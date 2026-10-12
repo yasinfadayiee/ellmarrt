@@ -23,6 +23,7 @@ npm install
 node scripts/logo.js      # لوگوی SVG و آیکون‌ها از لوگوی Gemini
 node scripts/images.js    # تصاویر WebP و کارت‌های OG
 node scripts/build.js     # تولید سایت در docs/
+# فونت: assets/fonts/Vazirmatn-wght.woff2 زیرمجموعه فارسی+لاتین است (python -m fontTools.subset)
 node scripts/serve.js     # پیش‌نمایش: http://localhost:4173/ellmarrt/
 ```
 

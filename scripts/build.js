@@ -36,7 +36,7 @@ const copyDir = (src, dst) => {
 // assets
 copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
 fs.mkdirSync(path.join(OUT, "assets/fonts"), { recursive: true });
-fs.copyFileSync(path.join(ROOT, "node_modules/vazirmatn/fonts/webfonts/Vazirmatn[wght].woff2"), path.join(OUT, "assets/fonts/Vazirmatn-wght.woff2"));
+// font: subset copy lives in assets/fonts (python -m fontTools.subset, see README)
 fs.copyFileSync(path.join(ROOT, "assets/img/favicon-48.png"), path.join(OUT, "favicon.png"));
 fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
 
@@ -62,6 +62,10 @@ emit("/big-size/", pages.bigSize(ctx), { priority: 0.85 });
 emit("/size-guide/", pages.sizeGuide(ctx), { priority: 0.7 });
 emit("/about/", pages.about(ctx), { priority: 0.6 });
 emit("/faq/", pages.faq(ctx), { priority: 0.6 });
+emit("/contact/", pages.contact(ctx), { priority: 0.7 });
+emit("/terms/", pages.terms(ctx), { priority: 0.3 });
+emit("/privacy/", pages.privacy(ctx), { priority: 0.3 });
+emit("/shipping-returns/", pages.shipping(ctx), { priority: 0.5 });
 for (const g of pages.guides) emit(`/guide/${g.slug}/`, pages.guide(ctx, g), { priority: 0.7 });
 emit("/guide/", pages.guideIndex(ctx), { priority: 0.6 });
 write("404.html", pages.notFound(ctx));
@@ -81,4 +85,5 @@ write("manifest.webmanifest", JSON.stringify({
   icons: [{ src: `${BASE}/assets/img/icon-192.png`, sizes: "192x192", type: "image/png" }, { src: `${BASE}/assets/img/icon-512.png`, sizes: "512x512", type: "image/png" }],
 }));
 write("llms.txt", pages.llms(ctx));
+write("assets/catalog.json", JSON.stringify(pages.catalog(ctx)));
 console.log(`built ${urls.length} pages -> docs/ (${SITE_URL})`);

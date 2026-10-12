@@ -8,7 +8,10 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
   };
   const BASE = document.documentElement.dataset.base || "";
-  const CAT = window.__CATALOG__ || [];
+  let CAT = [];
+  const VER = (document.querySelector("script[src*=\"site.js\"]")?.src.split("v=")[1]) || "";
+  let catP = null;
+  const catReady = () => (catP ??= fetch(`${BASE}/assets/catalog.json?v=${VER}`).then((r) => r.json()).then((d) => (CAT = d)).catch(() => CAT));
 
   /* header */
   const hdr = $(".hdr");
@@ -50,7 +53,7 @@
     body.innerHTML = items.length ? items.map((p) => `<a class="mini" href="${p.url}"><img src="${p.img}" alt="" width="72" height="90" loading="lazy"><div><b>${p.t}</b><span>${fa(p.p)} تومان</span></div><span aria-hidden="true">‹</span></a>`).join("")
       : `<div class="empty"><p>هنوز چیزی را نشان نکرده‌اید.</p><a class="btn btn-ink" href="${BASE}/shop/">دیدن محصولات</a></div>`;
   }
-  $$(".open-favs").forEach((b) => b.addEventListener("click", () => { renderDrawer(); drawer.classList.add("open"); scrim.classList.add("on"); }));
+  $$(".open-favs").forEach((b) => b.addEventListener("click", async () => { await catReady(); renderDrawer(); drawer.classList.add("open"); scrim.classList.add("on"); }));
   $(".drawer-x")?.addEventListener("click", closeAll);
   paintFavs(); favBadge();
 
@@ -76,7 +79,8 @@
       $("#stock-f")?.setAttribute("aria-pressed", state.stock);
     };
     const norm = (s) => s.replace(/[‌\s]+/g, " ").replace(/ي/g, "ی").replace(/ك/g, "ک").toLowerCase();
-    const run = (push = true) => {
+    const run = async (push = true) => {
+      await catReady();
       let list = CAT.filter((p) => (state.cat === "all" || p.c === state.cat) && (!state.stock || p.st) && (!state.sizes.size || (p.s || []).some((s) => state.sizes.has(s))) && (!state.q || norm(p.t + " " + p.cn + " " + (p.k || "")).includes(norm(state.q))));
       if (state.sort === "low") list.sort((a, b) => a.p - b.p);
       else if (state.sort === "high") list.sort((a, b) => b.p - a.p);
@@ -170,8 +174,7 @@
     const rv = store.get("elm-recent", []).filter((x) => x !== P.id);
     store.set("elm-recent", [P.id, ...rv].slice(0, 12));
     const box = $("#recent");
-    const items = rv.map((id) => CAT.find((p) => p.id === id)).filter(Boolean).slice(0, 4);
-    if (box && items.length) { box.hidden = false; $(".grid", box).innerHTML = items.map(card).join(""); reveal(box); paintFavs(); }
+    if (box && rv.length) catReady().then(() => { const items = rv.map((id) => CAT.find((p) => p.id === id)).filter(Boolean).slice(0, 4); if (items.length) { box.hidden = false; $(".grid", box).innerHTML = items.map(card).join(""); reveal(box); paintFavs(); } });
   }
 
   /* size finder */

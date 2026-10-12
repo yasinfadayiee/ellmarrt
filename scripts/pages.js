@@ -48,7 +48,6 @@ function layout(ctx, o) {
   const url = SITE_URL + o.path;
   const title = o.title.includes(STORE.name) ? o.title : `${o.title} | ${STORE.name}`;
   const image = o.image || `${SITE_URL}/assets/og/site.jpg`;
-  const catalog = ctx.products.map((p) => cardData(ctx, p));
   const navLinks = [
     ["/shop/", "فروشگاه"],
     ["/c/tshirt/", "تیشرت"],
@@ -57,6 +56,7 @@ function layout(ctx, o) {
     ["/big-size/", "سایز بزرگ"],
     ["/size-guide/", "سایزیاب"],
     ["/about/", "داستان ما"],
+    ["/contact/", "تماس"],
   ];
   return `<!doctype html>
 <html lang="fa" dir="rtl" data-base="${BASE}">
@@ -81,7 +81,7 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" co
 <link rel="apple-touch-icon" href="${BASE}/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="${BASE}/manifest.webmanifest">
 <link rel="preload" href="${BASE}/assets/fonts/Vazirmatn-wght.woff2" as="font" type="font/woff2" crossorigin>
-${o.preload ? `<link rel="preload" as="image" href="${o.preload}" fetchpriority="high">` : ""}
+${o.preload ? `<link rel="preload" as="image" href="${o.preload}"${o.preloadSet?` imagesrcset="${o.preloadSet}" imagesizes="${o.preloadSizes}"`:""} fetchpriority="high">` : ""}
 <link rel="stylesheet" href="${BASE}/assets/css/site.css?v=${VERSION}">
 ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</script>`).join("\n")}
 </head>
@@ -112,20 +112,28 @@ ${o.body}
         <p>${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}. پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا 6XL.</p>
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a></div>
       </div>
-      <div><h3>فروشگاه</h3><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}</ul></div>
-      <div><h3>راهنما</h3><ul><li><a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a></li><li><a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></li><li><a href="${BASE}/guide/">راهنمای خرید</a></li><li><a href="${BASE}/faq/">ارسال و سوالات متداول</a></li></ul></div>
-      <div><h3>المارت</h3><ul><li><a href="${BASE}/about/">داستان ما</a></li><li><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام @${STORE.igHandle}</a></li><li><a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه در باسلام</a></li><li><a href="${STORE.rubika}" target="_blank" rel="noopener">کانال روبیکا</a></li>${STORE.phones.map((p)=>`<li><a href="tel:${p}" class="num">${fa0(p)}</a></li>`).join("")}<li>${STORE.address}</li></ul></div>
+      <div><h2>فروشگاه</h2><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}</ul></div>
+      <div><h2>راهنما</h2><ul><li><a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a></li><li><a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></li><li><a href="${BASE}/guide/">راهنمای خرید</a></li><li><a href="${BASE}/faq/">سوالات متداول</a></li><li><a href="${BASE}/shipping-returns/">ارسال و مرجوعی</a></li><li><a href="${BASE}/terms/">قوانین و مقررات</a></li><li><a href="${BASE}/privacy/">حریم خصوصی</a></li><li><a href="${BASE}/contact/">تماس با ما</a></li></ul></div>
+      <div><h2>المارت</h2><ul><li><a href="${BASE}/about/">داستان ما</a></li><li><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام @${STORE.igHandle}</a></li><li><a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه در باسلام</a></li><li><a href="${STORE.rubika}" target="_blank" rel="noopener">کانال روبیکا</a></li>${STORE.phones.map((p)=>`<li><a href="tel:${p}" class="num">${fa0(p)}</a></li>`).join("")}<li>${STORE.address}</li></ul></div>
     </div>
     <div class="ftr-b"><span>© ${new Date().getFullYear()} ${STORE.latin} — ${STORE.name}. همه حقوق محفوظ است.</span><span>ساخته‌شده با عشق در تبریز</span></div>
   </div>
 </footer>
+<nav class="bnav" aria-label="ناوبری سریع">
+<a href="${BASE}/"${o.path==="/"?" aria-current=\"page\"":""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg><span>خانه</span></a>
+<a href="${BASE}/shop/"${o.path==="/shop/"?" aria-current=\"page\"":""}>${I.bag}<span>فروشگاه</span></a>
+<a href="${BASE}/size-guide/"${o.path==="/size-guide/"?" aria-current=\"page\"":""}>${I.ruler}<span>سایزیاب</span></a>
+<button class="open-favs">${I.heart}<span>علاقه‌مندی</span><i class="badge fav-count"></i></button>
+<a href="${BASE}/contact/"${o.path==="/contact/"?" aria-current=\"page\"":""}>${I.phone}<span>تماس</span></a>
+</nav>
+<a class="fab" href="tel:${STORE.phones[0]}" aria-label="تماس برای سفارش">${I.phone}<span>سفارش تلفنی</span></a>
 <aside class="drawer" aria-label="علاقه‌مندی‌ها"><div class="drawer-h"><b>علاقه‌مندی‌های شما</b><button class="ibtn drawer-x" aria-label="بستن">✕</button></div><div class="drawer-b"></div></aside>
 <div class="lb" role="dialog" aria-label="نمایش بزرگ تصویر"><button class="lb-x" aria-label="بستن">✕</button><button class="lb-n lb-prev" aria-label="قبلی">›</button><img alt=""><button class="lb-n lb-next" aria-label="بعدی">‹</button></div>
 <div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="om-t"><div class="modal-c"><button class="ibtn modal-x" aria-label="بستن">✕</button>
 <h2 id="om-t">سفارش مستقیم از المارت</h2><p class="om-p"></p>
 <div class="om-code"><span>کد پیگیری سفارش شما</span><b class="num" id="om-code"></b><small>این کد را هنگام تماس یا در پیام بگویید.</small></div>
 <div class="om-act"><a class="btn btn-ink btn-block" id="om-sms" href="#">ارسال پیامک سفارش</a>${STORE.phones.map((p,i)=>`<a class="btn btn-ghost btn-block om-call" href="tel:${p}">${I.phone} تماس: <span class="num">${fa0(p)}</span></a>`).join("")}<a class="btn btn-ghost btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">پیام در روبیکا (@aliegbal)</a></div></div></div>
-<script>window.__STORE__=${json({phones:STORE.phones})};window.__CATALOG__=${json(catalog)}</script>
+<script>window.__STORE__=${json({phones:STORE.phones})}</script>
 <script src="${BASE}/assets/js/site.js?v=${VERSION}" defer></script>
 </body>
 </html>`;
@@ -214,7 +222,7 @@ function home(ctx) {
       <div class="hero-stats"><div><b class="num" data-count="${STORE.years}" data-suffix="+">${fa(STORE.years)}+</b><span>سال در بازار تبریز</span></div><div><b class="num" data-count="${P.length}">${fa(P.length)}</b><span>مدل در کالکشن</span></div><div><b class="num">6XL</b><span>بزرگ‌ترین سایز</span></div></div>
     </div>
     <div class="arches" aria-hidden="true">
-      ${heroIds.map((id, i) => `<div class="arch"><img src="${BASE}/assets/p/${id}-${i === 1 ? 960 : 480}.webp" alt="" width="480" height="600" ${i === 1 ? 'fetchpriority="high"' : 'loading="eager"'}></div>`).join("")}
+      ${heroIds.map((id, i) => `<div class="arch"><img src="${BASE}/assets/p/${id}-480.webp"${i === 1 ? ` srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:900px) 33vw, 16vw"` : ""} alt="" width="480" height="600" ${i === 1 ? 'fetchpriority="high"' : 'loading="eager"'}></div>`).join("")}
       <div class="seal"><div class="seal-in"><span class="num">${fa(STORE.years)}</span>سال<br>بازار تبریز</div></div>
     </div>
   </div>
@@ -234,7 +242,7 @@ function home(ctx) {
 </div></section>
 
 <section class="sec bg-cream"><div class="wrap">
-  <div class="sec-head rv"><div><span class="kicker">پرفروش‌های غرفه</span><h2>انتخاب مشتری‌های همیشگی</h2><p>مدل‌هایی که بیشترین سفارش را در باسلام داشته‌اند.</p></div><a class="link" href="${BASE}/shop/?sort=best">مشاهده همه</a></div>
+  <div class="sec-head rv"><div><span class="kicker">پرفروش‌های غرفه</span><h2>انتخاب مشتری‌های همیشگی</h2><p>مدل‌هایی که بیشترین سفارش را در باسلام داشته‌اند.</p></div><a class="link" href="${BASE}/shop/?sort=best">همه پرفروش‌ها</a></div>
   <div class="grid">${best.map((p) => card(ctx, p)).join("")}</div>
 </div></section>
 
@@ -250,7 +258,7 @@ function home(ctx) {
       <div><i>${I.ruler}</i><p style="margin:0"><b>تخصص سایز بزرگ</b><span>تن‌خور خوب برای هیکل‌های درشت</span></p></div>
       <div><i>${I.box}</i><p style="margin:0"><b>بسته‌بندی ایمن</b><span>ارسال سریع از روز اول کاری</span></p></div>
     </div>
-    <p style="margin-top:28px"><a class="btn btn-ink" href="${BASE}/about/">بیشتر بخوانید ${I.arrow}</a></p>
+    <p style="margin-top:28px"><a class="btn btn-ink" href="${BASE}/about/">داستان کامل المارت ${I.arrow}</a></p>
   </div>
 </div></section>
 
@@ -281,7 +289,7 @@ function home(ctx) {
     path: "/",
     title: `${STORE.name} | پوشاک مردانه بازار تبریز؛ تیشرت، شلوار اسلش و سایز بزرگ تا 6XL`,
     desc: `خرید آنلاین پوشاک مردانه از ${STORE.name}، ${fa(STORE.years)} سال در بازار بزرگ تبریز: تیشرت نخ پنبه، شلوار اسلش، هودی، پیراهن و لباس سایز بزرگ مردانه تا 6XL با قیمت منصفانه و ارسال به سراسر ایران.`,
-    preload: `${BASE}/assets/p/${heroIds[1]}-960.webp`,
+    preload: `${BASE}/assets/p/${heroIds[1]}-480.webp`,
     schema: [orgSchema(ctx), { "@context": "https://schema.org", "@type": "WebSite", name: STORE.name, alternateName: STORE.latin, url: `${ctx.SITE_URL}/`, inLanguage: "fa-IR", potentialAction: { "@type": "SearchAction", target: `${ctx.SITE_URL}/shop/?q={search_term_string}`, "query-input": "required name=search_term_string" } }, faqSchema(HOME_FAQ)],
     body,
   });
@@ -315,7 +323,7 @@ function shop(ctx) {
     schema: [crumbSchema(ctx, items), itemList(ctx, sorted)],
     body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></header>
-<section id="shop">${filters(ctx, null)}<div class="wrap"><div class="grid" id="shop-grid">${sorted.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>`,
+<section id="shop">${filters(ctx, null)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${sorted.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>`,
   });
 }
 
@@ -343,7 +351,7 @@ function category(ctx, c) {
     schema: [crumbSchema(ctx, items), itemList(ctx, list), ...(qa.length ? [faqSchema(qa)] : [])],
     body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></header>
-<section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
+<section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -384,7 +392,7 @@ function product(ctx, p) {
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
   <div class="gal">
-    <div class="gal-main"><img class="cover" src="${hero}" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
+    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${p.id}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
     <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" aria-label="تصویر ${fa(i + 1)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95"></button>`).join("")}</div>
   </div>
   <div class="pinfo">
@@ -425,6 +433,8 @@ ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-
     ogType: "product",
     image: `${SITE_URL}/assets/og/${p.id}.jpg`,
     preload: hero,
+    preloadSet: `${BASE}/assets/p/${p.id}-480.webp 480w, ${hero} 960w`,
+    preloadSizes: "(max-width:900px) 92vw, 46vw",
     schema: [crumbSchema(ctx, items), schema],
     body,
   });
@@ -607,4 +617,5 @@ ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.l
 `;
 }
 
-module.exports = { home, shop, category, product, bigSize, sizeGuide, about, faq, guide, guideIndex, guides, notFound, llms };
+const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
+module.exports = { ...info, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, faq, guide, guideIndex, guides, notFound, llms };
