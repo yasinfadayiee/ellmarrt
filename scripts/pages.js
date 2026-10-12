@@ -14,10 +14,16 @@ const STORE = {
   igHandle: "ellmarrt",
   igDm: "https://ig.me/m/ellmarrt",
   basalam: "https://basalam.com/piraysh",
+  rubika: "https://rubika.ir/ellmarrt",
+  rubikaOrder: "https://rubika.ir/aliegbal",
+  phones: ["09228167268", "09935291942"],
+  address: "تبریز، بازار سرپوشیده، راسته بازار، روبروی بانک سپه",
   years: 60,
 };
 
+const fa0 = (s) => String(s).replace(/d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
 const I = {
+  phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
   bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
   heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.4 4.5 7 4.5c2 0 3.5 1.1 5 2.9 1.5-1.8 3-2.9 5-2.9 3.6 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg>',
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
@@ -108,14 +114,18 @@ ${o.body}
       </div>
       <div><h3>فروشگاه</h3><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}</ul></div>
       <div><h3>راهنما</h3><ul><li><a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a></li><li><a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></li><li><a href="${BASE}/guide/">راهنمای خرید</a></li><li><a href="${BASE}/faq/">ارسال و سوالات متداول</a></li></ul></div>
-      <div><h3>المارت</h3><ul><li><a href="${BASE}/about/">داستان ما</a></li><li><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام @${STORE.igHandle}</a></li><li><a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه در باسلام</a></li><li>${STORE.bazaar}</li></ul></div>
+      <div><h3>المارت</h3><ul><li><a href="${BASE}/about/">داستان ما</a></li><li><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام @${STORE.igHandle}</a></li><li><a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه در باسلام</a></li><li><a href="${STORE.rubika}" target="_blank" rel="noopener">کانال روبیکا</a></li>${STORE.phones.map((p)=>`<li><a href="tel:${p}" class="num">${fa0(p)}</a></li>`).join("")}<li>${STORE.address}</li></ul></div>
     </div>
     <div class="ftr-b"><span>© ${new Date().getFullYear()} ${STORE.latin} — ${STORE.name}. همه حقوق محفوظ است.</span><span>ساخته‌شده با عشق در تبریز</span></div>
   </div>
 </footer>
 <aside class="drawer" aria-label="علاقه‌مندی‌ها"><div class="drawer-h"><b>علاقه‌مندی‌های شما</b><button class="ibtn drawer-x" aria-label="بستن">✕</button></div><div class="drawer-b"></div></aside>
 <div class="lb" role="dialog" aria-label="نمایش بزرگ تصویر"><button class="lb-x" aria-label="بستن">✕</button><button class="lb-n lb-prev" aria-label="قبلی">›</button><img alt=""><button class="lb-n lb-next" aria-label="بعدی">‹</button></div>
-<script>window.__CATALOG__=${json(catalog)}</script>
+<div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="om-t"><div class="modal-c"><button class="ibtn modal-x" aria-label="بستن">✕</button>
+<h2 id="om-t">سفارش مستقیم از المارت</h2><p class="om-p"></p>
+<div class="om-code"><span>کد پیگیری سفارش شما</span><b class="num" id="om-code"></b><small>این کد را هنگام تماس یا در پیام بگویید.</small></div>
+<div class="om-act"><a class="btn btn-ink btn-block" id="om-sms" href="#">ارسال پیامک سفارش</a>${STORE.phones.map((p,i)=>`<a class="btn btn-ghost btn-block om-call" href="tel:${p}">${I.phone} تماس: <span class="num">${fa0(p)}</span></a>`).join("")}<a class="btn btn-ghost btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">پیام در روبیکا (@aliegbal)</a></div></div></div>
+<script>window.__STORE__=${json({phones:STORE.phones})};window.__CATALOG__=${json(catalog)}</script>
 <script src="${BASE}/assets/js/site.js?v=${VERSION}" defer></script>
 </body>
 </html>`;
@@ -159,10 +169,11 @@ const orgSchema = (ctx) => ({
   name: `${STORE.name} (${STORE.latin})`, alternateName: [STORE.latin, STORE.full, "پیرایش"],
   url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: `${ctx.SITE_URL}/assets/og/site.jpg`,
   description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا 6XL.`,
-  address: { "@type": "PostalAddress", streetAddress: STORE.bazaar, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
+  address: { "@type": "PostalAddress", streetAddress: STORE.address, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
   areaServed: { "@type": "Country", name: "Iran" }, currenciesAccepted: "IRR", priceRange: "$$",
   foundingDate: String(new Date().getFullYear() - STORE.years),
-  sameAs: [STORE.instagram, STORE.basalam],
+  sameAs: [STORE.instagram, STORE.basalam, STORE.rubika],
+  telephone: "+98" + STORE.phones[0].slice(1),
 });
 const faqSchema = (qa) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qa.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
 
@@ -390,6 +401,7 @@ function product(ctx, p) {
         <button class="btn btn-ghost fav" data-id="${p.id}" style="position:static;width:54px;padding:0" aria-label="افزودن به علاقه‌مندی‌ها">${I.heart}</button>
         <button class="btn btn-ghost" id="share" style="width:54px;padding:0" aria-label="اشتراک‌گذاری">${I.share}</button>
       </div>
+      <button class="btn btn-gold btn-block" id="direct-order">${I.phone} سفارش مستقیم (تلفنی / پیامکی)</button>
       <p class="buy-note">پرداخت از درگاه امن باسلام با ضمانت بازگشت وجه؛ ارسال از روز اول کاری.</p>
     </div>
     <div class="perks"><div>${I.truck}ارسال سراسری</div><div>${I.shield}ضمانت باسلام</div><div>${I.camera}بررسی قبل از ارسال</div></div>

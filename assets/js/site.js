@@ -209,4 +209,28 @@
   const thumbsAll = $$(".thumbs button").map((t) => t.dataset.full);
   $$(".real-i").forEach((b) => b.addEventListener("click", () => { lbImgs = reals; openLb(+b.dataset.real); }));
   $(".gal-main")?.addEventListener("click", () => { lbImgs = thumbsAll; }, true);
+  /* direct order with site tracking code (EL-XXXX) — lets the partners attribute website orders */
+  const modal = $("#order-modal");
+  const dob = $("#direct-order");
+  if (modal && dob && pdp) {
+    const P = JSON.parse($("#pdp-data").textContent);
+    const title = $(".pinfo h1").textContent.trim();
+    const close = () => { modal.classList.remove("on"); document.body.style.overflow = ""; };
+    $(".modal-x", modal).addEventListener("click", close);
+    modal.addEventListener("click", (e) => e.target === modal && close());
+    dob.addEventListener("click", () => {
+      const color = $("[data-color][aria-pressed=true]")?.dataset.color || ($$("[data-color]").length ? null : "");
+      const size = $("[data-size][aria-pressed=true]")?.dataset.size || ($$("[data-size]").length ? null : "");
+      if (size === null) { toast("اول سایز را انتخاب کنید"); $(".opt")?.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+      if (color === null) { toast("اول رنگ را انتخاب کنید"); return; }
+      const code = "EL-" + (Date.now() % 1679616).toString(36).toUpperCase().padStart(4, "0");
+      const log = store.get("elm-orders", []); log.unshift({ code, id: P.id, size, color, t: Date.now() }); store.set("elm-orders", log.slice(0, 20));
+      $("#om-code").textContent = code;
+      $(".om-p", modal).textContent = `${title}${size ? " — سایز " + size : ""}${color ? " — " + color : ""}`;
+      const body = `سلام، سفارش از سایت المارت\nکد پیگیری: ${code}\nمحصول: ${title} (کد ${P.id})${size ? "\nسایز: " + size : ""}${color ? "\nرنگ: " + color : ""}\nلینک: ${location.href.split("?")[0]}`;
+      $("#om-sms").href = `sms:${(window.__STORE__ || {}).phones?.[0] || ""}?&body=${encodeURIComponent(body)}`;
+      modal.classList.add("on"); document.body.style.overflow = "hidden";
+      navigator.clipboard?.writeText(body).catch(() => {});
+    });
+  }
 })();
