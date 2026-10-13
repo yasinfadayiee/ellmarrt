@@ -96,6 +96,7 @@ function load() {
       hasVideo: !!(s.video && s.video.PRIMARY),
       created: d.created_at,
       images: images[s.id],
+      colorImages: colors.map((_, i) => i).filter((i) => fs.existsSync(path.join(ROOT, "assets/p", `${s.id}-k${i}-960.webp`))),
       buyUrl: `https://basalam.com/piraysh/product/${s.id}`,
     });
   }

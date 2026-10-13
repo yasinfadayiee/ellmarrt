@@ -30,7 +30,7 @@ const logo = fs.readFileSync(path.join(ROOT, "assets/img/logo.svg"));
       // close-up crops from the same studio shot -> a visually consistent gallery
       const sm = await sharp(src).metadata();
       const cw = Math.round(sm.width * 0.62), ch = Math.round(cw * 1.25), left = Math.round(sm.width * 0.19);
-      for (const [n, topF] of [["z1", 0.07], ["z2", 0.36]]) {
+      for (const [n, topF] of []) { // close-up crops retired (looked like duplicates)
         const dst = path.join(OUT, `${id}-${n}.webp`);
         const top = Math.min(Math.round(sm.height * topF), sm.height - ch);
         if (!fresh(src, dst)) await sharp(src).extract({ left, top, width: cw, height: ch }).resize(960, 1200).webp({ quality: 80, effort: 5 }).toFile(dst);
@@ -54,6 +54,15 @@ const logo = fs.readFileSync(path.join(ROOT, "assets/img/logo.svg"));
       m.gallery.push({ file: `${id}-g${n}.webp`, w: md.width, h: md.height });
     }
     meta[id] = m;
+  }
+  // per-colour studio shots: src-images/gemini/colors/<id>-k<i>.webp -> assets/p/<id>-k<i>-{480,960}.webp
+  const CDIR = path.join(GEM, "colors");
+  if (fs.existsSync(CDIR)) for (const f of fs.readdirSync(CDIR).filter((f) => /^d+-kd+.webp$/.test(f))) {
+    const src = path.join(CDIR, f), base = f.replace(".webp", "");
+    for (const w of [480, 960]) {
+      const dst = path.join(OUT, `${base}-${w}.webp`);
+      if (!fresh(src, dst)) await sharp(src).resize(w, Math.round(w * 1.25), { fit: "cover", position: "attention" }).webp({ quality: 78, effort: 5 }).toFile(dst);
+    }
   }
   // site-wide OG card
   await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#F4F0E8" } })

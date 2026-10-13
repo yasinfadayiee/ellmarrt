@@ -21,6 +21,8 @@
   const closeAll = () => { nav && nav.classList.remove("open"); $(".drawer")?.classList.remove("open"); scrim?.classList.remove("on"); document.body.style.overflow = ""; };
   $(".menu-btn")?.addEventListener("click", () => { nav.classList.add("open"); scrim.classList.add("on"); document.body.style.overflow = "hidden"; });
   scrim?.addEventListener("click", closeAll);
+  $(".nav-x")?.addEventListener("click", closeAll);
+  $(".nav a").forEach((a) => a.addEventListener("click", closeAll));
   addEventListener("keydown", (e) => e.key === "Escape" && (closeAll(), closeLb()));
 
   /* reveal */
@@ -148,7 +150,9 @@
       const n = match.reduce((a, v) => a + (v.stock || 0), 0);
       if (st && (sel.color || sel.size)) { st.className = "stock" + (n === 0 ? " no" : n <= 2 ? " low" : ""); st.textContent = n === 0 ? "ناموجود" : n <= 2 ? `فقط ${fa(n)} عدد باقی‌مانده` : "موجود در انبار"; }
     };
-    $$("[data-color]").forEach((b) => b.addEventListener("click", () => { sel.color = sel.color === b.dataset.color ? null : b.dataset.color; if (sel.size && !avail(sel.color, sel.size)) sel.size = null; paint(); }));
+    const showColor = (c) => { const i = thumbs.findIndex((t) => t.dataset.tc === (c || "")); if (i >= 0 && i !== cur) show(i); };
+    $$("[data-color]").forEach((b) => b.addEventListener("click", () => { sel.color = sel.color === b.dataset.color ? null : b.dataset.color; if (sel.size && !avail(sel.color, sel.size)) sel.size = null; paint(); showColor(sel.color); }));
+    thumbs.forEach((t) => t.addEventListener("click", () => { const c = t.dataset.tc; if (c && c !== sel.color) { const btn = $$("[data-color]").find((b) => b.dataset.color === c); if (btn && !btn.disabled) { sel.color = c; if (sel.size && !avail(sel.color, sel.size)) sel.size = null; paint(); } } }));
     $$("[data-size]").forEach((b) => b.addEventListener("click", () => { sel.size = sel.size === b.dataset.size ? null : b.dataset.size; paint(); }));
     paint();
     const buy = (e) => {

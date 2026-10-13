@@ -92,7 +92,7 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
   <div class="wrap hdr-in">
     <button class="ibtn menu-btn" aria-label="منو">${I.menu}</button>
     <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42"><span><b>${STORE.name}</b><small>ELLMARRT</small></span></a>
-    <nav class="nav" aria-label="منوی اصلی">${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
+    <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76"><button class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <div class="hdr-act">
       <a class="ibtn" href="${BASE}/shop/#q" aria-label="جستجو">${I.search}</a>
       <button class="ibtn open-favs" aria-label="علاقه‌مندی‌ها">${I.heart}<span class="badge fav-count"></span></button>
@@ -154,7 +154,7 @@ function cardData(ctx, p) {
   const t = tagFor(p);
   return {
     id: p.id, t: p.title, c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
-    url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${p.id}-480.webp`, alt: `${ctx.BASE}/assets/p/${p.id}-z1.webp`,
+    url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${p.id}-480.webp`, alt: p.colorImages.length ? `${ctx.BASE}/assets/p/${p.id}-k${p.colorImages[0]}-480.webp` : null,
     tag: t && t[0], tagc: t && t[1],
   };
 }
@@ -361,11 +361,10 @@ function product(ctx, p) {
   const c = catOf(ctx, p);
   const items = [["/", "خانه"], [`/c/${c.slug}/`, c.name], [`/p/${p.id}/`, p.title]];
   const hero = `${BASE}/assets/p/${p.id}-960.webp`;
-  const gal = [
-    { full: hero, thumb: `${BASE}/assets/p/${p.id}-480.webp`, label: "نمای کامل" },
-    { full: `${BASE}/assets/p/${p.id}-z1.webp`, thumb: `${BASE}/assets/p/${p.id}-z1.webp`, label: "نمای نزدیک" },
-    { full: `${BASE}/assets/p/${p.id}-z2.webp`, thumb: `${BASE}/assets/p/${p.id}-z2.webp`, label: "جزئیات دوخت" },
-  ];
+  // gallery = main studio shot + one studio shot per colour (no duplicate crops)
+  const colorImg = (i) => p.colorImages.includes(i) ? `${BASE}/assets/p/${p.id}-k${i}-960.webp` : null;
+  const gal = [{ full: hero, thumb: `${BASE}/assets/p/${p.id}-480.webp`, label: "نمای اصلی", color: "" },
+    ...p.colors.map((c, i) => colorImg(i) && { full: colorImg(i), thumb: `${BASE}/assets/p/${p.id}-k${i}-480.webp`, label: c, color: c }).filter(Boolean)];
   const real = p.images.gallery.map((g) => `${BASE}/assets/p/${g.file}`);
   const colors = p.colors;
   const sizes = p.sizes;
@@ -393,14 +392,14 @@ function product(ctx, p) {
 <div class="wrap pdp" id="pdp">
   <div class="gal">
     <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${p.id}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
-    <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" aria-label="تصویر ${fa(i + 1)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95"></button>`).join("")}</div>
+    <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" data-tc="${esc(g.color)}" aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95"></button>`).join("")}</div>
   </div>
   <div class="pinfo">
     <a class="kicker" href="${BASE}/c/${c.slug}/">${c.name}</a>
     <h1>${esc(p.title)}</h1>
     <div class="pmeta">${p.rating ? `<span class="stars">${I.star}<span class="num">${fa(p.rating.avg)}</span></span><span>${fa(p.rating.count)} نظر در باسلام</span>` : ""}${p.sales ? `<span>${fa(p.sales)} فروش موفق</span>` : ""}<span>کد کالا: <span class="num">${p.id}</span></span></div>
     ${priceBlock}
-    ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x) => `<button data-color="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
+    ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
     ${sizes.length ? `<div class="opt"><div class="opt-h">سایز: <span id="sel-size">انتخاب کنید</span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">راهنمای سایز</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div></div>` : ""}
     <div class="buy">
       <a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>
