@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yasinfadayiee.github.io/ellmarrt/sitemap.xml
+Sitemap: https://ellmarrt.ir/sitemap.xml

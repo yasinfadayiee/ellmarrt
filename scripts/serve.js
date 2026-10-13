@@ -3,13 +3,13 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const DOCS = path.join(__dirname, "../docs");
-const BASE = "/ellmarrt";
+const BASE = fs.existsSync(path.join(DOCS, "CNAME")) ? "" : "/ellmarrt";
 const PORT = +process.env.PORT || 4173;
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".xml": "application/xml", ".txt": "text/plain; charset=utf-8", ".webmanifest": "application/manifest+json" };
 http.createServer((req, res) => {
   const shot = req.url.includes("shot=1") || (req.headers.referer || "").includes("shot=1");
   let u = decodeURIComponent(req.url.split("?")[0]);
-  if (u === "/" ) { res.writeHead(302, { Location: BASE + "/" }); return res.end(); }
+  if (u === "/" && BASE) { res.writeHead(302, { Location: BASE + "/" }); return res.end(); }
   if (!u.startsWith(BASE)) { res.writeHead(404); return res.end(); }
   let f = path.join(DOCS, u.slice(BASE.length));
   if (fs.existsSync(f) && fs.statSync(f).isDirectory()) f = path.join(f, "index.html");

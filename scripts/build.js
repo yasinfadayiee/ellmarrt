@@ -7,7 +7,7 @@ const pages = require("./pages");
 
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "docs");
-const SITE_URL = (process.env.SITE_URL || "https://yasinfadayiee.github.io/ellmarrt").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://ellmarrt.ir").replace(/\/$/, "");
 const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
 const VERSION = Date.now().toString(36);
 
