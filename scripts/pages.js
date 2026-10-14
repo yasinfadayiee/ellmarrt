@@ -42,6 +42,8 @@ const I = {
   box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>',
 };
 
+const THEMES = [["", "ابریشم تبریز", ["#2a1424", "#e2b45a", "#8a2433"]], ["firouzeh", "فیروزه", ["#0d3a40", "#e9c46a", "#127a83"]], ["zomorrod", "زمرد", ["#0f3a2c", "#e6be6e", "#1d6b51"]], ["lajevard", "لاجورد", ["#16224f", "#e8c062", "#2a44a8"]], ["anar", "انار", ["#4a0d1c", "#f6d2b4", "#b0203f"]], ["shab", "شب", ["#0e0d10", "#e2b45a", "#1c191f"]]];
+
 /* ---------------- layout ---------------- */
 function layout(ctx, o) {
   const { SITE_URL, BASE, VERSION } = ctx;
@@ -82,6 +84,7 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" co
 <link rel="manifest" href="${BASE}/manifest.webmanifest">
 <link rel="preload" href="${BASE}/assets/fonts/Vazirmatn-wght.woff2" as="font" type="font/woff2" crossorigin>
 ${o.preload ? `<link rel="preload" as="image" href="${o.preload}"${o.preloadSet?` imagesrcset="${o.preloadSet}" imagesizes="${o.preloadSizes}"`:""} fetchpriority="high">` : ""}
+<script>try{var t=localStorage.getItem("elm-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="${BASE}/assets/css/site.css?v=${VERSION}">
 ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</script>`).join("\n")}
 </head>
@@ -94,6 +97,8 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
     <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42"><span><b>${STORE.name}</b><small>ELLMARRT</small></span></a>
     <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76"><button class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <div class="hdr-act">
+      <div class="theme-btn"><button class="ibtn" id="theme-open" aria-label="تغییر رنگ‌بندی سایت" aria-expanded="false"><span class="sw3"><i style="background:var(--dk2)"></i><i style="background:var(--gold-2)"></i><i style="background:var(--brick)"></i></span></button>
+      <div class="theme-pop" id="theme-pop" role="dialog" aria-label="رنگ‌بندی سایت"><b>رنگ‌بندی سایت را انتخاب کنید</b><div class="theme-list">${THEMES.map(([k, n, c]) => `<button data-theme-set="${k}" aria-pressed="false"><span class="sw3">${c.map((x) => `<i style="background:${x}"></i>`).join("")}</span>${n}</button>`).join("")}</div></div></div>
       <a class="ibtn" href="${BASE}/shop/#q" aria-label="جستجو">${I.search}</a>
       <button class="ibtn open-favs" aria-label="علاقه‌مندی‌ها">${I.heart}<span class="badge fav-count"></span></button>
       <a class="ibtn" href="${STORE.basalam}" rel="noopener" target="_blank" aria-label="غرفه المارت در باسلام">${I.bag}</a>
@@ -142,6 +147,9 @@ ${o.body}
 /* ---------------- shared pieces ---------------- */
 const HEX = { "مشکی": "#151515", "سفید": "#f7f7f5", "کرمی": "#eadfc8", "کله‌غازی": "#21566a", "استخوانی": "#ece6d8", "نسکافه‌ای": "#7a5a43", "هوایی": "#a9cbe6", "یشمی": "#8fa697", "شکلاتی": "#4a2f22", "طوسی": "#9a9a9a", "طوسی تیره": "#4b4b4f", "طوسی روشن": "#c9c9c9", "پرتقالی": "#f07a1f", "زرد": "#e1b43a", "قرمز": "#c23a35", "مشکی ساده": "#151515", "مشکی طرح لوزی": "#2a2a2a", "سبز": "#2f6b45", "سرمه‌ای": "#1f2a4d", "نارنجی": "#c8642d", "آبی": "#1f5fc4", "پسته‌ای": "#bcd49a", "قهوه‌ای": "#6b4a33", "زرشکی": "#6e1f2c", "مشکی سفید": "linear-gradient(90deg,#151515 50%,#f7f7f5 50%)", "سبز ساقه‌ای": "#6f7d3c", "سفید مشکی": "linear-gradient(90deg,#f7f7f5 50%,#151515 50%)", "زیتونی": "#6b6b3a", "زغالی": "#3a3a3c", "سبز ساقه ای": "#6f7d3c" };
 const dotsHtml = (cols) => cols.length > 1 ? `<div class="dots" aria-label="رنگ‌های موجود">${cols.slice(0, 5).map((c) => `<i title="${c}" style="background:${HEX[c] || "#bbb"}"></i>`).join("")}${cols.length > 5 ? `<small>+${cols.length - 5}</small>` : ""}</div>` : "";
+const stars = (n) => `<span class="rstars" aria-label="${n} از ۵">${[1, 2, 3, 4, 5].map((i) => `<i class="${i <= Math.round(n) ? "on" : ""}">★</i>`).join("")}</span>`;
+const faDate = (d) => { try { return new Intl.DateTimeFormat("fa-IR", { year: "numeric", month: "long" }).format(new Date(d)); } catch { return ""; } };
+const reviewCard = (ctx, r, withProduct) => { const p = withProduct && ctx.products.find((x) => x.id === r.productId); return `<figure class="rv-card rv"><div class="rv-top">${stars(r.star)}<span class="rv-date">${faDate(r.date)}</span></div><blockquote>${esc(r.text)}</blockquote><figcaption><b>${esc(r.name || "خریدار باسلام")}</b><span>خرید تأییدشده در باسلام${p ? ` · <a href="${pUrl(ctx, p)}">${esc(short(p))}</a>` : ""}</span></figcaption></figure>`; };
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
 const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
@@ -285,6 +293,14 @@ function home(ctx) {
   <div class="grid">${big.map((p) => card(ctx, p)).join("")}</div>
 </div></section>
 
+${(() => { const RV = ctx.storeReviews; if (!RV || !RV.count) return ""; const good = RV.reviews.filter((r) => r.text && r.star >= 4).slice(0, 9); const total = Object.values(RV.groups).reduce((a, b) => a + b, 0) || 1;
+return `<section class="sec reviews"><div class="wrap">
+  <div class="sec-head rv"><div><span class="kicker">از زبان خریداران</span><h2>اعتماد واقعی، نه تبلیغ</h2><p>نظرهای ثبت‌شده خریداران در غرفه رسمی المارت در باسلام؛ بدون ویرایش.</p></div><a class="link" href="${STORE.basalam}" target="_blank" rel="noopener">همه نظرها در باسلام</a></div>
+  <div class="rv-wrap">
+    <div class="rv-score rv"><b class="num">${fa(RV.average)}</b>${stars(RV.average)}<span>از ${fa(RV.count)} امتیاز خریداران</span>
+      <ul>${[5, 4, 3, 2, 1].map((n) => `<li><span>${fa(n)} ★</span><i><em style="width:${Math.round(((RV.groups[n] || 0) / total) * 100)}%"></em></i><small class="num">${fa(RV.groups[n] || 0)}</small></li>`).join("")}</ul></div>
+    <div class="rv-grid">${good.map((r) => reviewCard(ctx, r, true)).join("")}</div>
+  </div></div></section>`; })()}
 <section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv" style="justify-content:center;text-align:center"><div><span class="kicker">سوالات پرتکرار</span><h2>قبل از خرید بدانید</h2></div></div>
   <div class="faq rv">${HOME_FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
@@ -428,6 +444,7 @@ function product(ctx, p) {
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="300" height="300"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
+${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>ست کنید یا مشابه ببینید</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div></div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
 <script type="application/json" id="pdp-data">${json(data)}</script>`;

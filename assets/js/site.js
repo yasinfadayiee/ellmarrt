@@ -242,4 +242,18 @@
       navigator.clipboard?.writeText(body).catch(() => {});
     });
   }
+  /* theme picker — choice is remembered on this device */
+  const tOpen = $("#theme-open"), tPop = $("#theme-pop");
+  const curTheme = () => document.documentElement.getAttribute("data-theme") || "";
+  const markTheme = () => $$("[data-theme-set]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.themeSet === curTheme()));
+  if (tOpen && tPop) {
+    tOpen.addEventListener("click", (e) => { e.stopPropagation(); const on = !tPop.classList.contains("on"); tPop.classList.toggle("on", on); tOpen.setAttribute("aria-expanded", on); markTheme(); });
+    document.addEventListener("click", (e) => { if (!e.target.closest(".theme-btn")) tPop.classList.remove("on"); });
+    $$("[data-theme-set]").forEach((b) => b.addEventListener("click", () => {
+      const t = b.dataset.themeSet;
+      t ? document.documentElement.setAttribute("data-theme", t) : document.documentElement.removeAttribute("data-theme");
+      try { t ? localStorage.setItem("elm-theme", t) : localStorage.removeItem("elm-theme"); } catch {}
+      markTheme(); toast("رنگ‌بندی «" + b.textContent.trim() + "» فعال شد");
+    }));
+  }
 })();

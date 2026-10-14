@@ -67,6 +67,18 @@ const get = async (url, tries = 4) => {
   }
   const slim = uniq.map((p) => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, sales_count: p.sales_count, rating: p.rating, categoryTitle: p.categoryTitle, video: p.video ? { PRIMARY: p.video.PRIMARY } : null }));
   fs.writeFileSync(path.join(RAW, "_search.json"), JSON.stringify(slim, null, 1));
+  // customer reviews of the store (public Basalam reviews), newest first
+  try {
+    const group = await (await get("https://services.basalam.com/web/v1/review/vendor/1057051/reviews/group")).json();
+    const reviews = [];
+    for (let off = 0; off < 400; off += 20) {
+      const j = await (await get(`https://services.basalam.com/web/v1/review/vendor/1057051/reviews?limit=20&offset=${off}`)).json();
+      reviews.push(...(j.reviews || []).map((r) => ({ id: r.id, star: r.star, text: (r.description || "").trim(), date: r.createdAt, productId: +r.productId, product: r.product && r.product.title, name: r.user && r.user.name, variant: r.variation_metadata || null, photos: ((r.attachments && r.attachments.photos) || []).map((p) => p.MEDIUM || p.LARGE).filter(Boolean) })));
+      if (!j.has_next) break;
+    }
+    fs.writeFileSync(path.join(RAW, "_reviews.json"), JSON.stringify({ average: group.stars_average, count: group.stars_total_count, groups: group.groups, reviews }, null, 1));
+    console.log(`reviews: ${reviews.length} (avg ${group.stars_average} of ${group.stars_total_count})`);
+  } catch (e) { console.error("reviews skipped:", e.message); }
   const removed = prev.filter((p) => !uniq.some((u) => u.id === p.id)).map((p) => p.id);
   console.log(`sync ok: ${uniq.length} products, ${changed} updated, new: [${added.join(",")}], removed: [${removed.join(",")}]`);
 })().catch((e) => { console.error(e); process.exit(1); });

@@ -602,3 +602,81 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .phead.banner .banner-img{position:absolute;inset-inline-end:clamp(10px,4vw,48px);bottom:0;height:115%;width:auto;mask:var(--arch) center/100% 100% no-repeat;-webkit-mask:var(--arch) center/100% 100% no-repeat;aspect-ratio:4/5;object-fit:cover;opacity:.95}
 .phead.banner .bt{max-width:min(620px,62%)}
 @media (max-width:760px){.phead.banner .banner-img{display:none}.phead.banner .bt{max-width:none}}
+/* reviews */
+.rv-wrap{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+.rv-score{position:sticky;top:96px;background:var(--surface,#fff);border-radius:var(--r-lg);padding:26px;text-align:center;box-shadow:var(--shadow)}
+.rv-score>b{display:block;font-size:64px;font-weight:900;line-height:1;color:var(--plum)}
+.rv-score>span{display:block;color:var(--muted);font-size:14px;margin:6px 0 16px}
+.rv-score ul{list-style:none;padding:0;margin:0;display:grid;gap:6px;text-align:start}
+.rv-score li{display:grid;grid-template-columns:36px 1fr 24px;gap:8px;align-items:center;font-size:13px}
+.rv-score li i{height:8px;border-radius:8px;background:var(--sand);overflow:hidden;display:block}
+.rv-score li em{display:block;height:100%;background:linear-gradient(90deg,var(--gold-2),var(--gold))}
+.rstars{display:inline-flex;gap:2px;font-size:16px;letter-spacing:0;direction:ltr}
+.rstars i{font-style:normal;color:var(--sand)}
+.rstars i.on{color:var(--gold)}
+.rv-grid{columns:3 260px;column-gap:16px}
+.rv-card{break-inside:avoid;margin:0 0 16px;background:var(--surface,#fff);border-radius:20px;padding:20px;box-shadow:0 10px 26px -18px rgba(42,20,36,.35);border:1px solid var(--line-2)}
+.rv-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.rv-date{font-size:12px;color:var(--muted)}
+.rv-card blockquote{margin:0 0 14px;font-size:15.5px;line-height:1.9;color:var(--ink-2)}
+.rv-card blockquote::before{content:"«";color:var(--gold);font-weight:900;margin-inline-end:2px}
+.rv-card blockquote::after{content:"»";color:var(--gold);font-weight:900;margin-inline-start:2px}
+.rv-card figcaption b{display:block;font-size:14px}
+.rv-card figcaption span{font-size:12.5px;color:var(--teal)}
+.rv-card figcaption a{color:var(--brick);font-weight:700}
+.h-sub{font-size:15px;font-weight:600;color:var(--muted)}
+@media (max-width:900px){.rv-wrap{grid-template-columns:1fr}.rv-score{position:static}}
+
+/* ===== v5: themeable surfaces (all themes only change these variables) ===== */
+:root{--dk1:#1b111c;--dk2:#2a1424;--dk3:#3a1626;--dk-glow:rgba(226,180,90,.22);--dk-glow2:rgba(138,36,51,.45);--surface:#fff;--on-dk:#f6efe4;--g1:#f0cf86;--g2:#d29a3f;--g3:#b77f2a}
+.topbar{background:linear-gradient(90deg,var(--brick-2),var(--dk2) 40%,var(--brick-2))}
+.hero{background:radial-gradient(900px 520px at 78% 12%,var(--dk-glow),transparent 60%),radial-gradient(700px 500px at 10% 100%,var(--dk-glow2),transparent 65%),var(--grain),linear-gradient(150deg,var(--dk1) 0%,var(--dk2) 55%,var(--dk3) 100%)}
+.hero h1 em{background:linear-gradient(90deg,var(--g1),var(--g2) 60%,var(--g1));-webkit-background-clip:text;background-clip:text}
+.btn-ink,.opts button[aria-pressed=true],.chip[aria-pressed=true],.chip.on{background:linear-gradient(135deg,var(--dk2),var(--dk1));border-color:var(--dk2)}
+.btn-gold,.tag-gold,.cat-go,.sizes-f button[aria-pressed=true],.seal{background:linear-gradient(135deg,var(--g1),var(--g2) 55%,var(--g3))}
+.look{background:var(--grain),radial-gradient(800px 400px at 20% 0%,var(--dk-glow2),transparent 60%),linear-gradient(180deg,var(--dk1),var(--dk2))}
+.fit,.phead.banner{background:radial-gradient(600px 300px at 90% 0%,var(--dk-glow),transparent 60%),linear-gradient(135deg,var(--dk2),var(--dk1))}
+.ftr{background:radial-gradient(800px 400px at 90% 0%,var(--dk-glow),transparent 60%),var(--grain),linear-gradient(180deg,var(--dk2),var(--dk1))}
+.cat::after{background:linear-gradient(to top,color-mix(in srgb,var(--dk2) 90%,transparent),color-mix(in srgb,var(--dk2) 15%,transparent) 55%,transparent)}
+.card,.trust div,.pbox,.rv-score,.rv-card,.ccard,.sizer,.contact-map{background:var(--surface)}
+.price b,.pprice b,.rv-score>b{color:var(--dk2)}
+.hdr{background:color-mix(in srgb,var(--paper) 88%,transparent)}
+body{background-color:var(--paper)}
+
+/* ===== theme picker ===== */
+.theme-btn{position:relative}
+.theme-btn .sw3{display:flex;width:22px;height:22px;border-radius:50%;overflow:hidden;transform:rotate(-45deg);box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--line)}
+.theme-btn .sw3 i{flex:1}
+.theme-pop{position:absolute;top:calc(100% + 10px);inset-inline-end:0;width:280px;background:var(--surface);border-radius:20px;box-shadow:var(--shadow-lg);padding:14px;z-index:80;display:none;border:1px solid var(--line-2)}
+.theme-pop.on{display:block;animation:pop .25s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}}
+.theme-pop b{display:block;font-size:14px;margin:2px 4px 10px;color:var(--ink)}
+.theme-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.theme-list button{display:flex;align-items:center;gap:8px;padding:8px;border-radius:12px;border:1.5px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);background:transparent;text-align:start}
+.theme-list button[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.theme-list .sw3{width:26px;height:26px;flex-shrink:0}
+
+/* ===== themes ===== */
+/* فیروزه — Tabriz tile turquoise & gold */
+[data-theme=firouzeh]{--dk1:#08262b;--dk2:#0d3a40;--dk3:#13545a;--dk-glow:rgba(233,196,106,.22);--dk-glow2:rgba(31,140,150,.45);--brick:#127a83;--brick-2:#0b5a61;--teal:#b5652a;--teal-soft:rgba(181,101,42,.12);--plum:#0d3a40;--paper:#f6f8f6;--cream:#e9f1ef;--sand:#dde8e5;--ink:#0f2326;--ink-2:#22393c;--ink-3:#4d6466}
+/* زمرد — emerald & brass */
+[data-theme=zomorrod]{--dk1:#08201a;--dk2:#0f3a2c;--dk3:#165140;--dk-glow:rgba(230,190,110,.22);--dk-glow2:rgba(32,120,90,.45);--brick:#1d6b51;--brick-2:#134a38;--teal:#9a5b2c;--teal-soft:rgba(154,91,44,.12);--plum:#0f3a2c;--paper:#f7f6f0;--cream:#eef0e6;--sand:#e2e6d6;--ink:#13221b;--ink-2:#26372f;--ink-3:#526158}
+/* لاجورد — lapis lazuli & gold */
+[data-theme=lajevard]{--dk1:#0b1230;--dk2:#16224f;--dk3:#20307a;--dk-glow:rgba(232,192,98,.24);--dk-glow2:rgba(58,88,190,.45);--brick:#2a44a8;--brick-2:#1c3080;--teal:#b7792a;--teal-soft:rgba(183,121,42,.12);--plum:#16224f;--paper:#f7f7fb;--cream:#ecedf6;--sand:#e0e2ef;--ink:#121733;--ink-2:#262c4d;--ink-3:#545a78}
+/* انار — pomegranate & rose gold */
+[data-theme=anar]{--dk1:#2a0710;--dk2:#4a0d1c;--dk3:#6b1428;--dk-glow:rgba(240,190,150,.25);--dk-glow2:rgba(200,50,80,.45);--brick:#b0203f;--brick-2:#7d1530;--teal:#2c6f6a;--teal-soft:rgba(44,111,106,.12);--plum:#4a0d1c;--g1:#f6d2b4;--g2:#d99a76;--g3:#b9755a;--gold:#c47f5e;--gold-2:#e2a785;--paper:#fcf7f5;--cream:#f7ebe7;--sand:#efdcd6;--ink:#2a1015;--ink-2:#3f2026;--ink-3:#6a4a50}
+/* شب — night mode */
+[data-theme=shab]{--dk1:#050506;--dk2:#0e0d10;--dk3:#1a171c;--dk-glow:rgba(226,180,90,.18);--dk-glow2:rgba(138,36,51,.35);--paper:#121014;--cream:#19161b;--sand:#2a262d;--surface:#1c191f;--ink:#f3ece2;--ink-2:#e0d7cc;--ink-3:#b9ada2;--muted:#9a8f86;--line:rgba(243,236,226,.12);--line-2:rgba(243,236,226,.07);--plum:#e2b45a;--brick:#d0546a;--brick-2:#a63a4f;--teal:#5fb3b9;--teal-soft:rgba(95,179,185,.14);color-scheme:dark}
+[data-theme=shab] .price b,[data-theme=shab] .pprice b,[data-theme=shab] .rv-score>b{color:var(--gold-2)}
+[data-theme=shab] .card-media,[data-theme=shab] .gal-main{background:#2a262d}
+[data-theme=shab] .bg-cream{background:linear-gradient(180deg,#19161b,#151217)}
+[data-theme=shab] .hdr{background:rgba(18,16,20,.92)}
+[data-theme=shab] .field,[data-theme=shab] .search,[data-theme=shab] .sel,[data-theme=shab] .opts button{background:#232027;color:var(--ink)}
+[data-theme=shab] .brand img,[data-theme=shab] .nav-h img{filter:invert(1) hue-rotate(180deg)}
+[data-theme=shab] .tag{background:#2a262d;color:var(--ink)}
+[data-theme=shab] .sizer-out{background:#232027}
+/* text on always-dark sections stays light in every theme */
+.hero,.bg-ink,.look,.fit,.topbar,.phead.banner,.ftr,.btn-ink,.chip[aria-pressed=true],.opts button[aria-pressed=true],.om-code,.toast,.mbar .btn-ink{color:var(--on-dk)}
+.hero .btn-ghost{color:var(--on-dk)}
+.ftr h2,.phead.banner h1,.look .sec-head h2,.fit h2{color:#fff}
+[data-theme=shab] .hdr{border-bottom-color:var(--line)}

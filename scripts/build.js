@@ -12,8 +12,8 @@ const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
 // cache-busting version = hash of css+js, so identical builds produce identical HTML
 const VERSION = require("crypto").createHash("md5").update(fs.readFileSync(path.join(ROOT, "assets/css/site.css")) + fs.readFileSync(path.join(ROOT, "assets/js/site.js"))).digest("hex").slice(0, 8);
 
-const { products, CATEGORIES } = load();
-const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION };
+const { products, CATEGORIES, storeReviews } = load();
+const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews };
 
 // clean output (keep CNAME if any)
 const cname = fs.existsSync(path.join(OUT, "CNAME")) ? fs.readFileSync(path.join(OUT, "CNAME")) : null;

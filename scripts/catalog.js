@@ -117,9 +117,14 @@ function load() {
     const ok = p.colorImages.filter((i) => p.colorInStock.includes(i));
     p.mainColor = ok.length ? ok[0] : p.colorImages.length ? p.colorImages[0] : null;
   }
+  const RV = fs.existsSync(path.join(RAW, "_reviews.json")) ? JSON.parse(fs.readFileSync(path.join(RAW, "_reviews.json"), "utf8")) : { average: 0, count: 0, groups: {}, reviews: [] };
+  for (const p of products) {
+    p.reviews = RV.reviews.filter((r) => r.productId === p.id);
+    if (p.reviews.length) p.rating = { avg: Math.round((p.reviews.reduce((a, r) => a + r.star, 0) / p.reviews.length) * 10) / 10, count: p.reviews.length };
+  }
   const copy = require("./copy");
   for (const p of products) p.copy = copy.build(p);
-  return { products, CATEGORIES, SIZE_ORDER };
+  return { products, CATEGORIES, SIZE_ORDER, storeReviews: RV };
 }
 
 module.exports = { load, parseVariant };
