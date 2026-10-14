@@ -141,6 +141,7 @@ ${o.body}
 
 /* ---------------- shared pieces ---------------- */
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
+const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
 const pUrl = (ctx, p) => `${ctx.BASE}/p/${p.id}/`;
 const isBig = (p) => p.sizes.some((s) => ["4XL", "5XL", "6XL"].includes(s));
@@ -154,7 +155,7 @@ const tagFor = (p) => {
 function cardData(ctx, p) {
   const t = tagFor(p);
   return {
-    id: p.id, t: p.title, c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
+    id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
     url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`, alt: (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
     tag: t && t[0], tagc: t && t[1],
   };
@@ -165,7 +166,7 @@ function card(ctx, p, eager = false) {
 <div class="card-media"><img src="${d.img}" alt="${esc(p.title)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${d.alt ? `<img class="alt" src="${d.alt}" alt="" loading="lazy" decoding="async">` : ""}
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button></div>
-<div class="card-body"><div class="card-cat">${d.cn}</div><h3 class="card-title"><a href="${d.url}">${esc(p.title)}</a></h3>
+<div class="card-body"><div class="card-cat">${d.cn}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
 <div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small></div><div class="card-sizes">${p.sizes.slice(0, 5).map((s) => `<span>${s}</span>`).join("")}</div></div></article>`;
 }
 const crumbs = (ctx, items) => `<nav class="crumbs wrap" aria-label="مسیر"><ol>${items.map(([h, t], i) => `<li>${i < items.length - 1 ? `<a href="${ctx.BASE}${h}">${t}</a>` : `<span aria-current="page">${t}</span>`}</li>`).join("")}</ol></nav>`;
@@ -360,7 +361,7 @@ ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) =
 function product(ctx, p) {
   const { BASE, SITE_URL, products: P } = ctx;
   const c = catOf(ctx, p);
-  const items = [["/", "خانه"], [`/c/${c.slug}/`, c.name], [`/p/${p.id}/`, p.title]];
+  const items = [["/", "خانه"], [`/c/${c.slug}/`, c.name], [`/p/${p.id}/`, short(p)]];
   const hero = `${BASE}/assets/p/${mainBase(p)}-960.webp`;
   // gallery = main studio shot + one studio shot per colour (no duplicate crops)
   const colorImg = (i) => p.colorImages.includes(i) ? `${BASE}/assets/p/${p.id}-k${i}-960.webp` : null;
@@ -380,7 +381,7 @@ function product(ctx, p) {
     "@context": "https://schema.org", "@type": "Product", "@id": `${SITE_URL}/p/${p.id}/#product`,
     name: p.title, sku: String(p.id), mpn: String(p.id), category: c.name,
     image: [`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.slice(0, 4).map((g) => `${SITE_URL}/assets/p/${g.file}`)],
-    description: (p.description || desc).slice(0, 4900),
+    description: p.copy.plain.slice(0, 4900),
     ...(p.material ? { material: p.material } : {}),
     ...(colors.length ? { color: colors.join("، ") } : {}),
     ...(sizes.length ? { size: sizes.join(", ") } : {}),
@@ -404,18 +405,18 @@ function product(ctx, p) {
     ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
     ${sizes.length ? `<div class="opt"><div class="opt-h">سایز: <span id="sel-size">انتخاب کنید</span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">راهنمای سایز</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div></div>` : ""}
     <div class="buy">
-      <a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>
+      ${p.inStock ? `<a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>` : `<div class="oos"><b>این مدل فعلاً ناموجود است</b><span>موجودی هر ۶ ساعت از باسلام به‌روز می‌شود. برای خبر شدن از شارژ مجدد پیام بدهید.</span></div><a class="btn btn-ink btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">خبرم کن وقتی موجود شد</a>`}
       <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
         <a class="btn btn-ghost" href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال قبل از خرید</a>
         <button class="btn btn-ghost fav" data-id="${p.id}" style="position:static;width:54px;padding:0" aria-label="افزودن به علاقه‌مندی‌ها">${I.heart}</button>
         <button class="btn btn-ghost" id="share" style="width:54px;padding:0" aria-label="اشتراک‌گذاری">${I.share}</button>
       </div>
-      <button class="btn btn-gold btn-block" id="direct-order">${I.phone} سفارش مستقیم (تلفنی / پیامکی)</button>
+      ${p.inStock ? "" : "<!--"}<button class="btn btn-gold btn-block" id="direct-order">${I.phone} سفارش مستقیم (تلفنی / پیامکی)</button>${p.inStock ? "" : "-->"}
       <p class="buy-note">پرداخت از درگاه امن باسلام با ضمانت بازگشت وجه؛ ارسال از روز اول کاری.</p>
     </div>
     <div class="perks"><div>${I.truck}ارسال سراسری</div><div>${I.shield}ضمانت باسلام</div><div>${I.camera}بررسی قبل از ارسال</div></div>
     <div class="pbox">
-      <details open><summary>توضیحات محصول</summary><div class="desc">${esc(p.description || desc)}</div></details>
+      <details open><summary>توضیحات محصول</summary><div class="copy"><p class="lead">${esc(p.copy.lead)}</p><ul class="ticks">${p.copy.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul><p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p></div></details>
       <details><summary>مشخصات</summary><table class="spec">${facts.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table></details>
       <details><summary>ارسال و خرید</summary><div class="desc">سفارش از طریق غرفه رسمی المارت در باسلام ثبت و پرداخت می‌شود. ارسال با پست پیشتاز یا سفارشی به سراسر کشور و برای تبریز با پیک انجام می‌شود. هر سفارش قبل از ارسال بررسی و ایمن بسته‌بندی می‌شود.</div></details>
     </div>
@@ -423,14 +424,14 @@ function product(ctx, p) {
 </div>
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="300" height="300"></button>`).join("")}</div></div></section>` : ""}
-<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>
+${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>ست کنید یا مشابه ببینید</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div></div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
 <script type="application/json" id="pdp-data">${json(data)}</script>`;
   return layout(ctx, {
     path: `/p/${p.id}/`,
-    title: `${p.title} | قیمت و خرید`,
-    desc,
+    title: p.title,
+    desc: (`${p.copy.lead} قیمت ${fa(p.price)} تومان، ارسال به سراسر ایران.`).slice(0, 165),
     ogType: "product",
     image: `${SITE_URL}/assets/og/${p.id}.jpg`,
     preload: hero,

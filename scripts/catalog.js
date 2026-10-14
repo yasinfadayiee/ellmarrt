@@ -67,7 +67,9 @@ function load() {
   const products = [];
   for (const s of search) {
     const d = JSON.parse(fs.readFileSync(path.join(RAW, `${s.id}.json`), "utf8"));
-    const [title, cat, keyword] = curated[s.id] || autoCurate(d, s);
+    const [rawTitle, cat, keyword, hook] = curated[s.id] || autoCurate(d, s);
+    // sizes read better with Latin digits (2XL, not ۲XL)
+    const title = rawTitle.replace(/[۰-۹](?=XL)/g, (x) => "۰۱۲۳۴۵۶۷۸۹".indexOf(x));
     const variants = (d.variants || []).map(parseVariant);
     const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))].sort((a, b) => {
       const ia = SIZE_ORDER.indexOf(a), ib = SIZE_ORDER.indexOf(b);
@@ -88,6 +90,7 @@ function load() {
       id: s.id,
       title,
       keyword,
+      hook: hook || null,
       basalamTitle: clean(d.title),
       cat,
       price,
@@ -114,6 +117,8 @@ function load() {
     const ok = p.colorImages.filter((i) => p.colorInStock.includes(i));
     p.mainColor = ok.length ? ok[0] : p.colorImages.length ? p.colorImages[0] : null;
   }
+  const copy = require("./copy");
+  for (const p of products) p.copy = copy.build(p);
   return { products, CATEGORIES, SIZE_ORDER };
 }
 
