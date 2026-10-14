@@ -22,7 +22,7 @@
   $(".menu-btn")?.addEventListener("click", () => { nav.classList.add("open"); scrim.classList.add("on"); document.body.style.overflow = "hidden"; });
   scrim?.addEventListener("click", closeAll);
   $(".nav-x")?.addEventListener("click", closeAll);
-  $(".nav a").forEach((a) => a.addEventListener("click", closeAll));
+  $$(".nav a").forEach((a) => a.addEventListener("click", closeAll));
   addEventListener("keydown", (e) => e.key === "Escape" && (closeAll(), closeLb()));
 
   /* reveal */

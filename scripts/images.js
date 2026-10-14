@@ -57,7 +57,7 @@ const logo = fs.readFileSync(path.join(ROOT, "assets/img/logo.svg"));
   }
   // per-colour studio shots: src-images/gemini/colors/<id>-k<i>.webp -> assets/p/<id>-k<i>-{480,960}.webp
   const CDIR = path.join(GEM, "colors");
-  if (fs.existsSync(CDIR)) for (const f of fs.readdirSync(CDIR).filter((f) => /^d+-kd+.webp$/.test(f))) {
+  if (fs.existsSync(CDIR)) for (const f of fs.readdirSync(CDIR).filter((f) => /^\d+-k\d+\.webp$/.test(f))) {
     const src = path.join(CDIR, f), base = f.replace(".webp", "");
     for (const w of [480, 960]) {
       const dst = path.join(OUT, `${base}-${w}.webp`);
