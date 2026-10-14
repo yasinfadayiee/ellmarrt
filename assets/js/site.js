@@ -66,7 +66,7 @@
     <div class="card-tags">${p.tag ? `<span class="tag ${p.tagc}">${p.tag}</span>` : ""}</div>
     <button class="fav" data-id="${p.id}" aria-label="افزودن به علاقه‌مندی‌ها"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.4 4.5 7 4.5c2 0 3.5 1.1 5 2.9 1.5-1.8 3-2.9 5-2.9 3.6 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg></button></div>
     <div class="card-body"><div class="card-cat">${p.cn}</div><h3 class="card-title"><a href="${p.url}">${p.t}</a></h3>
-    <div class="price"><b class="num">${fa(p.p)}</b><small>تومان</small></div><div class="card-sizes">${sizeTags(p)}</div></div></article>`;
+    <div class="price"><b class="num">${fa(p.p)}</b><small>تومان</small></div>${p.dots || ""}<div class="card-sizes">${sizeTags(p)}</div></div></article>`;
 
   /* shop filters */
   const shop = $("#shop");

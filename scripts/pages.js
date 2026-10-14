@@ -140,6 +140,8 @@ ${o.body}
 }
 
 /* ---------------- shared pieces ---------------- */
+const HEX = { "مشکی": "#151515", "سفید": "#f7f7f5", "کرمی": "#eadfc8", "کله‌غازی": "#21566a", "استخوانی": "#ece6d8", "نسکافه‌ای": "#7a5a43", "هوایی": "#a9cbe6", "یشمی": "#8fa697", "شکلاتی": "#4a2f22", "طوسی": "#9a9a9a", "طوسی تیره": "#4b4b4f", "طوسی روشن": "#c9c9c9", "پرتقالی": "#f07a1f", "زرد": "#e1b43a", "قرمز": "#c23a35", "مشکی ساده": "#151515", "مشکی طرح لوزی": "#2a2a2a", "سبز": "#2f6b45", "سرمه‌ای": "#1f2a4d", "نارنجی": "#c8642d", "آبی": "#1f5fc4", "پسته‌ای": "#bcd49a", "قهوه‌ای": "#6b4a33", "زرشکی": "#6e1f2c", "مشکی سفید": "linear-gradient(90deg,#151515 50%,#f7f7f5 50%)", "سبز ساقه‌ای": "#6f7d3c", "سفید مشکی": "linear-gradient(90deg,#f7f7f5 50%,#151515 50%)", "زیتونی": "#6b6b3a", "زغالی": "#3a3a3c", "سبز ساقه ای": "#6f7d3c" };
+const dotsHtml = (cols) => cols.length > 1 ? `<div class="dots" aria-label="رنگ‌های موجود">${cols.slice(0, 5).map((c) => `<i title="${c}" style="background:${HEX[c] || "#bbb"}"></i>`).join("")}${cols.length > 5 ? `<small>+${cols.length - 5}</small>` : ""}</div>` : "";
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
 const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
@@ -157,7 +159,7 @@ function cardData(ctx, p) {
   return {
     id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
     url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`, alt: (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
-    tag: t && t[0], tagc: t && t[1],
+    tag: t && t[0], tagc: t && t[1], dots: dotsHtml(p.colors.filter((c, i) => p.colorInStock.includes(i))),
   };
 }
 function card(ctx, p, eager = false) {
@@ -167,7 +169,7 @@ function card(ctx, p, eager = false) {
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button></div>
 <div class="card-body"><div class="card-cat">${d.cn}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
-<div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small></div><div class="card-sizes">${p.sizes.slice(0, 5).map((s) => `<span>${s}</span>`).join("")}</div></div></article>`;
+<div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small></div>${dotsHtml(p.colors.filter((c, i) => p.colorInStock.includes(i)))}<div class="card-sizes">${p.sizes.slice(0, 5).map((s) => `<span>${s}</span>`).join("")}</div></div></article>`;
 }
 const crumbs = (ctx, items) => `<nav class="crumbs wrap" aria-label="مسیر"><ol>${items.map(([h, t], i) => `<li>${i < items.length - 1 ? `<a href="${ctx.BASE}${h}">${t}</a>` : `<span aria-current="page">${t}</span>`}</li>`).join("")}</ol></nav>`;
 const crumbSchema = (ctx, items) => ({
@@ -214,6 +216,7 @@ function home(ctx) {
   const cats = Object.entries(C).map(([k, c]) => ({ k, c, n: P.filter((p) => p.cat === k).length })).filter((x) => x.n);
   const body = `
 <section class="hero">
+  <svg class="hero-vault" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="vg" x1="0" x2="1"><stop offset="0" stop-color="#e2b45a" stop-opacity=".1"/><stop offset=".5" stop-color="#e2b45a" stop-opacity=".9"/><stop offset="1" stop-color="#e2b45a" stop-opacity=".1"/></linearGradient></defs><path d="M120 800V420C120 230 400 120 720 40c320 80 600 190 600 380v380"/><path d="M240 800V460C240 310 460 220 720 150c260 70 480 160 480 310v340"/><path d="M360 800V500C360 390 520 320 720 260c200 60 360 130 360 240v300"/><path d="M480 800V540c0-80 110-130 240-170 130 40 240 90 240 170v260"/></svg>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="wrap hero-in">
     <div>
@@ -324,7 +327,7 @@ function shop(ctx) {
     desc: `همه ${fa(P.length)} مدل پوشاک مردانه المارت: تیشرت، پولوشرت، پیراهن، هودی، دورس، شلوار اسلش، شلوارک، کفش و لباس پسرانه؛ فیلتر بر اساس سایز تا 6XL.`,
     schema: [crumbSchema(ctx, items), itemList(ctx, sorted)],
     body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن کامل</span><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(sorted[0])}-480.webp" alt="" width="480" height="600"></header>
 <section id="shop">${filters(ctx, null)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${sorted.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>`,
   });
 }
@@ -352,7 +355,7 @@ function category(ctx, c) {
     image: `${ctx.SITE_URL}/assets/og/${list[0].id}.jpg`,
     schema: [crumbSchema(ctx, items), itemList(ctx, list), ...(qa.length ? [faqSchema(qa)] : [])],
     body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
 <section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
@@ -458,7 +461,7 @@ function bigSize(ctx) {
     desc: "خرید لباس سایز بزرگ مردانه از 3XL تا 6XL: تیشرت سایز بزرگ، شلوار اسلش سایز بزرگ، شلوارک و پوشاک راحتی برای آقایان درشت‌اندام؛ با قواره و قد واقعی از بازار تبریز.",
     schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
-<header class="wrap phead"><span class="kicker">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا 6XL را اینجا ببینید.</p></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا 6XL را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
 <section class="sec-sm" style="padding-top:12px"><div class="wrap"><div class="grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="fit rv"><div><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا 6XL پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">تا 3XL</span><h2>مدل‌های دیگر با سایز 3XL</h2></div></div><div class="grid">${xl3.slice(0, 8).map((p) => card(ctx, p)).join("")}</div></div></section>
