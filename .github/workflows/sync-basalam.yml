@@ -1,0 +1,40 @@
+# Keeps ellmarrt.ir in sync with the Basalam store: stock, prices, variants, new/removed products.
+name: Sync Basalam stock
+
+on:
+  schedule:
+    - cron: "15 */6 * * *" # every 6 hours (03:45, 09:45, 15:45, 21:45 Tehran)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-basalam
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Pull products and stock from Basalam
+        run: node scripts/sync-basalam.js
+      - name: Images for new products
+        run: node scripts/images.js
+      - name: Build site
+        run: node scripts/build.js
+      - name: Commit if anything changed
+        run: |
+          if [ -z "$(git status --porcelain data-raw data docs assets)" ]; then echo "no changes"; exit 0; fi
+          git config user.name "ellmarrt-sync"
+          git config user.email "actions@users.noreply.github.com"
+          git add data-raw data docs assets
+          git commit -m "Sync stock and prices from Basalam ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push

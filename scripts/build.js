@@ -9,7 +9,8 @@ const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "docs");
 const SITE_URL = (process.env.SITE_URL || "https://ellmarrt.ir").replace(/\/$/, "");
 const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
-const VERSION = Date.now().toString(36);
+// cache-busting version = hash of css+js, so identical builds produce identical HTML
+const VERSION = require("crypto").createHash("md5").update(fs.readFileSync(path.join(ROOT, "assets/css/site.css")) + fs.readFileSync(path.join(ROOT, "assets/js/site.js"))).digest("hex").slice(0, 8);
 
 const { products, CATEGORIES } = load();
 const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION };

@@ -13,14 +13,23 @@ fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync(OG, { recursive: true });
 
 const ids = JSON.parse(fs.readFileSync(path.join(ROOT, "data-raw/_search.json"))).map((p) => p.id);
-const fresh = (src, dst) => fs.existsSync(dst) && fs.statSync(dst).mtimeMs >= fs.statSync(src).mtimeMs;
+// in CI (fresh git checkout) mtimes are meaningless: only build what is missing
+const fresh = (src, dst) => fs.existsSync(dst) && (process.env.CI || fs.statSync(dst).mtimeMs >= fs.statSync(src).mtimeMs);
+const prevMeta = fs.existsSync(path.join(ROOT, "data/images.json")) ? JSON.parse(fs.readFileSync(path.join(ROOT, "data/images.json"))) : {};
 const logo = fs.readFileSync(path.join(ROOT, "assets/img/logo.svg"));
 
 (async () => {
   const meta = {};
   const logoPng = await sharp(logo, { density: 300 }).resize({ height: 220 }).png().toBuffer();
   for (const id of ids) {
-    const src = path.join(GEM, `${id}.webp`);
+    let src = path.join(GEM, `${id}.webp`);
+    // new product without a studio shot yet: build the hero from its first Basalam photo
+    const firstOrig = path.join(ORIG, `${id}-0.jpg`);
+    if (!fs.existsSync(src) && fs.existsSync(firstOrig)) {
+      src = path.join(ROOT, ".cache", `${id}.webp`);
+      fs.mkdirSync(path.dirname(src), { recursive: true });
+      if (!fs.existsSync(src)) await sharp(firstOrig).resize(1280, 1600, { fit: "contain", background: "#efe9df" }).webp({ quality: 88 }).toFile(src);
+    }
     const m = { hero: null, gallery: [] };
     if (fs.existsSync(src)) {
       for (const w of [480, 960]) {
@@ -46,13 +55,16 @@ const logo = fs.readFileSync(path.join(ROOT, "assets/img/logo.svg"));
           .jpeg({ quality: 82, mozjpeg: true }).toFile(og);
       }
     }
-    const origs = fs.readdirSync(ORIG).filter((f) => f.startsWith(`${id}-`)).sort((a, b) => parseInt(a.split("-")[1]) - parseInt(b.split("-")[1]));
+    const origs = !fs.existsSync(ORIG) ? [] : fs.readdirSync(ORIG).filter((f) => f.startsWith(`${id}-`)).sort((a, b) => parseInt(a.split("-")[1]) - parseInt(b.split("-")[1]));
     for (const [n, f] of origs.slice(0, 6).entries()) {
       const dst = path.join(OUT, `${id}-g${n}.webp`);
       if (!fresh(path.join(ORIG, f), dst)) await sharp(path.join(ORIG, f)).resize(900, 900, { fit: "inside", withoutEnlargement: true }).webp({ quality: 74, effort: 5 }).toFile(dst);
       const md = await sharp(dst).metadata();
       m.gallery.push({ file: `${id}-g${n}.webp`, w: md.width, h: md.height });
     }
+    // originals are not in git: keep the gallery we built before when they are absent
+    if (!origs.length && prevMeta[id]) m.gallery = prevMeta[id].gallery;
+    if (!m.hero && prevMeta[id]) m.hero = prevMeta[id].hero;
     meta[id] = m;
   }
   // per-colour studio shots: src-images/gemini/colors/<id>-k<i>.webp -> assets/p/<id>-k<i>-{480,960}.webp

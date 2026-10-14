@@ -53,12 +53,21 @@ function parseVariant(v) {
 
 const clean = (s) => String(s || "").replace(/^#+\s*/gm, "").replace(/\*\*/g, "").replace(/\r/g, "").replace(/[ \t]+\n/g, "\n").trim();
 
+// products added on Basalam after the curated list was written
+const CAT_BY_TITLE = [[/کفش/, "shoes"], [/پسرانه|دخترانه|بچگانه/, "kids"], [/شلوارک/, "shorts"], [/شلوار/, "pants"], [/سویشرت|هودی|ژاکت|دورس|بلوز/, "sweat"], [/پیراهن/, "shirt"], [/پولو|یقه/, "polo"], [/تیشرت|تی شرت/, "tshirt"]];
+function autoCurate(d, s) {
+  const title = clean(d.title).replace(/s+/g, " ");
+  const hay = title + " " + (s.categoryTitle || "");
+  const cat = (CAT_BY_TITLE.find(([re]) => re.test(hay)) || [0, "tshirt"])[1];
+  return [title, cat, title];
+}
+
 function load() {
   const search = JSON.parse(fs.readFileSync(path.join(RAW, "_search.json"), "utf8"));
   const products = [];
   for (const s of search) {
     const d = JSON.parse(fs.readFileSync(path.join(RAW, `${s.id}.json`), "utf8"));
-    const [title, cat, keyword] = curated[s.id];
+    const [title, cat, keyword] = curated[s.id] || autoCurate(d, s);
     const variants = (d.variants || []).map(parseVariant);
     const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))].sort((a, b) => {
       const ia = SIZE_ORDER.indexOf(a), ib = SIZE_ORDER.indexOf(b);
@@ -95,10 +104,15 @@ function load() {
       sales: s.sales_count || 0,
       hasVideo: !!(s.video && s.video.PRIMARY),
       created: d.created_at,
-      images: images[s.id],
+      images: images[s.id] || { hero: null, gallery: [] },
       colorImages: colors.map((_, i) => i).filter((i) => fs.existsSync(path.join(ROOT, "assets/p", `${s.id}-k${i}-960.webp`))),
+      colorInStock: colors.map((_, i) => i).filter((i) => variants.some((v) => v.color === colors[i] && v.stock > 0)),
       buyUrl: `https://basalam.com/piraysh/product/${s.id}`,
     });
+  }
+  for (const p of products) {
+    const ok = p.colorImages.filter((i) => p.colorInStock.includes(i));
+    p.mainColor = ok.length ? ok[0] : p.colorImages.length ? p.colorImages[0] : null;
   }
   return { products, CATEGORIES, SIZE_ORDER };
 }

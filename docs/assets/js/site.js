@@ -128,7 +128,7 @@
     const thumbs = $$(".thumbs button");
     lbImgs = thumbs.map((t) => t.dataset.full);
     let cur = 0;
-    const show = (i) => { cur = i; thumbs.forEach((t, k) => t.setAttribute("aria-current", k === i)); main.style.opacity = 0; setTimeout(() => { main.src = thumbs[i].dataset.full; main.classList.toggle("cover", i === 0 && P.hero); main.onload = () => (main.style.opacity = 1); }, 120); };
+    const show = (i) => { cur = i; thumbs.forEach((t, k) => t.setAttribute("aria-current", k === i)); main.style.opacity = 0; setTimeout(() => { main.removeAttribute("srcset"); main.removeAttribute("sizes"); main.onload = () => (main.style.opacity = 1); main.src = thumbs[i].dataset.full; if (main.complete) main.style.opacity = 1; }, 120); };
     thumbs.forEach((t, i) => t.addEventListener("click", () => show(i)));
     $(".gal-main").addEventListener("click", () => openLb(cur));
     // swipe
@@ -154,6 +154,8 @@
     $$("[data-color]").forEach((b) => b.addEventListener("click", () => { sel.color = sel.color === b.dataset.color ? null : b.dataset.color; if (sel.size && !avail(sel.color, sel.size)) sel.size = null; paint(); showColor(sel.color); }));
     thumbs.forEach((t) => t.addEventListener("click", () => { const c = t.dataset.tc; if (c && c !== sel.color) { const btn = $$("[data-color]").find((b) => b.dataset.color === c); if (btn && !btn.disabled) { sel.color = c; if (sel.size && !avail(sel.color, sel.size)) sel.size = null; paint(); } } }));
     $$("[data-size]").forEach((b) => b.addEventListener("click", () => { sel.size = sel.size === b.dataset.size ? null : b.dataset.size; paint(); }));
+    const tc0 = thumbs[0]?.dataset.tc;
+    if (tc0 && $$("[data-color]").some((b) => b.dataset.color === tc0) && avail(tc0, null)) sel.color = tc0;
     paint();
     const buy = (e) => {
       const needSize = $$("[data-size]").length > 0, needColor = $$("[data-color]").length > 1;

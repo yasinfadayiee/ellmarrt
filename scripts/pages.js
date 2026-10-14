@@ -141,6 +141,7 @@ ${o.body}
 
 /* ---------------- shared pieces ---------------- */
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
+const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
 const pUrl = (ctx, p) => `${ctx.BASE}/p/${p.id}/`;
 const isBig = (p) => p.sizes.some((s) => ["4XL", "5XL", "6XL"].includes(s));
 const tagFor = (p) => {
@@ -154,7 +155,7 @@ function cardData(ctx, p) {
   const t = tagFor(p);
   return {
     id: p.id, t: p.title, c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
-    url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${p.id}-480.webp`, alt: p.colorImages.length ? `${ctx.BASE}/assets/p/${p.id}-k${p.colorImages[0]}-480.webp` : null,
+    url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`, alt: (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
     tag: t && t[0], tagc: t && t[1],
   };
 }
@@ -360,11 +361,12 @@ function product(ctx, p) {
   const { BASE, SITE_URL, products: P } = ctx;
   const c = catOf(ctx, p);
   const items = [["/", "خانه"], [`/c/${c.slug}/`, c.name], [`/p/${p.id}/`, p.title]];
-  const hero = `${BASE}/assets/p/${p.id}-960.webp`;
+  const hero = `${BASE}/assets/p/${mainBase(p)}-960.webp`;
   // gallery = main studio shot + one studio shot per colour (no duplicate crops)
   const colorImg = (i) => p.colorImages.includes(i) ? `${BASE}/assets/p/${p.id}-k${i}-960.webp` : null;
-  const gal = [{ full: hero, thumb: `${BASE}/assets/p/${p.id}-480.webp`, label: "نمای اصلی", color: "" },
-    ...p.colors.map((c, i) => colorImg(i) && { full: colorImg(i), thumb: `${BASE}/assets/p/${p.id}-k${i}-480.webp`, label: c, color: c }).filter(Boolean)];
+  const colorShots = p.colors.map((c, i) => colorImg(i) && { i, full: colorImg(i), thumb: `${BASE}/assets/p/${p.id}-k${i}-480.webp`, label: c, color: c }).filter(Boolean)
+    .sort((a, b) => p.colorInStock.includes(b.i) - p.colorInStock.includes(a.i));
+  const gal = colorShots.length ? colorShots : [{ full: hero, thumb: `${BASE}/assets/p/${p.id}-480.webp`, label: "نمای اصلی", color: "" }];
   const real = p.images.gallery.map((g) => `${BASE}/assets/p/${g.file}`);
   const colors = p.colors;
   const sizes = p.sizes;
@@ -377,7 +379,7 @@ function product(ctx, p) {
   const schema = {
     "@context": "https://schema.org", "@type": "Product", "@id": `${SITE_URL}/p/${p.id}/#product`,
     name: p.title, sku: String(p.id), mpn: String(p.id), category: c.name,
-    image: [`${SITE_URL}/assets/p/${p.id}-960.webp`, ...p.images.gallery.slice(0, 4).map((g) => `${SITE_URL}/assets/p/${g.file}`)],
+    image: [`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.slice(0, 4).map((g) => `${SITE_URL}/assets/p/${g.file}`)],
     description: (p.description || desc).slice(0, 4900),
     ...(p.material ? { material: p.material } : {}),
     ...(colors.length ? { color: colors.join("، ") } : {}),
@@ -391,7 +393,7 @@ function product(ctx, p) {
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
   <div class="gal">
-    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${p.id}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
+    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
     <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" data-tc="${esc(g.color)}" aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95"></button>`).join("")}</div>
   </div>
   <div class="pinfo">
@@ -432,7 +434,7 @@ ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-
     ogType: "product",
     image: `${SITE_URL}/assets/og/${p.id}.jpg`,
     preload: hero,
-    preloadSet: `${BASE}/assets/p/${p.id}-480.webp 480w, ${hero} 960w`,
+    preloadSet: `${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w`,
     preloadSizes: "(max-width:900px) 92vw, 46vw",
     schema: [crumbSchema(ctx, items), schema],
     body,
