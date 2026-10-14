@@ -60,22 +60,6 @@
   "video": null
  },
  {
-  "id": 54116388,
-  "name": "تیشرت مردانه یقه انگلیسی پارچه خارجی، خنک و کشسان",
-  "price": 8950000,
-  "stock": 18,
-  "sales_count": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "تیشرت و پولوشرت مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-232/video/product/X6zxOW/08-07/AnZ0clvTwAbKMgu5QX2Zs2K0GWIPG8XX9OsUxdYYkiNinqg0qn.mp4"
-  }
- },
- {
   "id": 47475290,
   "name": "پیراهن آستین کوتاه یقه انگلیسی مراکشی بیسکویتی سایزLتا3xl",
   "price": 11500000,
@@ -710,6 +694,22 @@
   }
  },
  {
+  "id": 54116388,
+  "name": "تیشرت مردانه یقه انگلیسی پارچه خارجی، خنک و کشسان",
+  "price": 8950000,
+  "stock": 2,
+  "sales_count": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "تیشرت و پولوشرت مردانه",
+  "video": {
+   "PRIMARY": "https://statics.basalam.com/public-232/video/product/X6zxOW/08-07/AnZ0clvTwAbKMgu5QX2Zs2K0GWIPG8XX9OsUxdYYkiNinqg0qn.mp4"
+  }
+ },
+ {
   "id": 53762676,
   "name": "شلوار بک کتان کشی بغل نوار سه خط ",
   "price": 11900000,
@@ -745,7 +745,7 @@
   "id": 49701761,
   "name": "تیشرت باکسی مردانه ترند سال",
   "price": 11900000,
-  "stock": 45,
+  "stock": 18,
   "sales_count": 0,
   "rating": {
    "average": 0,

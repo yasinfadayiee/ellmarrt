@@ -145,11 +145,11 @@
    "slug": "تیشرت-یقه-دار-مردانه"
   }
  ],
- "inventory": 18,
+ "inventory": 2,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-08-07T18:40:38+03:30",
- "updated_at": "2026-08-20T00:55:13+03:30",
+ "updated_at": "2026-10-14T21:53:00+03:30",
  "description": "# تیشرت مردانه یقه انگلیسی | پارچه خارجی، خنک و کشسان\n\nاگر دنبال یک تیشرت شیک، راحت و خنک برای استفاده روزمره، بیرون، پیاده‌روی یا سفر هستی، این مدل انتخاب فوق‌العاده‌ایه.\n\nاین تیشرت از **پارچه خارجی درجه یک** تولید شده که علاوه بر لطافت بالا، **کشسانی عالی** داره و به‌خوبی روی تن می‌ایسته. پارچه سبک، خنک و تنفس‌پذیر این کار باعث میشه در طول روز احساس راحتی کامل داشته باشی.\n\n**مشخصات محصول:**\n\n* جنس: پارچه خارجی درجه یک\n* مدل: تیشرت مردانه **یقه انگلیسی**\n* ویژگی پارچه: خنک، نرم، سبک و کشسان\n* مناسب برای: استفاده روزمره، پیاده‌روی، سفر، بیرون و استایل اسپرت\n* رنگ‌بندی: 4 رنگ جذاب\n* سایزبندی: XL / XXL / XXXL\n\nمناسب آقایانی که به‌دنبال یک تیشرت شیک، باکیفیت، خنک و خوش‌فرم برای استفاده روزمره هستند.\n",
  "is_saleable": true,
  "is_showable": true,
@@ -269,10 +269,58 @@
  "rating": 0,
  "variants": [
   {
+   "id": 59267807,
+   "price": 8950000,
+   "primary_price": 8950000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 38928,
+      "title": "نسکافه ای xl",
+      "value": "نسکافه ای xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82112604,
+   "price": 13000000,
+   "primary_price": 13000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 38331,
+      "title": "طوسی xxl",
+      "value": "طوسی xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 59267804,
    "price": 8950000,
    "primary_price": 8950000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -296,7 +344,7 @@
    "id": 59267805,
    "price": 8950000,
    "primary_price": 8950000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -320,7 +368,7 @@
    "id": 59267806,
    "price": 8950000,
    "primary_price": 8950000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -341,34 +389,10 @@
    "discount": null
   },
   {
-   "id": 59267807,
-   "price": 8950000,
-   "primary_price": 8950000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 38928,
-      "title": "نسکافه ای xl",
-      "value": "نسکافه ای xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 59267808,
    "price": 8950000,
    "primary_price": 8950000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -392,7 +416,7 @@
    "id": 59267809,
    "price": 8950000,
    "primary_price": 8950000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -413,10 +437,10 @@
    "discount": null
   },
   {
-   "id": 59267810,
-   "price": 8950000,
-   "primary_price": 8950000,
-   "stock": 2,
+   "id": 82112603,
+   "price": 13000000,
+   "primary_price": 13000000,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -426,9 +450,9 @@
       "type": "text"
      },
      "value": {
-      "id": 1415292,
-      "title": "هواییxl",
-      "value": "هواییxl",
+      "id": 38328,
+      "title": "طوسی xl",
+      "value": "طوسی xl",
       "order": null
      }
     }
@@ -437,10 +461,10 @@
    "discount": null
   },
   {
-   "id": 59267811,
-   "price": 8950000,
-   "primary_price": 8950000,
-   "stock": 2,
+   "id": 82112605,
+   "price": 13000000,
+   "primary_price": 13000000,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -450,33 +474,9 @@
       "type": "text"
      },
      "value": {
-      "id": 1415293,
-      "title": "هوایی2xl",
-      "value": "هوایی2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 59267812,
-   "price": 8950000,
-   "primary_price": 8950000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1415294,
-      "title": "هوایی3xl",
-      "value": "هوایی3xl",
+      "id": 64065,
+      "title": "طوسی 3xl",
+      "value": "طوسی 3xl",
       "order": null
      }
     }
@@ -514,7 +514,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 57196396,

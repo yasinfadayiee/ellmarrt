@@ -152,11 +152,11 @@
    "slug": "تیشرت-یقه-دار-مردانه"
   }
  ],
- "inventory": 45,
+ "inventory": 18,
  "net_weight": 500,
  "net_weight_decimal": 500,
  "created_at": "2026-06-29T15:27:54+03:30",
- "updated_at": "2026-09-08T21:13:27+03:30",
+ "updated_at": "2026-10-14T21:50:22+03:30",
  "description": "تیشرت باکسی جدید مردانه\n\nمدل‌های باکسی این روزها جزو ترندهای محبوب استایل مردانه هستند. تنخور آزاد، ف\nرم شیک و راحت این مدل باعث می‌شود هم برای استفاده روزمره و هم برای استایل کژوال انتخاب جذابی باشد.\n\nدر این مدل از جنس دورس اعلا استفاده شده؛ پارچه‌ای نرم، خوش‌فرم و با دوام که ایستایی خوبی روی تن دارد، به‌راحتی تغییر شکل نمی‌دهد و حس کیفیت را از همان بار اول پوشیدن منتقل می‌کند.\n\n✔️ جنس دورس اعلا\n✔️ مدل باکسی ترند و خوش‌استایل\n✔️ طرح جدید و مدرن جلو\n✔️ یقه کش‌بافت باکیفیت\n✔️ دوخت دقیق و تمیز\n✔️ سایزهای L، XL و 2XL\n✔️ موجود در 5 رنگ جذاب\n\nاگر دنبال یک تیشرت باکسی با کیفیت دوخت بالا، پارچه درجه‌یک و استایل به‌روز هستی، این مدل می‌تواند یکی از بهترین انتخا\nب‌ها باشد. برای اطلاع از قیمت و ثبت سفارش پیام بده.",
  "is_saleable": true,
  "is_showable": true,
@@ -262,78 +262,6 @@
  "review_count": 0,
  "rating": 0,
  "variants": [
-  {
-   "id": 49004973,
-   "price": 11900000,
-   "primary_price": 11900000,
-   "stock": 3,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 13355,
-      "title": "مشکی L",
-      "value": "مشکی L",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 49004974,
-   "price": 11900000,
-   "primary_price": 11900000,
-   "stock": 3,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1141,
-      "title": "مشکی xl",
-      "value": "مشکی xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 49004975,
-   "price": 11900000,
-   "primary_price": 11900000,
-   "stock": 3,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 27558,
-      "title": "مشکی 2xl",
-      "value": "مشکی 2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
   {
    "id": 49004976,
    "price": 11900000,
@@ -479,10 +407,82 @@
    "discount": null
   },
   {
+   "id": 49004973,
+   "price": 11900000,
+   "primary_price": 11900000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 13355,
+      "title": "مشکی L",
+      "value": "مشکی L",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 49004974,
+   "price": 11900000,
+   "primary_price": 11900000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1141,
+      "title": "مشکی xl",
+      "value": "مشکی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 49004975,
+   "price": 11900000,
+   "primary_price": 11900000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 27558,
+      "title": "مشکی 2xl",
+      "value": "مشکی 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 49004982,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -506,7 +506,7 @@
    "id": 49004983,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -530,7 +530,7 @@
    "id": 49004984,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -554,7 +554,7 @@
    "id": 49004985,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -578,7 +578,7 @@
    "id": 49004986,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -602,7 +602,7 @@
    "id": 49004987,
    "price": 11900000,
    "primary_price": 11900000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -652,7 +652,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 53512770,
