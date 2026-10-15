@@ -1,0 +1,715 @@
+{
+ "id": 62560754,
+ "title": "هودی بیسیک توکرک",
+ "price": 19500000,
+ "photo": {
+  "id": 449297120,
+  "original": "https://statics.basalam.com/public-264/users/X6zxOW/10-15/5ugbaAHJuOvNwRqlD1PaWGDkHfS2ue7DV3w03ZIwLlDhMiZWQ7.jpg",
+  "xs": "https://statics.basalam.com/public-264/users/X6zxOW/10-15/5ugbaAHJuOvNwRqlD1PaWGDkHfS2ue7DV3w03ZIwLlDhMiZWQ7.jpg_50X50X70.jpg",
+  "sm": "https://statics.basalam.com/public-264/users/X6zxOW/10-15/5ugbaAHJuOvNwRqlD1PaWGDkHfS2ue7DV3w03ZIwLlDhMiZWQ7.jpg_256X256X70.jpg",
+  "md": "https://statics.basalam.com/public-264/users/X6zxOW/10-15/5ugbaAHJuOvNwRqlD1PaWGDkHfS2ue7DV3w03ZIwLlDhMiZWQ7.jpg_512X512X70.jpg",
+  "lg": "https://statics.basalam.com/public-264/users/X6zxOW/10-15/5ugbaAHJuOvNwRqlD1PaWGDkHfS2ue7DV3w03ZIwLlDhMiZWQ7.jpg_800X800X70.jpg"
+ },
+ "photos": [],
+ "video": null,
+ "status": {
+  "name": "در دسترس",
+  "value": 2976,
+  "description": null
+ },
+ "summary": null,
+ "category": {
+  "id": 256,
+  "title": "سویشرت ، هودی و ژاکت مردانه",
+  "placeholder": null,
+  "parent": {
+   "id": 28,
+   "title": "مردانه",
+   "placeholder": null,
+   "parent": {
+    "id": 2,
+    "title": "مد و پوشاک",
+    "placeholder": null,
+    "parent": null,
+    "unit_type_id": null
+   },
+   "unit_type_id": null
+  },
+  "unit_type_id": null
+ },
+ "category_list": [
+  {
+   "id": 1959,
+   "title": "بافت مردانه",
+   "slug": "بافت-مردانه"
+  },
+  {
+   "id": 1960,
+   "title": "پلیور مردانه",
+   "slug": "پلیور-مردانه"
+  },
+  {
+   "id": 1961,
+   "title": "ژاکت بافت مردانه",
+   "slug": "ژاکت-بافت-مردانه"
+  },
+  {
+   "id": 1962,
+   "title": "ژاکت بافتنی مردانه",
+   "slug": "ژاکت-بافتنی-مردانه"
+  },
+  {
+   "id": 1963,
+   "title": "ژاکت مردانه",
+   "slug": "ژاکت-مردانه"
+  },
+  {
+   "id": 1964,
+   "title": "سویشرت مردانه",
+   "slug": "سویشرت-مردانه"
+  },
+  {
+   "id": 1965,
+   "title": "سویشرت و شلوار مردانه",
+   "slug": "سویشرت-و-شلوار-مردانه"
+  },
+  {
+   "id": 1966,
+   "title": "هودی لش مردانه",
+   "slug": "هودی-لش-مردانه"
+  },
+  {
+   "id": 1967,
+   "title": "هودی مردانه",
+   "slug": "هودی-مردانه"
+  }
+ ],
+ "inventory": 36,
+ "net_weight": 700,
+ "net_weight_decimal": 700,
+ "created_at": "2026-10-15T20:56:20+03:30",
+ "updated_at": "2026-10-15T20:56:33+03:30",
+ "description": "\n\n🔥 هودی بیسیک توکرک | گرم و خوش‌استایل 🔥\n\nبچه‌هاا 😍 اگه دنبال یه هودی گرم و راحت برای روزای سردین، این مدل رو از دست ندین! 🖤👌🏻\n\nیه مدل ساده و شیک که با کلی استایل می‌تونین ستش کنین؛ هم برای دخترا مناسبه، هم پسرا 😎🍂\n\n✨ **مشخصات محصول:**\n\n✔️ جنس دورس لاکرادار حوله‌ای توکرک\n✔️ داخل گرم و نرم، مناسب روزای سرد\n✔️ مدل بیسیک و ساده، بدون طرح\n✔️ کلاه بنددار و کاربردی\n✔️ پارچه نرم، کشسان و ضدحساسیت\n✔️ تن‌خور راحت و اسپرت\n✔️ مناسب استایل پاییزی و زمستونی\n✔️ مدل یونیسکس؛ مناسب دخترونه و پسرونه\n\n📏 **سایزبندی:** XL | XXL | XXXL\n\n💰 **قیمت: 1,950**\n\n📩 برای قیمت عمده بهمون پیام بدین 💌\n\n📍 **فروشگاه المارت**\nراسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
+ "is_saleable": true,
+ "is_showable": true,
+ "is_available": true,
+ "primary_price": 19500000,
+ "shipping_area": null,
+ "packaged_weight": 900,
+ "preparation_day": 0,
+ "attribute_groups": [
+  {
+   "title": "عمومی",
+   "attributes": [
+    {
+     "id": 219,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "مناسب برای",
+     "value": "دخترانه و پسرانه",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 220,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "سایر توضیحات",
+     "value": "جنس دورس لاکرادار حوله‌ای توکرک\n✔️ داخل گرم و نرم، مناسب روزای سرد\n✔️ مدل بیسیک و ساده، بدون طرح\n✔️ کلاه بنددار و کاربردی\n✔️ پارچه نرم، کشسان و ضدحساسیت\n✔️ تن‌خور راحت و اسپرت\n✔️ مناسب استایل پاییزی و زمستونی\n✔️ مدل یونیسکس؛ مناسب دخترونه و پسرونه",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 221,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "جنس",
+     "value": "جنس دورس لاکرادار حوله‌ای توکرک",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 276,
+     "unit": "سانتیمتر",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "سایز",
+     "value": "xl. xxl    xxxl",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 222,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "رنگ",
+     "value": "قهوه ای .مشکی. آبی روشن .آبی تیره . یشمی .سفید ",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1751,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "برند",
+     "value": "المارت",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1317,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "موارد استفاده",
+     "value": "یک مدل شیک  برای استایل‌های روزمره و اسپرت",
+     "selected_values": null,
+     "required": false
+    }
+   ]
+  }
+ ],
+ "is_free_shipping": false,
+ "location_deployment": {
+  "name": "ارسال توسط غرفه دار",
+  "value": 3017,
+  "description": null
+ },
+ "is_product_for_revision": false,
+ "has_selectable_variation": false,
+ "can_add_to_cart": true,
+ "review_count": 0,
+ "rating": 0,
+ "variants": [
+  {
+   "id": 82454784,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1141,
+      "title": "مشکی xl",
+      "value": "مشکی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454785,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 19696,
+      "title": "مشکی xxl",
+      "value": "مشکی xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454786,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 130672,
+      "title": "مشکی xxxl",
+      "value": "مشکی xxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454787,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1142,
+      "title": "سفید xl",
+      "value": "سفید xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454788,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 47676,
+      "title": "سفید xxl",
+      "value": "سفید xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454789,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 130673,
+      "title": "سفید xxxl",
+      "value": "سفید xxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454790,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 360148,
+      "title": "آبی تیره xl",
+      "value": "آبی تیره xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454791,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 722565,
+      "title": "آبی تیره xxl",
+      "value": "آبی تیره xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454792,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 722566,
+      "title": "آبی تیره xxxl",
+      "value": "آبی تیره xxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454793,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 50719,
+      "title": "آبی روشن xl",
+      "value": "آبی روشن xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454794,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1651517,
+      "title": "ابی روشنxxl",
+      "value": "ابی روشنxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454795,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1651518,
+      "title": "آبی روشنxxxl",
+      "value": "آبی روشنxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454796,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 117701,
+      "title": "قهوه ایxl",
+      "value": "قهوه ایxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454797,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 729552,
+      "title": "قهوه ایxxl",
+      "value": "قهوه ایxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454798,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 999913,
+      "title": "قهوه ایxxxl",
+      "value": "قهوه ایxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454799,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 125625,
+      "title": "یشمیxl",
+      "value": "یشمیxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454800,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 931051,
+      "title": "یشمیxxl",
+      "value": "یشمیxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454801,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1580642,
+      "title": "یشمیxxxl",
+      "value": "یشمیxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  }
+ ],
+ "variants_selected_index": 0,
+ "shipping_data": {
+  "illegal_for_iran": false,
+  "illegal_for_same_city": false
+ },
+ "free_shipping": {
+  "result": false,
+  "meta_data": {
+   "illegals": {
+    "from_iran": false,
+    "from_same_city": false
+   },
+   "limits": {
+    "to_iran": null,
+    "to_same_city": null
+   }
+  }
+ },
+ "allow_category_change": null,
+ "unit_quantity": 1,
+ "unit_type": {
+  "name": "عددی",
+  "value": 6304,
+  "description": null
+ },
+ "sku": null,
+ "discount": null,
+ "packaging_dimensions": null,
+ "is_wholesale": false,
+ "is_service_variation": false,
+ "attributes": [
+  {
+   "id": 66678343,
+   "key": "برند",
+   "value": "المارت"
+  },
+  {
+   "id": 66678344,
+   "key": "موارد استفاده",
+   "value": "یک مدل شیک  برای استایل‌های روزمره و اسپرت"
+  },
+  {
+   "id": 66678345,
+   "key": "مناسب برای",
+   "value": "دخترانه و پسرانه"
+  },
+  {
+   "id": 66678346,
+   "key": "سایر توضیحات",
+   "value": "جنس دورس لاکرادار حوله‌ای توکرک\n✔️ داخل گرم و نرم، مناسب روزای سرد\n✔️ مدل بیسیک و ساده، بدون طرح\n✔️ کلاه بنددار و کاربردی\n✔️ پارچه نرم، کشسان و ضدحساسیت\n✔️ تن‌خور راحت و اسپرت\n✔️ مناسب استایل پاییزی و زمستونی\n✔️ مدل یونیسکس؛ مناسب دخترونه و پسرونه"
+  },
+  {
+   "id": 66678347,
+   "key": "جنس",
+   "value": "جنس دورس لاکرادار حوله‌ای توکرک"
+  },
+  {
+   "id": 66678348,
+   "key": "رنگ",
+   "value": "قهوه ای .مشکی. آبی روشن .آبی تیره . یشمی .سفید "
+  },
+  {
+   "id": 66678349,
+   "key": "سایز",
+   "value": "xl. xxl    xxxl"
+  }
+ ],
+ "barcode": null,
+ "kalabarg": {
+  "enable": false,
+  "is_bulk": false
+ }
+}
