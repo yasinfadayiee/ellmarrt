@@ -31,6 +31,7 @@ function build(p) {
     p.sizes.length && `سایزبندی ${p.sizes[0]} تا ${p.sizes[p.sizes.length - 1]}${p.sizes.some((s) => /^[4-6]XL$/.test(s)) ? "، با قواره واقعی برای سایزهای بزرگ" : ""}.`,
     inStockColors.length > 1 && `${fa(inStockColors.length)} رنگ موجود: ${inStockColors.join("، ")}.`,
     extra && extra.length < 120 && !/http|@|09\d{9}/.test(extra) && extra + (/[.!؟]$/.test(extra) ? "" : "."),
+    p.extra,
     `مناسب برای ${c.use}.`,
   ].filter(Boolean);
   const lead = p.hook || `${p.title}؛ انتخابی خوش‌دوخت و بادوام از کالکشن المارت.`;

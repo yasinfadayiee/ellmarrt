@@ -1,0 +1,47 @@
+# Rebuilds and publishes the site whenever the admin panel (/admin/) saves content.
+# The panel commits data/overrides.json, data/orders.json and photos under uploads/.
+name: Build site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/overrides.json"
+      - "data/orders.json"
+      - "uploads/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+# one build at a time, shared with the Basalam sync
+concurrency:
+  group: site-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Images (new uploads only)
+        run: node scripts/images.js
+      - name: Build site
+        run: node scripts/build.js
+      - name: Commit if anything changed
+        run: |
+          if [ -z "$(git status --porcelain docs assets data)" ]; then echo "no changes"; exit 0; fi
+          git config user.name "ellmarrt-admin"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs assets data
+          git commit -m "Publish admin changes ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git pull --rebase -q origin main
+          git push

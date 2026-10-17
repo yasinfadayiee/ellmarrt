@@ -65,7 +65,7 @@ const get = async (url, tries = 4) => {
       }
     }
   }
-  const slim = uniq.map((p) => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, sales_count: p.sales_count, rating: p.rating, categoryTitle: p.categoryTitle, video: p.video ? { PRIMARY: p.video.PRIMARY } : null }));
+  const slim = uniq.map((p) => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, sales_count: p.sales_count, sales_count_week: p.sales_count_week, rating: p.rating, categoryTitle: p.categoryTitle, video: p.video ? { PRIMARY: p.video.PRIMARY } : null }));
   fs.writeFileSync(path.join(RAW, "_search.json"), JSON.stringify(slim, null, 1));
   // customer reviews of the store (public Basalam reviews), newest first
   try {
@@ -79,6 +79,13 @@ const get = async (url, tries = 4) => {
     fs.writeFileSync(path.join(RAW, "_reviews.json"), JSON.stringify({ average: group.stars_average, count: group.stars_total_count, groups: group.groups, reviews }, null, 1));
     console.log(`reviews: ${reviews.length} (avg ${group.stars_average} of ${group.stars_total_count})`);
   } catch (e) { console.error("reviews skipped:", e.message); }
+  // fingerprint of everything fetched; syncedAt moves only when the content changed
+  const hash = require("crypto").createHash("md5");
+  for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json") && f !== "_meta.json").sort()) hash.update(fs.readFileSync(path.join(RAW, f)));
+  const fp = hash.digest("hex");
+  const metaFile = path.join(RAW, "_meta.json");
+  const oldMeta = fs.existsSync(metaFile) ? JSON.parse(fs.readFileSync(metaFile, "utf8")) : {};
+  if (oldMeta.fp !== fp) fs.writeFileSync(metaFile, JSON.stringify({ fp, syncedAt: new Date().toISOString() }, null, 1));
   const removed = prev.filter((p) => !uniq.some((u) => u.id === p.id)).map((p) => p.id);
   console.log(`sync ok: ${uniq.length} products, ${changed} updated, new: [${added.join(",")}], removed: [${removed.join(",")}]`);
 })().catch((e) => { console.error(e); process.exit(1); });

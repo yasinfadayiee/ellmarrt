@@ -6,6 +6,7 @@ const ROOT = path.join(__dirname, "..");
 const RAW = path.join(ROOT, "data-raw");
 const curated = require("../data/curated");
 const images = JSON.parse(fs.readFileSync(path.join(ROOT, "data/images.json"), "utf8"));
+const { overrides } = require("./overrides");
 
 const CATEGORIES = {
   tshirt: { slug: "tshirt", name: "تیشرت مردانه", plural: "تیشرت‌ها", h1: "تیشرت مردانه نخ پنبه", desc: "تیشرت مردانه نخ پنبه، باکسی و اورسایز تا سایز 5XL؛ مستقیم از بازار بزرگ تبریز با قیمت منصفانه و ارسال به سراسر ایران." },
@@ -34,7 +35,7 @@ const COLOR_FIX = [
   [/^ط\.?\s*روشن$/, "طوسی روشن"], [/^ط\.?\s*تیره$/, "طوسی تیره"], [/^روشن$/, "طوسی روشن"], [/^تیره$/, "طوسی تیره"],
   [/^غازی$/, "کله‌غازی"], [/^کله غازی$/, "کله‌غازی"], [/^ساده$/, "مشکی ساده"], [/^لوزی$/, "مشکی طرح لوزی"],
   [/^سرمه( ای| ‌ای|‌ای)?$/, "سرمه‌ای"], [/^قهو?اه? ?ای$|^قهوه ای$/, "قهوه‌ای"], [/^نسکافه ?ای$/, "نسکافه‌ای"],
-  [/^پسته ?ای$/, "پسته‌ای"], [/^سبز ساقه ?ای$/, "سبز ساقه‌ای"], [/^پایین /, ""],
+  [/^پسته ?ای$/, "پسته‌ای"], [/^ابی(?= |$)/, "آبی"], [/^آبی ?تیره$/, "آبی تیره"], [/^آبی ?روشن$/, "آبی روشن"], [/^ابی ?(تیره|روشن)$/, (m, t) => "آبی " + t], [/^سبز ساقه ?ای$/, "سبز ساقه‌ای"], [/^پایین /, ""],
 ];
 
 // "مشکی 4xl" | "رنگ و سایز:طوسی تیره xl" | "2xl 105" | "41 سفید" -> {color,size}
@@ -51,12 +52,17 @@ function parseVariant(v) {
   return { color: color || null, size, stock: v.stock, price: Math.round(v.price / 10) };
 }
 
+// ordered unique colour names of a Basalam product (index = colour-shot index)
+function colorsOf(d) {
+  return [...new Set((d.variants || []).map(parseVariant).map((v) => v.color).filter(Boolean))];
+}
+
 const clean = (s) => String(s || "").replace(/^#+\s*/gm, "").replace(/\*\*/g, "").replace(/\r/g, "").replace(/[ \t]+\n/g, "\n").trim();
 
 // products added on Basalam after the curated list was written
 const CAT_BY_TITLE = [[/کفش/, "shoes"], [/پسرانه|دخترانه|بچگانه/, "kids"], [/شلوارک/, "shorts"], [/شلوار/, "pants"], [/سویشرت|هودی|ژاکت|دورس|بلوز/, "sweat"], [/پیراهن/, "shirt"], [/پولو|یقه/, "polo"], [/تیشرت|تی شرت/, "tshirt"]];
 function autoCurate(d, s) {
-  const title = clean(d.title).replace(/s+/g, " ");
+  const title = clean(d.title).replace(/\s+/g, " ");
   const hay = title + " " + (s.categoryTitle || "");
   const cat = (CAT_BY_TITLE.find(([re]) => re.test(hay)) || [0, "tshirt"])[1];
   return [title, cat, title];
@@ -67,7 +73,11 @@ function load() {
   const products = [];
   for (const s of search) {
     const d = JSON.parse(fs.readFileSync(path.join(RAW, `${s.id}.json`), "utf8"));
-    const [rawTitle, cat, keyword, hook] = curated[s.id] || autoCurate(d, s);
+    const O = overrides.products[s.id] || {};
+    let [rawTitle, cat, keyword, hook] = curated[s.id] || autoCurate(d, s);
+    if (O.title) rawTitle = O.title;
+    if (O.hook) hook = O.hook;
+    if (O.cat && CATEGORIES[O.cat]) cat = O.cat;
     // sizes read better with Latin digits (2XL, not ۲XL)
     const title = rawTitle.replace(/[۰-۹](?=XL)/g, (x) => "۰۱۲۳۴۵۶۷۸۹".indexOf(x));
     const variants = (d.variants || []).map(parseVariant);
@@ -105,6 +115,12 @@ function load() {
       description: clean(d.description),
       rating,
       sales: s.sales_count || 0,
+      salesWeek: s.sales_count_week || 0,
+      hidden: !!O.hidden,
+      featured: !!O.featured,
+      extra: (O.extra || "").trim() || null,
+      ov: O,
+      autoTitle: (curated[s.id] || autoCurate(d, s))[0],
       hasVideo: !!(s.video && s.video.PRIMARY),
       created: d.created_at,
       images: images[s.id] || { hero: null, gallery: [] },
@@ -117,14 +133,18 @@ function load() {
     const ok = p.colorImages.filter((i) => p.colorInStock.includes(i));
     p.mainColor = ok.length ? ok[0] : p.colorImages.length ? p.colorImages[0] : null;
   }
-  const RV = fs.existsSync(path.join(RAW, "_reviews.json")) ? JSON.parse(fs.readFileSync(path.join(RAW, "_reviews.json"), "utf8")) : { average: 0, count: 0, groups: {}, reviews: [] };
+  const RV0 = fs.existsSync(path.join(RAW, "_reviews.json")) ? JSON.parse(fs.readFileSync(path.join(RAW, "_reviews.json"), "utf8")) : { average: 0, count: 0, groups: {}, reviews: [] };
+  const hiddenRv = new Set(overrides.reviewsHidden);
+  const RV = { ...RV0, reviews: RV0.reviews.map((r) => ({ ...r, hidden: hiddenRv.has(r.id) })) };
+  const visibleRv = RV.reviews.filter((r) => !r.hidden);
   for (const p of products) {
-    p.reviews = RV.reviews.filter((r) => r.productId === p.id);
+    p.reviews = visibleRv.filter((r) => r.productId === p.id);
     if (p.reviews.length) p.rating = { avg: Math.round((p.reviews.reduce((a, r) => a + r.star, 0) / p.reviews.length) * 10) / 10, count: p.reviews.length };
   }
   const copy = require("./copy");
   for (const p of products) p.copy = copy.build(p);
-  return { products, CATEGORIES, SIZE_ORDER, storeReviews: RV };
+  const visible = products.filter((p) => !p.hidden);
+  return { products: visible, all: products, CATEGORIES, SIZE_ORDER, storeReviews: { ...RV, reviews: visibleRv } , allReviews: RV.reviews };
 }
 
-module.exports = { load, parseVariant };
+module.exports = { load, parseVariant, colorsOf, CATEGORIES };

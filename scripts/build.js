@@ -12,7 +12,8 @@ const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
 // cache-busting version = hash of css+js, so identical builds produce identical HTML
 const VERSION = require("crypto").createHash("md5").update(fs.readFileSync(path.join(ROOT, "assets/css/site.css")) + fs.readFileSync(path.join(ROOT, "assets/js/site.js"))).digest("hex").slice(0, 8);
 
-const { products, CATEGORIES, storeReviews } = load();
+const { products, all, allReviews, CATEGORIES, storeReviews } = load();
+const meta = fs.existsSync(path.join(ROOT, "data-raw/_meta.json")) ? JSON.parse(fs.readFileSync(path.join(ROOT, "data-raw/_meta.json"), "utf8")) : {};
 const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews };
 
 // clean output (keep CNAME if any)
@@ -73,13 +74,13 @@ write("404.html", pages.notFound(ctx));
 
 // sitemap with image extension
 const xmlEsc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-const today = new Date().toISOString().slice(0, 10);
+const today = (meta.syncedAt || new Date().toISOString()).slice(0, 10); // changes only when content changes
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><lastmod>${today}</lastmod><priority>${u.priority}</priority>${u.images.map((i) => `<image:image><image:loc>${xmlEsc(i)}</image:loc></image:image>`).join("")}</url>`).join("\n")}
 </urlset>
 `);
-write("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 write("manifest.webmanifest", JSON.stringify({
   name: "المارت | ELLMARRT", short_name: "المارت", lang: "fa", dir: "rtl", start_url: `${BASE}/`, display: "standalone",
   background_color: "#fbf8f2", theme_color: "#141210",
@@ -87,4 +88,9 @@ write("manifest.webmanifest", JSON.stringify({
 }));
 write("llms.txt", pages.llms(ctx));
 write("assets/catalog.json", JSON.stringify(pages.catalog(ctx)));
+// admin panel (static app + data snapshot); never indexed
+copyDir(path.join(ROOT, "admin"), path.join(OUT, "admin"));
+const adminIndex = path.join(OUT, "admin/index.html");
+fs.writeFileSync(adminIndex, fs.readFileSync(adminIndex, "utf8").replace(/__V__/g, VERSION));
+write("admin/data.json", JSON.stringify(require("./admin-data")({ all, allReviews, storeReviews, CATEGORIES, SITE_URL, meta })));
 console.log(`built ${urls.length} pages -> docs/ (${SITE_URL})`);

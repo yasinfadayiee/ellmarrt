@@ -1,4 +1,4 @@
-# Keeps ellmarrt.ir in sync with the Basalam store: stock, prices, variants, new/removed products.
+# Keeps ellmarrt.ir in sync with the Basalam store: stock, prices, variants, reviews, new/removed products.
 name: Sync Basalam stock
 
 on:
@@ -9,8 +9,9 @@ on:
 permissions:
   contents: write
 
+# one build at a time, shared with the admin-panel build
 concurrency:
-  group: sync-basalam
+  group: site-build
   cancel-in-progress: false
 
 jobs:
@@ -19,12 +20,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - name: Pull products and stock from Basalam
+      - name: Pull products, stock and reviews from Basalam
         run: node scripts/sync-basalam.js
       - name: Images for new products
         run: node scripts/images.js
@@ -37,4 +40,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data-raw data docs assets
           git commit -m "Sync stock and prices from Basalam ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git pull --rebase -q origin main
           git push

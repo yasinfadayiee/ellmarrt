@@ -256,4 +256,6 @@
       markTheme(); toast("رنگ‌بندی «" + b.textContent.trim() + "» فعال شد");
     }));
   }
+  /* copy promo code */
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (!b) return; navigator.clipboard?.writeText(b.dataset.copy).then(() => toast("کد تخفیف کپی شد")).catch(() => toast(b.dataset.copy)); });
 })();

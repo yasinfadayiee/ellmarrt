@@ -21,7 +21,22 @@ const STORE = {
   years: 60,
 };
 
-const fa0 = (s) => String(s).replace(/d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+// ---- editable site settings (admin panel -> data/overrides.json) ----
+const { overrides: OVR } = require("./overrides");
+const SITE = OVR.site || {};
+{
+  const C0 = SITE.contact || {};
+  if (Array.isArray(C0.phones) && C0.phones.filter(Boolean).length) STORE.phones = C0.phones.filter(Boolean).map((x) => String(x).replace(/D/g, ""));
+  if (C0.address) STORE.address = C0.address;
+  if (C0.igHandle) { STORE.igHandle = C0.igHandle.replace(/^@/, ""); STORE.instagram = "https://instagram.com/" + STORE.igHandle; STORE.igDm = "https://ig.me/m/" + STORE.igHandle; }
+  if (C0.rubika) STORE.rubika = C0.rubika;
+  if (C0.rubikaOrder) STORE.rubikaOrder = C0.rubikaOrder;
+  if (SITE.years) STORE.years = +SITE.years || STORE.years;
+}
+const hero = (k, d) => (SITE.hero && SITE.hero[k]) || d;
+const promoOn = () => SITE.promo && SITE.promo.active && SITE.promo.code;
+
+const fa0 = (s) => String(s).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
 const I = {
   phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
   bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
@@ -82,6 +97,7 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" co
 <link rel="icon" href="${BASE}/favicon.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="${BASE}/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="${BASE}/manifest.webmanifest">
+${SITE.analytics && SITE.analytics.goatcounter ? `<script data-goatcounter="https://${esc(SITE.analytics.goatcounter)}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>` : ""}
 <link rel="preload" href="${BASE}/assets/fonts/Vazirmatn-wght.woff2" as="font" type="font/woff2" crossorigin>
 ${o.preload ? `<link rel="preload" as="image" href="${o.preload}"${o.preloadSet?` imagesrcset="${o.preloadSet}" imagesizes="${o.preloadSizes}"`:""} fetchpriority="high">` : ""}
 <script>try{var t=localStorage.getItem("elm-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
@@ -90,7 +106,7 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
 </head>
 <body>
 <a class="skip" href="#main">رفتن به محتوای اصلی</a>
-<div class="topbar" aria-label="مزایای خرید"><div class="marquee">${Array(2).fill(["ارسال به سراسر ایران از روز اول کاری", `بیش از ${fa(STORE.years)} سال در ${STORE.bazaar}`, "سایزبندی واقعی تا 6XL", "خرید امن با ضمانت باسلام", "عکس‌ها و سایز دقیق، بررسی قبل از ارسال"].map((t) => `<span>${t}</span>`).join("")).join("")}</div></div>
+<div class="topbar" aria-label="مزایای خرید"><div class="marquee">${Array(2).fill([...(promoOn() ? [`کد تخفیف ${SITE.promo.code}${SITE.promo.text ? " — " + SITE.promo.text : ""}`] : []), ...((SITE.announcements || []).filter(Boolean).length ? SITE.announcements.filter(Boolean) : ["ارسال به سراسر ایران از روز اول کاری", `بیش از ${fa(STORE.years)} سال در ${STORE.bazaar}`, "سایزبندی واقعی تا 6XL", "خرید امن با ضمانت باسلام", "عکس‌ها و سایز دقیق، بررسی قبل از ارسال"])].map((t) => `<span>${esc(t)}</span>`).join("")).join("")}</div></div>
 <header class="hdr">
   <div class="wrap hdr-in">
     <button class="ibtn menu-btn" aria-label="منو">${I.menu}</button>
@@ -114,7 +130,7 @@ ${o.body}
     <div class="ftr-g">
       <div>
         <img src="${BASE}/assets/img/logo-light.svg" alt="${STORE.latin} — ${STORE.name}" width="170" height="143" loading="lazy" style="width:150px;height:auto;margin-bottom:16px">
-        <p>${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}. پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا 6XL.</p>
+        <p>${SITE.footer && SITE.footer.blurb ? esc(SITE.footer.blurb) : `${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}.`} پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا 6XL.</p>
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a></div>
       </div>
       <div><h2>فروشگاه</h2><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}</ul></div>
@@ -145,7 +161,7 @@ ${o.body}
 }
 
 /* ---------------- shared pieces ---------------- */
-const HEX = { "مشکی": "#151515", "سفید": "#f7f7f5", "کرمی": "#eadfc8", "کله‌غازی": "#21566a", "استخوانی": "#ece6d8", "نسکافه‌ای": "#7a5a43", "هوایی": "#a9cbe6", "یشمی": "#8fa697", "شکلاتی": "#4a2f22", "طوسی": "#9a9a9a", "طوسی تیره": "#4b4b4f", "طوسی روشن": "#c9c9c9", "پرتقالی": "#f07a1f", "زرد": "#e1b43a", "قرمز": "#c23a35", "مشکی ساده": "#151515", "مشکی طرح لوزی": "#2a2a2a", "سبز": "#2f6b45", "سرمه‌ای": "#1f2a4d", "نارنجی": "#c8642d", "آبی": "#1f5fc4", "پسته‌ای": "#bcd49a", "قهوه‌ای": "#6b4a33", "زرشکی": "#6e1f2c", "مشکی سفید": "linear-gradient(90deg,#151515 50%,#f7f7f5 50%)", "سبز ساقه‌ای": "#6f7d3c", "سفید مشکی": "linear-gradient(90deg,#f7f7f5 50%,#151515 50%)", "زیتونی": "#6b6b3a", "زغالی": "#3a3a3c", "سبز ساقه ای": "#6f7d3c" };
+const HEX = { "مشکی": "#151515", "سفید": "#f7f7f5", "کرمی": "#eadfc8", "کله‌غازی": "#21566a", "استخوانی": "#ece6d8", "نسکافه‌ای": "#7a5a43", "هوایی": "#a9cbe6", "یشمی": "#8fa697", "شکلاتی": "#4a2f22", "طوسی": "#9a9a9a", "طوسی تیره": "#4b4b4f", "طوسی روشن": "#c9c9c9", "پرتقالی": "#f07a1f", "زرد": "#e1b43a", "قرمز": "#c23a35", "مشکی ساده": "#151515", "مشکی طرح لوزی": "#2a2a2a", "سبز": "#2f6b45", "سرمه‌ای": "#1f2a4d", "نارنجی": "#c8642d", "آبی": "#1f5fc4", "پسته‌ای": "#bcd49a", "قهوه‌ای": "#6b4a33", "زرشکی": "#6e1f2c", "مشکی سفید": "linear-gradient(90deg,#151515 50%,#f7f7f5 50%)", "سبز ساقه‌ای": "#6f7d3c", "سفید مشکی": "linear-gradient(90deg,#f7f7f5 50%,#151515 50%)", "زیتونی": "#6b6b3a", "زغالی": "#3a3a3c", "سبز ساقه ای": "#6f7d3c", "آبی تیره": "#1b3a73", "آبی روشن": "#7fb0e0" };
 const dotsHtml = (cols) => cols.length > 1 ? `<div class="dots" aria-label="رنگ‌های موجود">${cols.slice(0, 5).map((c) => `<i title="${c}" style="background:${HEX[c] || "#bbb"}"></i>`).join("")}${cols.length > 5 ? `<small>+${cols.length - 5}</small>` : ""}</div>` : "";
 const stars = (n) => `<span class="rstars" aria-label="${n} از ۵">${[1, 2, 3, 4, 5].map((i) => `<i class="${i <= Math.round(n) ? "on" : ""}">★</i>`).join("")}</span>`;
 const faDate = (d) => { try { return new Intl.DateTimeFormat("fa-IR", { year: "numeric", month: "long" }).format(new Date(d)); } catch { return ""; } };
@@ -204,7 +220,7 @@ const sizer = (title = "سایزیاب هوشمند المارت") => `<div clas
 <div class="seg" role="group"><button type="button" data-fit="slim" aria-pressed="false">جذب</button><button type="button" data-fit="regular" aria-pressed="true">معمولی</button><button type="button" data-fit="loose" aria-pressed="false">گشاد / اورسایز</button></div>
 <div class="sizer-out" aria-live="polite"></div></div>`;
 
-const HOME_FAQ = [
+const HOME_FAQ_DEFAULT = [
   ["خرید از المارت چطور انجام می‌شود؟", "هر محصول در غرفه رسمی المارت در باسلام ثبت شده است. سایز و رنگ را در سایت انتخاب کنید و با دکمه «خرید امن از باسلام» سفارش را با درگاه و ضمانت باسلام تکمیل کنید."],
   ["ارسال چقدر طول می‌کشد؟", "سفارش‌ها از روز اول کاری بعد از ثبت، با پست پیشتاز یا سفارشی به سراسر ایران ارسال می‌شوند. برای تبریز ارسال با پیک موتوری هم امکان‌پذیر است."],
   ["سایز مناسب خودم را چطور پیدا کنم؟", "از سایزیاب المارت استفاده کنید: قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید. همچنین در صفحه هر محصول اندازه‌های واقعی آن آمده است و می‌توانید قبل از خرید در اینستاگرام از ما بپرسید."],
@@ -212,12 +228,14 @@ const HOME_FAQ = [
   ["عکس محصولات واقعی است؟", "عکس‌های اصلی با نورپردازی استودیویی بازسازی شده‌اند و جنس، رنگ و دوخت هر لباس دقیقاً همان کالای ارسالی است. عکس‌های واقعی گرفته‌شده در غرفه هم در گالری هر محصول قرار دارند."],
 ];
 
+const HOME_FAQ = (SITE.faq || []).filter((x) => x && x[0] && x[1]).length ? SITE.faq.filter((x) => x && x[0] && x[1]) : HOME_FAQ_DEFAULT;
+
 /* ---------------- pages ---------------- */
 function home(ctx) {
   const { products: P, CATEGORIES: C, BASE } = ctx;
   const byId = (id) => P.find((p) => p.id === id);
   const heroIds = [60937967, 47475290, 53762676];
-  const best = [...P].filter((p) => p.inStock).sort((a, b) => b.sales - a.sales).slice(0, 8);
+  const best = [...P].filter((p) => p.inStock).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8);
   const fresh = [...P].filter((p) => p.inStock && !best.includes(p)).sort((a, b) => b.created.localeCompare(a.created)).slice(0, 8);
   const big = P.filter((p) => isBig(p) && p.inStock).slice(0, 4);
   const catImg = { tshirt: 49701761, polo: 53765502, shirt: 45025631, sweat: 58897534, pants: 54126455, shorts: 42724724, shoes: 43999644, kids: 36616537 };
@@ -228,10 +246,10 @@ function home(ctx) {
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="wrap hero-in">
     <div>
-      <span class="eyebrow">از دل ${STORE.bazaar} — شش دهه تجربه</span>
-      <h1>شیک بپوش،<br>مثل <em>بازاری‌ها<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 12 Q150 2 298 12"/></svg></em> بخر.</h1>
-      <p class="hero-lead">${fa(STORE.years)} سال تجربه در انتخاب پارچه و دوخت؛ حالا مستقیم برای شما. تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا <b class="num">6XL</b> با قیمت منصفانه و ارسال به سراسر ایران.</p>
-      <div class="hero-cta"><a class="btn btn-gold" href="${BASE}/shop/">دیدن کالکشن ${I.arrow}</a><a class="btn btn-ghost" href="${BASE}/size-guide/">سایزم چیه؟</a></div>
+      <span class="eyebrow">${esc(hero("eyebrow", `از دل ${STORE.bazaar} — شش دهه تجربه`))}</span>
+      <h1>${esc(hero("line1", "شیک بپوش،"))}<br>${esc(hero("pre", "مثل"))} <em>${esc(hero("em", "بازاری‌ها"))}<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 12 Q150 2 298 12"/></svg></em> ${esc(hero("post", "بخر."))}</h1>
+      <p class="hero-lead">${hero("lead", "") ? esc(hero("lead", "")) : `${fa(STORE.years)} سال تجربه در انتخاب پارچه و دوخت؛ حالا مستقیم برای شما. تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا <b class="num">6XL</b> با قیمت منصفانه و ارسال به سراسر ایران.`}</p>
+      <div class="hero-cta"><a class="btn btn-gold" href="${BASE}/shop/">${esc(hero("cta1", "دیدن کالکشن"))} ${I.arrow}</a><a class="btn btn-ghost" href="${BASE}/size-guide/">${esc(hero("cta2", "سایزم چیه؟"))}</a></div>
       <div class="hero-stats"><div><b class="num" data-count="${STORE.years}" data-suffix="+">${fa(STORE.years)}+</b><span>سال در بازار تبریز</span></div><div><b class="num" data-count="${P.length}">${fa(P.length)}</b><span>مدل در کالکشن</span></div><div><b class="num">6XL</b><span>بزرگ‌ترین سایز</span></div></div>
     </div>
     <div class="arches" aria-hidden="true">
@@ -263,8 +281,8 @@ function home(ctx) {
   <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/p/45326170-960.webp" alt="مدل المارت با بلوز نخی نارنجی" width="960" height="1200" loading="lazy"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
   <div class="rv">
     <span class="kicker">داستان المارت</span>
-    <h2>یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد.</h2>
-    <p>غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعال است؛ کاری که از پدرمان به ارث رسید. ما هر پارچه را با دست لمس می‌کنیم، هر دوخت را قبل از ارسال بررسی می‌کنیم و همان قیمت منصفانه بازار را به خانه شما می‌آوریم.</p>
+    <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : "یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد."}</h2>
+    <p>${SITE.story && SITE.story.text ? esc(SITE.story.text) : `غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعال است؛ کاری که از پدرمان به ارث رسید. ما هر پارچه را با دست لمس می‌کنیم، هر دوخت را قبل از ارسال بررسی می‌کنیم و همان قیمت منصفانه بازار را به خانه شما می‌آوریم.`}</p>
     <div class="feat">
       <div><i>${I.thread}</i><p style="margin:0"><b>پارچه انتخابی</b><span>نخ پنبه، کتان کشی، اسپان و دورس اعلا</span></p></div>
       <div><i>${I.arch}</i><p style="margin:0"><b>اصالت بازار تبریز</b><span>بیش از نیم قرن سابقه در پخش پوشاک</span></p></div>
@@ -335,7 +353,7 @@ ${Object.entries(C).map(([k, c]) => { const n = P.filter((p) => p.cat === k).len
 
 function shop(ctx) {
   const { products: P } = ctx;
-  const sorted = [...P].sort((a, b) => (b.inStock - a.inStock) || (b.sales - a.sales));
+  const sorted = [...P].sort((a, b) => (b.featured - a.featured) || (b.inStock - a.inStock) || (b.sales - a.sales));
   const items = [["/", "خانه"], ["/shop/", "فروشگاه"]];
   return layout(ctx, {
     path: "/shop/",
@@ -360,7 +378,7 @@ const CAT_FAQ = {
 function category(ctx, c) {
   const { products: P } = ctx;
   const key = Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c);
-  const list = P.filter((p) => p.cat === key).sort((a, b) => (b.inStock - a.inStock) || (b.sales - a.sales));
+  const list = P.filter((p) => p.cat === key).sort((a, b) => (b.featured - a.featured) || (b.inStock - a.inStock) || (b.sales - a.sales));
   const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name]];
   const min = Math.min(...list.map((p) => p.price)), max = Math.max(...list.map((p) => p.price));
   const qa = CAT_FAQ[key] || [];
@@ -421,6 +439,7 @@ function product(ctx, p) {
     <h1>${esc(p.title)}</h1>
     <div class="pmeta">${p.rating ? `<span class="stars">${I.star}<span class="num">${fa(p.rating.avg)}</span></span><span>${fa(p.rating.count)} نظر در باسلام</span>` : ""}${p.sales ? `<span>${fa(p.sales)} فروش موفق</span>` : ""}<span>کد کالا: <span class="num">${p.id}</span></span></div>
     ${priceBlock}
+    ${promoOn() ? `<div class="promo"><b>کد تخفیف ${esc(SITE.promo.code)}</b><span>${esc(SITE.promo.text || "هنگام پرداخت در باسلام وارد کنید")}</span><button type="button" data-copy="${esc(SITE.promo.code)}">کپی کد</button></div>` : ""}
     ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
     ${sizes.length ? `<div class="opt"><div class="opt-h">سایز: <span id="sel-size">انتخاب کنید</span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">راهنمای سایز</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div></div>` : ""}
     <div class="buy">
