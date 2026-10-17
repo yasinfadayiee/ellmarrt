@@ -88,27 +88,64 @@
   }
   function renderChip() { const c = $("#chip"); if (!c) return; const [k, t] = chipState(); c.className = "chip " + k; c.innerHTML = `<i></i>${esc(t)}`; }
 
-  /* ---------- login ---------- */
-  function renderLogin(err) {
+  /* ---------- login (password unlocks the GitHub token stored encrypted in admin/vault.json) ---------- */
+  const VAULT = "admin/vault.json";
+  const b64 = (u8) => { let t = ""; u8.forEach((x) => (t += String.fromCharCode(x))); return btoa(t); };
+  const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  async function pwKey(pw, salt) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 600000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  }
+  async function seal(token, pw) {
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await pwKey(pw, salt), new TextEncoder().encode(token));
+    return { v: 1, salt: b64(salt), iv: b64(iv), ct: b64(new Uint8Array(ct)) };
+  }
+  const unseal = async (v, pw) => new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(v.iv) }, await pwKey(pw, unb64(v.salt)), unb64(v.ct)));
+  async function fetchVault() {
+    try { const r = await fetch(`${API}${repo}/contents/${VAULT}?ref=${BRANCH}&t=${Date.now()}`, { headers: { Accept: "application/vnd.github.raw+json" } }); return r.ok ? await r.json() : null; } catch { return null; }
+  }
+  async function renderLogin(err) {
+    const vault = qs.get("reset") ? null : await fetchVault();
+    if (vault) {
+      $("#app").innerHTML = `<div class="login"><form class="login-c" id="lf" autocomplete="off">
+        <img src="../assets/img/logo.svg" alt="ELLMARRT" width="80" height="64">
+        <h1>پنل مدیریت المارت</h1>
+        <label class="field"><span>رمز عبور</span><input type="password" id="pw" autocomplete="current-password" required autofocus></label>
+        <button class="btn btn-ink" style="width:100%" type="submit">ورود به پنل</button>
+        <p class="err" id="le">${esc(err || "")}</p>
+      </form></div>`;
+      $("#lf").addEventListener("submit", async (e) => {
+        e.preventDefault(); $("#le").textContent = "در حال بررسی…";
+        try { TOKEN = await unseal(vault, $("#pw").value); } catch { TOKEN = ""; $("#le").textContent = "رمز اشتباه است."; return; }
+        try { await gh(repo); localStorage.setItem(TKEY, TOKEN); start(); }
+        catch (er) { const m = errMsg(er); TOKEN = ""; $("#le").textContent = m; }
+      });
+      return;
+    }
     $("#app").innerHTML = `<div class="login"><form class="login-c" id="lf" autocomplete="off">
       <img src="../assets/img/logo.svg" alt="ELLMARRT" width="80" height="64">
-      <h1>پنل مدیریت المارت</h1>
-      <p>برای ورود یک بار «توکن دسترسی گیت‌هاب» را وارد کنید. توکن فقط در همین مرورگر ذخیره می‌شود.</p>
+      <h1>راه‌اندازی اولیه پنل</h1>
+      <p>فقط یک بار: توکن گیت‌هاب را بچسبانید و یک رمز برای پنل انتخاب کنید. از این به بعد فقط با همان رمز (روی هر دستگاهی) وارد می‌شوید.</p>
       <ol class="steps">
-        <li>در گیت‌هاب وارد حساب خود شوید و به <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Settings ← Developer settings ← Fine-grained tokens ← Generate new token</a> بروید.</li>
+        <li>به <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Settings ← Developer settings ← Fine-grained tokens ← Generate new token</a> بروید.</li>
         <li>در «Repository access» فقط مخزن <b dir="ltr">${OWNER}/${REPO}</b> را انتخاب کنید.</li>
-        <li>در «Permissions ← Repository» این دو مورد را روی <b dir="ltr">Read and write</b> بگذارید: <b dir="ltr">Contents</b> و <b dir="ltr">Actions</b>.</li>
-        <li>توکن ساخته‌شده را اینجا بچسبانید.</li>
+        <li>در Permissions، دو مورد <b dir="ltr">Contents</b> و <b dir="ltr">Actions</b> را روی <b dir="ltr">Read and write</b> بگذارید و توکن را اینجا بچسبانید.</li>
       </ol>
       <label class="field"><span>توکن گیت‌هاب</span><input type="password" id="tk" dir="ltr" placeholder="github_pat_…" required></label>
-      <button class="btn btn-ink" style="width:100%" type="submit">ورود به پنل</button>
+      <label class="field"><span>رمز دلخواه پنل (حداقل ۱۰ نویسه، ترجیحاً جمله‌ی بلند)</span><input type="password" id="pw" autocomplete="new-password" minlength="10" required></label>
+      <button class="btn btn-ink" style="width:100%" type="submit">ذخیره و ورود</button>
       <p class="err" id="le">${esc(err || "")}</p>
     </form></div>`;
     $("#lf").addEventListener("submit", async (e) => {
-      e.preventDefault(); TOKEN = $("#tk").value.trim(); if (!TOKEN) return;
+      e.preventDefault(); TOKEN = $("#tk").value.trim(); const pw = $("#pw").value; if (!TOKEN) return;
       $("#le").textContent = "در حال بررسی…";
-      try { const r = await gh(repo); if (r.permissions && r.permissions.push === false) throw Object.assign(new Error("no push"), { status: 403 }); localStorage.setItem(TKEY, TOKEN); start(); }
-      catch (er) { TOKEN = ""; $("#le").textContent = errMsg(er); }
+      try {
+        const r = await gh(repo); if (r.permissions && r.permissions.push === false) throw Object.assign(new Error("no push"), { status: 403 });
+        const cur = await getFile(VAULT);
+        await putFile(VAULT, enc(JSON.stringify(await seal(TOKEN, pw)) + "\n"), "Admin: set panel password", cur && cur.sha);
+        localStorage.setItem(TKEY, TOKEN); history.replaceState(null, "", location.pathname); start();
+      } catch (er) { TOKEN = ""; $("#le").textContent = errMsg(er); }
     });
   }
 
@@ -394,7 +431,7 @@
     else if (act === "order-new") openOrder(null);
     else if (act === "orders-csv") ordersCsv();
     else if (act === "rv-save") { try { await saveOv((o) => { o.reviewsHidden = [...S.rvStage]; }, "Admin: reviews visibility"); S.rvStage = null; renderView(); } catch {} }
-    else if (act === "logout") { if (confirm("از پنل خارج می‌شوید و توکن از این مرورگر پاک می‌شود. ادامه می‌دهید؟")) { localStorage.removeItem(TKEY); TOKEN = ""; renderLogin(); } }
+    else if (act === "logout") { if (confirm("از پنل خارج می‌شوید و ورود بعدی دوباره رمز می‌خواهد. ادامه می‌دهید؟")) { localStorage.removeItem(TKEY); TOKEN = ""; renderLogin(); } }
     else if (act === "sync") {
       try { busy(true, "در حال درخواست همگام‌سازی…"); await gh(`${repo}/actions/workflows/sync-basalam.yml/dispatches`, { method: "POST", body: { ref: BRANCH } }); S.pendingSince = Date.now(); toast("همگام‌سازی شروع شد؛ حدود ۳ دقیقه صبر کنید."); pollRuns(); }
       catch (er) { toast(er.status === 403 || er.status === 404 ? "برای این دکمه، دسترسی «Actions: Read and write» به توکن اضافه کنید." : errMsg(er), true); } finally { busy(false); }
@@ -411,5 +448,5 @@
       S.rvStage = null; route(); loadRuns();
     } catch (e) { if (e.status === 401) { localStorage.removeItem(TKEY); TOKEN = ""; renderLogin(errMsg(e)); } else { renderLogin(errMsg(e)); } }
   }
-  if (TOKEN || qs.get("api")) { if (!TOKEN) TOKEN = "test-token"; start(); } else renderLogin();
+  if (qs.get("reset")) renderLogin(); else if (TOKEN || qs.get("api")) { if (!TOKEN) TOKEN = "test-token"; start(); } else renderLogin();
 })();
