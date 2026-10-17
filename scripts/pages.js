@@ -85,6 +85,7 @@ function layout(ctx, o) {
 <link rel="canonical" href="${url}">
 ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index,follow,max-image-preview:large">'}
 <meta name="theme-color" content="#141210">
+<meta name="google-site-verification" content="uXxAD7CF1q8Fo0xZpy1_uE84WzXJWtndZYkGuYqUT9A">
 <meta property="og:type" content="${o.ogType || "website"}">
 <meta property="og:site_name" content="${STORE.name} | ${STORE.latin}">
 <meta property="og:locale" content="fa_IR">
