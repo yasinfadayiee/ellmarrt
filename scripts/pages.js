@@ -405,6 +405,7 @@ function category(ctx, c) {
     body: `${crumbs(ctx, items)}
 <header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
 <section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
+${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -679,6 +680,26 @@ const guides = [
   },
 ];
 
+const readMin = (ctx, g) => Math.max(2, Math.round(g.html(ctx).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length / 200));
+// one distinct cover photo per guide, picked in guide order
+const guideCovers = new WeakMap();
+function guideCover(ctx, g) {
+  if (!guideCovers.has(ctx)) {
+    const used = new Set(), m = {};
+    for (const x of guides) {
+      const list = ctx.products.filter((p) => x.cats.includes(p.cat) && p.inStock && (x.slug !== "big-size-men" || isBig(p))).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales));
+      m[x.slug] = list.find((p) => !used.has(p.id)) || list[0];
+      if (m[x.slug]) used.add(m[x.slug].id);
+    }
+    guideCovers.set(ctx, m);
+  }
+  return guideCovers.get(ctx)[g.slug];
+}
+function gcard(ctx, g) {
+  const p = guideCover(ctx, g);
+  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" alt="" width="480" height="600" loading="lazy">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><h3>${g.title}</h3><p>${g.desc}</p></div></a>`;
+}
+
 function guide(ctx, g) {
   const items = [["/", "خانه"], ["/guide/", "راهنمای خرید"], [`/guide/${g.slug}/`, g.title]];
   const prods = ctx.products.filter((p) => g.cats.includes(p.cat) && p.inStock && (g.slug !== "big-size-men" || isBig(p))).slice(0, 4);
@@ -688,8 +709,9 @@ function guide(ctx, g) {
     desc: g.desc,
     ogType: "article",
     schema: [crumbSchema(ctx, items), { "@context": "https://schema.org", "@type": "Article", headline: g.title, description: g.desc, inLanguage: "fa-IR", author: { "@type": "Organization", name: STORE.name }, publisher: { "@id": `${ctx.SITE_URL}/#store` }, mainEntityOfPage: `${ctx.SITE_URL}/guide/${g.slug}/`, datePublished: g.date || "2026-10-12" }],
-    body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1>${g.html(ctx)}</div></article>
-<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>`,
+    body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1><p class="gmeta">${fa(readMin(ctx, g))} دقیقه مطالعه · ${new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(g.date || "2026-10-12"))}</p>${g.html(ctx)}</div></article>
+<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>راهنماهای دیگر</h2></div><div class="gcards">${guides.filter((x) => x !== g).sort((a, b) => (b.cats.some((c) => g.cats.includes(c)) - a.cats.some((c) => g.cats.includes(c)))).slice(0, 3).map((x) => gcard(ctx, x)).join("")}</div></div></section>`,
   });
 }
 
@@ -701,7 +723,7 @@ function guideIndex(ctx) {
     desc: "مقاله‌های راهنمای خرید المارت: شلوار اسلش، لباس سایز بزرگ مردانه، هودی و دورس، قواره تیشرت، پولوشرت و جدول سایز.",
     schema: [crumbSchema(ctx, items)],
     body: `${crumbs(ctx, items)}<header class="wrap phead"><h1>راهنمای خرید</h1><p>تجربه چند دهه فروش در بازار تبریز، خلاصه در چند مقاله کوتاه.</p></header>
-<section class="sec-sm"><div class="wrap faq">${guides.map((g) => `<p><a class="link" style="font-size:19px" href="${ctx.BASE}/guide/${g.slug}/">${g.title}</a><br><span style="color:var(--muted)">${g.desc}</span></p>`).join("")}<p><a class="link" style="font-size:19px" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a></p></div></section>`,
+<section class="sec-sm"><div class="wrap"><div class="gcards">${guides.map((g) => gcard(ctx, g)).join("")}</div><p class="gmore">سایزتان را نمی‌دانید؟ <a class="link" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a> را ببینید.</p></div></section>`,
   });
 }
 
