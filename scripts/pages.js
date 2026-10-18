@@ -217,7 +217,7 @@ const crumbSchema = (ctx, items) => ({
 const orgSchema = (ctx) => ({
   "@context": "https://schema.org", "@type": "ClothingStore", "@id": `${ctx.SITE_URL}/#store`,
   name: `${STORE.name} (${STORE.latin})`, alternateName: [STORE.latin, STORE.full, "پیرایش"],
-  url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: `${ctx.SITE_URL}/assets/og/site.jpg`,
+  url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: [`${ctx.SITE_URL}/assets/og/site.jpg`, `${ctx.SITE_URL}/assets/og/hojreh.jpg`],
   description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا 6XL.`,
   address: { "@type": "PostalAddress", streetAddress: STORE.address, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
   areaServed: { "@type": "Country", name: "Iran" }, currenciesAccepted: "IRR", priceRange: "$$",
@@ -292,7 +292,7 @@ function home(ctx) {
 </div></section>
 
 <section class="sec"><div class="wrap story">
-  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/p/45326170-960.webp" alt="مدل المارت با بلوز نخی نارنجی" width="960" height="1200" loading="lazy"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
+  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
   <div class="rv">
     <span class="kicker">داستان المارت</span>
     <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : "یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد."}</h2>
