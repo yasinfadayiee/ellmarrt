@@ -59,6 +59,19 @@ function colorsOf(d) {
 
 const clean = (s) => String(s || "").replace(/^#+\s*/gm, "").replace(/\*\*/g, "").replace(/\r/g, "").replace(/[ \t]+\n/g, "\n").trim();
 
+// Basalam's «جنس» field is free text, sometimes a chatty sentence ("جنس کار نخ پنبه نخ 30 هست؛ یعنی نرم…").
+// Hand-written replacements for those, plus a generic tidy-up for new products.
+const MATERIAL = {
+  53718702: "نخ پنبه (نخ ۳۰)",
+  53765502: "پارچه خارجی درجه یک",
+  55720135: "رویه مصنوعی (غیرچرمی)، زیره PU",
+  43999644: "رویه خارجی، زیره PU",
+  62560754: "دورس لاکرادار حوله‌ای (توکرک)",
+  36616362: "کتان (بنگال)",
+  45025631: "مراکشی (بیسکویتی)",
+};
+const cleanMaterial = (id, v) => MATERIAL[id] || v.replace(/\s+/g, " ").replace(/^جنس( کار)?\s+/, "").split(/[؛.]/)[0].replace(/\s+(هست|است)$/, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
+
 // products added on Basalam after the curated list was written
 const CAT_BY_TITLE = [[/کفش/, "shoes"], [/پسرانه|دخترانه|بچگانه/, "kids"], [/شلوارک/, "shorts"], [/شلوار/, "pants"], [/سویشرت|هودی|ژاکت|دورس|بلوز/, "sweat"], [/پیراهن/, "shirt"], [/پولو|یقه/, "polo"], [/تیشرت|تی شرت/, "tshirt"]];
 function autoCurate(d, s) {
@@ -91,7 +104,9 @@ function load() {
       const k = (a.title || a.key || "").trim(), val = clean(a.value);
       if (k && val && k !== "سایر توضیحات" && val.length < 140) attrs.push([k, val]);
     }
-    const material = (attrs.find(([k]) => k === "جنس") || [])[1] || null;
+    const mi = attrs.findIndex(([k]) => k === "جنس");
+    if (mi >= 0) attrs[mi] = ["جنس", cleanMaterial(s.id, attrs[mi][1])];
+    const material = mi >= 0 ? attrs[mi][1] : null;
     const stockTotal = variants.length ? variants.reduce((a, v) => a + (v.stock || 0), 0) : d.inventory || s.stock || 0;
     const price = Math.round(d.price / 10);
     const primary = Math.round((d.primary_price || d.price) / 10);
