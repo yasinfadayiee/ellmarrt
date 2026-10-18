@@ -37,6 +37,8 @@ const hero = (k, d) => (SITE.hero && SITE.hero[k]) || d;
 const promoOn = () => SITE.promo && SITE.promo.active && SITE.promo.code;
 
 const fa0 = (s) => String(s).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+// which categories complete an outfit with each category ("با این ست کنید" on product pages)
+const PAIRS = { tshirt: ["pants", "shorts"], polo: ["pants", "shorts"], shirt: ["pants", "shorts"], sweat: ["pants"], pants: ["tshirt", "polo", "sweat"], shorts: ["tshirt", "polo", "shirt"], shoes: ["pants", "shorts"], kids: [] };
 const I = {
   phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
   bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
@@ -421,8 +423,13 @@ function product(ctx, p) {
   const colors = p.colors;
   const sizes = p.sizes;
   const low = p.inStock && p.stock <= 3;
-  const related = P.filter((x) => x.id !== p.id && x.cat === p.cat && x.inStock).slice(0, 4);
-  const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x)).slice(0, 4 - related.length) : [];
+  // "complete the look": tops pair with bottoms and the other way round; items sharing a size with this one come first
+  const fit = (x) => x.sizes.filter((z) => sizes.includes(z)).length;
+  const rank = (a, b) => (fit(b) > 0) - (fit(a) > 0) || (b.sales || 0) - (a.sales || 0);
+  const pairCats = PAIRS[p.cat] || [];
+  const pair = P.filter((x) => x.inStock && pairCats.includes(x.cat)).sort(rank).slice(0, 4);
+  const related = P.filter((x) => x.id !== p.id && x.cat === p.cat && x.inStock).sort(rank).slice(0, 4);
+  const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x) && !pair.includes(x)).slice(0, 4 - related.length) : [];
   const facts = [["دسته‌بندی", c.name], ...(sizes.length ? [["سایزها", sizes.join(" ، ")]] : []), ...(colors.length ? [["رنگ‌ها", colors.join("، ")]] : []), ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند"].includes(k))];
   const desc = `${p.title} از ${STORE.name}، بازار تبریز${p.material ? `؛ جنس ${p.material}` : ""}${sizes.length ? `، سایز ${sizes[0]} تا ${sizes[sizes.length - 1]}` : ""}. قیمت ${fa(p.price)} تومان، خرید امن و ارسال به سراسر ایران.`;
   const offerAvail = p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
@@ -476,7 +483,8 @@ ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="300" height="300"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
-<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>ست کنید یا مشابه ببینید</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div></div></section>
+${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
+<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>مدل‌های مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div></div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
 <script type="application/json" id="pdp-data">${json(data)}</script>`;
   return layout(ctx, {
