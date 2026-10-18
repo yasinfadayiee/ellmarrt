@@ -711,7 +711,7 @@ body{background-color:var(--paper)}
 .gcard:hover{border-color:var(--gold);transform:translateY(-2px)}
 .gcard img{width:110px;aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:calc(var(--r) - 4px);background:var(--sand)}
 .gcard .kicker{font-size:12px;margin-bottom:4px}
-.gcard h3{font-size:17px;line-height:1.6;margin:0 0 6px}
+.gcard h2,.gcard h3{font-size:17px;line-height:1.6;margin:0 0 6px}
 .gcard p{font-size:14px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .gmeta{color:var(--muted);font-size:14px;margin-top:-8px}
 .gmore{text-align:center;margin-top:28px;color:var(--muted)}

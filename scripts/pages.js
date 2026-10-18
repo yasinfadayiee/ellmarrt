@@ -336,6 +336,8 @@ return `<section class="sec reviews"><div class="wrap">
 <section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv" style="justify-content:center;text-align:center"><div><span class="kicker">سوالات پرتکرار</span><h2>قبل از خرید بدانید</h2></div></div>
   <div class="faq rv">${HOME_FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
+  <div class="gcards rv" style="margin-top:40px">${guides.slice(0, 3).map((g) => gcard(ctx, g)).join("")}</div>
+  <p style="text-align:center;margin-top:16px"><a class="link" href="${BASE}/guide/">همه راهنماهای خرید</a></p>
   <p style="text-align:center;margin-top:28px"><a class="btn btn-ghost" href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال دیگری دارید؟ در اینستاگرام بپرسید</a></p>
 </div></section>`;
   return layout(ctx, {
@@ -695,9 +697,9 @@ function guideCover(ctx, g) {
   }
   return guideCovers.get(ctx)[g.slug];
 }
-function gcard(ctx, g) {
+function gcard(ctx, g, h = "h3") {
   const p = guideCover(ctx, g);
-  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" alt="" width="480" height="600" loading="lazy">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><h3>${g.title}</h3><p>${g.desc}</p></div></a>`;
+  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" alt="" width="480" height="600" loading="lazy">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><${h}>${g.title}</${h}><p>${g.desc}</p></div></a>`;
 }
 
 function guide(ctx, g) {
@@ -723,7 +725,7 @@ function guideIndex(ctx) {
     desc: "مقاله‌های راهنمای خرید المارت: شلوار اسلش، لباس سایز بزرگ مردانه، هودی و دورس، قواره تیشرت، پولوشرت و جدول سایز.",
     schema: [crumbSchema(ctx, items)],
     body: `${crumbs(ctx, items)}<header class="wrap phead"><h1>راهنمای خرید</h1><p>تجربه چند دهه فروش در بازار تبریز، خلاصه در چند مقاله کوتاه.</p></header>
-<section class="sec-sm"><div class="wrap"><div class="gcards">${guides.map((g) => gcard(ctx, g)).join("")}</div><p class="gmore">سایزتان را نمی‌دانید؟ <a class="link" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a> را ببینید.</p></div></section>`,
+<section class="sec-sm"><div class="wrap"><div class="gcards">${guides.map((g) => gcard(ctx, g, "h2")).join("")}</div><p class="gmore">سایزتان را نمی‌دانید؟ <a class="link" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a> را ببینید.</p></div></section>`,
   });
 }
 
