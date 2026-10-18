@@ -80,10 +80,12 @@
       $$("[data-size-f]").forEach((b) => b.setAttribute("aria-pressed", state.sizes.has(b.dataset.sizeF)));
       $("#stock-f")?.setAttribute("aria-pressed", state.stock);
     };
-    const norm = (s) => s.replace(/[‌\s]+/g, " ").replace(/ي/g, "ی").replace(/ك/g, "ک").toLowerCase();
+    // Arabic ye/kaf, Persian/Arabic digits and ZWNJ are normalised; every word of the query must match (so «تی شرت» finds «تیشرت» and «۴XL» finds 4XL sizes)
+    const norm = (s) => s.replace(/[‌\s]+/g, " ").replace(/ي/g, "ی").replace(/ك/g, "ک").replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).toLowerCase();
+    const matches = (p, q) => { const hay = norm(p.t + " " + p.cn + " " + (p.k || "") + " " + (p.s || []).join(" ")); return norm(q).split(" ").filter(Boolean).every((w) => hay.includes(w)); };
     const run = async (push = true) => {
       await catReady();
-      let list = CAT.filter((p) => (state.cat === "all" || p.c === state.cat) && (!state.stock || p.st) && (!state.sizes.size || (p.s || []).some((s) => state.sizes.has(s))) && (!state.q || norm(p.t + " " + p.cn + " " + (p.k || "")).includes(norm(state.q))));
+      let list = CAT.filter((p) => (state.cat === "all" || p.c === state.cat) && (!state.stock || p.st) && (!state.sizes.size || (p.s || []).some((s) => state.sizes.has(s))) && (!state.q || matches(p, state.q)));
       if (state.sort === "low") list.sort((a, b) => a.p - b.p);
       else if (state.sort === "high") list.sort((a, b) => b.p - a.p);
       else if (state.sort === "new") list.sort((a, b) => (b.d || "").localeCompare(a.d || ""));
