@@ -359,7 +359,7 @@ p{margin:0 0 1em}
 .prose table{width:100%;border-collapse:collapse;margin:1em 0 1.6em;font-size:15px}
 .prose th,.prose td{border:1px solid var(--line);padding:10px;text-align:center}
 .prose th{background:var(--cream)}
-.prose a{color:var(--brick);font-weight:700}
+.prose a:not(.btn){color:var(--brick);font-weight:700}
 .note{background:var(--cream);border-inline-start:4px solid var(--gold);padding:16px 20px;border-radius:12px;margin:1.4em 0}
 
 /* footer */
