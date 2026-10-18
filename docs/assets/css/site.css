@@ -660,28 +660,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .hdr{background:color-mix(in srgb,var(--paper) 88%,transparent)}
 body{background-color:var(--paper)}
 
-/* ===== theme picker ===== */
-.theme-btn{position:relative}
-.theme-btn .sw3{display:flex;width:22px;height:22px;border-radius:50%;overflow:hidden;transform:rotate(-45deg);box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--line)}
-.theme-btn .sw3 i{flex:1}
-.theme-pop{position:absolute;top:calc(100% + 10px);inset-inline-end:0;width:280px;background:var(--surface);border-radius:20px;box-shadow:var(--shadow-lg);padding:14px;z-index:80;display:none;border:1px solid var(--line-2)}
-.theme-pop.on{display:block;animation:pop .25s var(--ease)}
-@keyframes pop{from{opacity:0;transform:translateY(-6px)}}
-.theme-pop b{display:block;font-size:14px;margin:2px 4px 10px;color:var(--ink)}
-.theme-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.theme-list button{display:flex;align-items:center;gap:8px;padding:8px;border-radius:12px;border:1.5px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);background:transparent;text-align:start}
-.theme-list button[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-.theme-list .sw3{width:26px;height:26px;flex-shrink:0}
-
-/* ===== themes ===== */
-/* فیروزه — Tabriz tile turquoise & gold */
-[data-theme=firouzeh]{--dk1:#08262b;--dk2:#0d3a40;--dk3:#13545a;--dk-glow:rgba(233,196,106,.22);--dk-glow2:rgba(31,140,150,.45);--brick:#127a83;--brick-2:#0b5a61;--teal:#b5652a;--teal-soft:rgba(181,101,42,.12);--plum:#0d3a40;--paper:#f6f8f6;--cream:#e9f1ef;--sand:#dde8e5;--ink:#0f2326;--ink-2:#22393c;--ink-3:#4d6466}
-/* زمرد — emerald & brass */
-[data-theme=zomorrod]{--dk1:#08201a;--dk2:#0f3a2c;--dk3:#165140;--dk-glow:rgba(230,190,110,.22);--dk-glow2:rgba(32,120,90,.45);--brick:#1d6b51;--brick-2:#134a38;--teal:#9a5b2c;--teal-soft:rgba(154,91,44,.12);--plum:#0f3a2c;--paper:#f7f6f0;--cream:#eef0e6;--sand:#e2e6d6;--ink:#13221b;--ink-2:#26372f;--ink-3:#526158}
-/* لاجورد — lapis lazuli & gold */
-[data-theme=lajevard]{--dk1:#0b1230;--dk2:#16224f;--dk3:#20307a;--dk-glow:rgba(232,192,98,.24);--dk-glow2:rgba(58,88,190,.45);--brick:#2a44a8;--brick-2:#1c3080;--teal:#b7792a;--teal-soft:rgba(183,121,42,.12);--plum:#16224f;--paper:#f7f7fb;--cream:#ecedf6;--sand:#e0e2ef;--ink:#121733;--ink-2:#262c4d;--ink-3:#545a78}
-/* انار — pomegranate & rose gold */
-[data-theme=anar]{--dk1:#2a0710;--dk2:#4a0d1c;--dk3:#6b1428;--dk-glow:rgba(240,190,150,.25);--dk-glow2:rgba(200,50,80,.45);--brick:#b0203f;--brick-2:#7d1530;--teal:#2c6f6a;--teal-soft:rgba(44,111,106,.12);--plum:#4a0d1c;--g1:#f6d2b4;--g2:#d99a76;--g3:#b9755a;--gold:#c47f5e;--gold-2:#e2a785;--paper:#fcf7f5;--cream:#f7ebe7;--sand:#efdcd6;--ink:#2a1015;--ink-2:#3f2026;--ink-3:#6a4a50}
+/* ===== night theme ===== */
+.theme-tg svg:last-child{display:none}
+[data-theme=shab] .theme-tg svg:first-child{display:none}
+[data-theme=shab] .theme-tg svg:last-child{display:block;color:var(--gold-2)}
 /* شب — night mode */
 [data-theme=shab]{--dk1:#050506;--dk2:#0e0d10;--dk3:#1a171c;--dk-glow:rgba(226,180,90,.18);--dk-glow2:rgba(138,36,51,.35);--paper:#121014;--cream:#19161b;--sand:#2a262d;--surface:#1c191f;--ink:#f3ece2;--ink-2:#e0d7cc;--ink-3:#b9ada2;--muted:#9a8f86;--line:rgba(243,236,226,.12);--line-2:rgba(243,236,226,.07);--plum:#e2b45a;--brick:#d0546a;--brick-2:#a63a4f;--teal:#5fb3b9;--teal-soft:rgba(95,179,185,.14);color-scheme:dark}
 [data-theme=shab] .price b,[data-theme=shab] .pprice b,[data-theme=shab] .rv-score>b{color:var(--gold-2)}
@@ -699,12 +681,6 @@ body{background-color:var(--paper)}
 [data-theme=shab] .hdr{border-bottom-color:var(--line)}
 
 /* ===== mobile fixes ===== */
-@media (max-width:980px){
-  .theme-btn{position:static}
-  .theme-pop{position:absolute;top:100%;inset-inline:12px;width:auto;margin-top:6px;max-height:calc(100vh - 140px);overflow:auto}
-  .theme-list{grid-template-columns:1fr 1fr}
-  .theme-list button{min-height:48px}
-}
 .ibtn,.menu-btn{flex-shrink:0;min-width:44px}
 .hdr-in{gap:8px}
 @media (max-width:980px){
@@ -724,3 +700,8 @@ body{background-color:var(--paper)}
 .promo b{font-size:15px;color:var(--ink)}
 .promo span{flex:1;min-width:120px;font-size:13px;color:var(--ink-3)}
 .promo button{height:34px;padding:0 14px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:700;font-size:13px}
+/* night mode: light pills and chips that kept a light background */
+[data-theme=shab] .fav,[data-theme=shab] .gal-hint{background:rgba(28,25,31,.9)}
+[data-theme=shab] .toast{background:#2a262d;color:var(--on-dk)}
+[data-theme=shab] .btn-ink{box-shadow:inset 0 0 0 1px rgba(243,236,226,.16)}
+[data-theme=shab] .bnav,[data-theme=shab] .mbar{background:rgba(18,16,20,.96);border-top-color:var(--line)}

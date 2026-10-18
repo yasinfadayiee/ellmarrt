@@ -242,19 +242,18 @@
       navigator.clipboard?.writeText(body).catch(() => {});
     });
   }
-  /* theme picker — choice is remembered on this device */
-  const tOpen = $("#theme-open"), tPop = $("#theme-pop");
-  const curTheme = () => document.documentElement.getAttribute("data-theme") || "";
-  const markTheme = () => $$("[data-theme-set]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.themeSet === curTheme()));
-  if (tOpen && tPop) {
-    tOpen.addEventListener("click", (e) => { e.stopPropagation(); const on = !tPop.classList.contains("on"); tPop.classList.toggle("on", on); tOpen.setAttribute("aria-expanded", on); markTheme(); });
-    document.addEventListener("click", (e) => { if (!e.target.closest(".theme-btn")) tPop.classList.remove("on"); });
-    $$("[data-theme-set]").forEach((b) => b.addEventListener("click", () => {
-      const t = b.dataset.themeSet;
-      t ? document.documentElement.setAttribute("data-theme", t) : document.documentElement.removeAttribute("data-theme");
-      try { t ? localStorage.setItem("elm-theme", t) : localStorage.removeItem("elm-theme"); } catch {}
-      markTheme(); toast("رنگ‌بندی «" + b.textContent.trim() + "» فعال شد");
-    }));
+  /* night mode toggle — choice is remembered on this device */
+  const tBtn = $("#theme-toggle");
+  if (tBtn) {
+    const isNight = () => document.documentElement.getAttribute("data-theme") === "shab";
+    const mark = () => { tBtn.setAttribute("aria-pressed", isNight()); tBtn.setAttribute("aria-label", isNight() ? "حالت روز" : "حالت شب"); };
+    mark();
+    tBtn.addEventListener("click", () => {
+      const night = !isNight();
+      night ? document.documentElement.setAttribute("data-theme", "shab") : document.documentElement.removeAttribute("data-theme");
+      try { night ? localStorage.setItem("elm-theme", "shab") : localStorage.removeItem("elm-theme"); } catch {}
+      mark(); toast(night ? "حالت شب فعال شد" : "حالت روز فعال شد");
+    });
   }
   /* copy promo code */
   document.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (!b) return; navigator.clipboard?.writeText(b.dataset.copy).then(() => toast("کد تخفیف کپی شد")).catch(() => toast(b.dataset.copy)); });
