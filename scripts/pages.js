@@ -54,10 +54,11 @@ const I = {
   store: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 5.5 4h13L20 9M4 9h16v11H4zM4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/></svg>',
   share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg>',
   star: '<svg viewBox="0 0 24 24"><path d="m12 2.8 2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
   box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>',
 };
 
-const THEMES = [["", "ابریشم تبریز", ["#2a1424", "#e2b45a", "#8a2433"]], ["firouzeh", "فیروزه", ["#0d3a40", "#e9c46a", "#127a83"]], ["zomorrod", "زمرد", ["#0f3a2c", "#e6be6e", "#1d6b51"]], ["lajevard", "لاجورد", ["#16224f", "#e8c062", "#2a44a8"]], ["anar", "انار", ["#4a0d1c", "#f6d2b4", "#b0203f"]], ["shab", "شب", ["#0e0d10", "#e2b45a", "#1c191f"]]];
 
 /* ---------------- layout ---------------- */
 function layout(ctx, o) {
@@ -102,7 +103,7 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" co
 ${SITE.analytics && SITE.analytics.goatcounter ? `<script data-goatcounter="https://${esc(SITE.analytics.goatcounter)}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>` : ""}
 <link rel="preload" href="${BASE}/assets/fonts/Vazirmatn-wght.woff2" as="font" type="font/woff2" crossorigin>
 ${o.preload ? `<link rel="preload" as="image" href="${o.preload}"${o.preloadSet?` imagesrcset="${o.preloadSet}" imagesizes="${o.preloadSizes}"`:""} fetchpriority="high">` : ""}
-<script>try{var t=localStorage.getItem("elm-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>try{if(localStorage.getItem("elm-theme")==="shab")document.documentElement.setAttribute("data-theme","shab")}catch(e){}</script>
 <link rel="stylesheet" href="${BASE}/assets/css/site.css?v=${VERSION}">
 ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</script>`).join("\n")}
 </head>
@@ -115,8 +116,7 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
     <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42"><span><b>${STORE.name}</b><small>ELLMARRT</small></span></a>
     <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76"><button class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <div class="hdr-act">
-      <div class="theme-btn"><button class="ibtn" id="theme-open" aria-label="تغییر رنگ‌بندی سایت" aria-expanded="false"><span class="sw3"><i style="background:var(--dk2)"></i><i style="background:var(--gold-2)"></i><i style="background:var(--brick)"></i></span></button>
-      <div class="theme-pop" id="theme-pop" role="dialog" aria-label="رنگ‌بندی سایت"><b>رنگ‌بندی سایت را انتخاب کنید</b><div class="theme-list">${THEMES.map(([k, n, c]) => `<button data-theme-set="${k}" aria-pressed="false"><span class="sw3">${c.map((x) => `<i style="background:${x}"></i>`).join("")}</span>${n}</button>`).join("")}</div></div></div>
+      <button class="ibtn theme-tg" id="theme-toggle" aria-label="حالت شب" aria-pressed="false">${I.moon}${I.sun}</button>
       <a class="ibtn" href="${BASE}/shop/#q" aria-label="جستجو">${I.search}</a>
       <button class="ibtn open-favs" aria-label="علاقه‌مندی‌ها">${I.heart}<span class="badge fav-count"></span></button>
       <a class="ibtn" href="${STORE.basalam}" rel="noopener" target="_blank" aria-label="غرفه المارت در باسلام">${I.bag}</a>
