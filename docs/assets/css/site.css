@@ -504,6 +504,8 @@ body{background:
   .phead p{font-size:15px}
 }
 @media (max-width:900px){.mbar{visibility:hidden}.mbar.on{visibility:visible}}
+/* product page: when the sticky buy bar shows, it replaces the bottom nav instead of stacking on it */
+@media (max-width:900px){body:has(.mbar.on) .bnav{visibility:hidden}.mbar.on{bottom:0}}
 /* fix: mobile menu — backdrop-filter on the header traps the fixed nav; keep scrim under the header */
 @media (max-width:980px){.hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(251,248,242,.98)}}
 .scrim{z-index:48}
@@ -551,6 +553,10 @@ body{background:
 .card-cat{color:var(--teal);font-weight:700}
 .price b{color:var(--plum)}
 .card-sizes span{background:var(--paper);border-color:var(--sand)}
+/* price sits right under the title; sizes line up at the bottom of each row */
+.card-body{flex:1;display:flex;flex-direction:column}
+.card-title{min-height:0}
+.card-sizes{margin-top:auto;padding-top:8px}
 .sec-head h2::after{content:"";display:block;width:56px;height:3px;border-radius:3px;margin-top:12px;background:linear-gradient(90deg,var(--gold),var(--brick))}
 .sec-head[style*="center"] h2::after{margin-inline:auto}
 .kicker{color:var(--brick)}
