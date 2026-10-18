@@ -563,6 +563,7 @@ function about(ctx) {
     path: "/about/",
     title: "داستان المارت؛ ۶۰ سال در بازار سرپوشیده تبریز",
     desc: `المارت (ELLMARRT) تولیدی و پخش پوشاک مردانه در بازار بزرگ تبریز است؛ کاری خانوادگی که ${fa(STORE.years)} سال پیش آغاز شد و حالا آنلاین به سراسر ایران می‌فروشد.`,
+    image: `${ctx.SITE_URL}/assets/og/hojreh.jpg`,
     schema: [crumbSchema(ctx, items), orgSchema(ctx)],
     body: `${crumbs(ctx, items)}
 <section class="sec-sm"><div class="wrap story">
@@ -575,7 +576,8 @@ function about(ctx) {
 <h2>چیزهایی که برایمان مهم است</h2>
 <ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه چند نسل انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
 <p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} @${STORE.igHandle}</a></p>
-</div></div></section>`,
+</div></div></section>
+<section class="sec-sm"><div class="wrap"><figure class="hojreh"><img src="${ctx.BASE}/assets/img/hojreh-1280.webp" srcset="${ctx.BASE}/assets/img/hojreh-640.webp 640w, ${ctx.BASE}/assets/img/hojreh-1280.webp 1280w" sizes="(max-width:1240px) 94vw, 1200px" alt="غرفه المارت در بازار سرپوشیده تبریز؛ هودی، سویشرت، شلوار و کفش مردانه" width="1280" height="960" loading="lazy"><figcaption>غرفه المارت در بازار سرپوشیده تبریز. همین‌جا هر کالا را قبل از ارسال با دست بررسی می‌کنیم.</figcaption></figure></div></section>`,
   });
 }
 

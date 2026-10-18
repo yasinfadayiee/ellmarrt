@@ -715,3 +715,8 @@ body{background-color:var(--paper)}
 .gcard p{font-size:14px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .gmeta{color:var(--muted);font-size:14px;margin-top:-8px}
 .gmore{text-align:center;margin-top:28px;color:var(--muted)}
+
+.hojreh{margin:0}
+.hojreh img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:var(--sand);box-shadow:var(--shadow-lg)}
+.hojreh figcaption{text-align:center;color:var(--muted);font-size:15px;margin-top:14px}
+@media (min-width:900px){.hojreh img{aspect-ratio:16/10}}
