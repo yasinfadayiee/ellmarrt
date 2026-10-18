@@ -659,7 +659,7 @@ function notFound(ctx) {
     path: "/404.html", noindex: true,
     title: "صفحه پیدا نشد",
     desc: "صفحه مورد نظر پیدا نشد.",
-    body: `<section class="sec"><div class="wrap" style="text-align:center"><h1 style="font-size:64px">۴۰۴</h1><p>این صفحه پیدا نشد؛ شاید محصول جابه‌جا شده باشد.</p><p><a class="btn btn-ink" href="${ctx.BASE}/shop/">رفتن به فروشگاه</a></p></div></section>`,
+    body: `<section class="sec"><div class="wrap" style="text-align:center"><h1 style="font-size:64px">۴۰۴</h1><p>این صفحه پیدا نشد؛ شاید این مدل دیگر موجود نیست یا جابه‌جا شده است. مدل مشابهش را از اینجا پیدا کنید:</p><form class="search" action="${ctx.BASE}/shop/" style="max-width:420px;margin:24px auto 18px" role="search">${I.search}<input name="q" type="search" placeholder="جستجو: شلوار اسلش، تیشرت 4XL، هودی…" aria-label="جستجو در محصولات"></form><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px">${Object.values(ctx.CATEGORIES).filter((c) => ctx.products.some((p) => ctx.CATEGORIES[p.cat] === c)).map((c) => `<a class="chip" href="${ctx.BASE}/c/${c.slug}/">${c.name}</a>`).join("")}</div><p><a class="btn btn-ink" href="${ctx.BASE}/shop/">رفتن به فروشگاه</a></p></div></section>`,
   });
 }
 
