@@ -551,9 +551,9 @@
   "id": 60467399,
   "name": "پولوشرت کبریتی یقه سفید ترند ",
   "price": 15000000,
-  "stock": 18,
-  "sales_count": 0,
-  "sales_count_week": 0,
+  "stock": 17,
+  "sales_count": 1,
+  "sales_count_week": 1,
   "rating": {
    "average": 0,
    "count": 0,
@@ -724,7 +724,7 @@
   "id": 54126455,
   "name": "شلوار اسلش شش جیب دمپا کش مردانه اسپرت، خوشاستایل و کاربردی",
   "price": 9800000,
-  "stock": 11,
+  "stock": 10,
   "sales_count": 3,
   "sales_count_week": 0,
   "rating": {

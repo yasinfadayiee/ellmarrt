@@ -192,25 +192,7 @@
    "productId": 42377785,
    "product": "شلوارک سایز بزرگ کارگو (شش جیب) ",
    "name": "پرویز خسروی",
-   "variant": [
-    {
-     "id": 547351798,
-     "properties": [
-      {
-       "property": {
-        "id": 59,
-        "title": "رنگ و سایز",
-        "type": ""
-       },
-       "value": {
-        "id": 1415600,
-        "title": "سبز ساقه ای 6xl",
-        "value": ""
-       }
-      }
-     ]
-    }
-   ],
+   "variant": [],
    "photos": []
   },
   {
