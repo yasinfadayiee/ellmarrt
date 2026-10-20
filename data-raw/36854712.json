@@ -1,7 +1,7 @@
 {
  "id": 36854712,
  "title": "شلوار اسپان مردانه دمپا ساده",
- "price": 8900000,
+ "price": 11500000,
  "photo": {
   "id": 302851322,
   "original": "https://statics.basalam.com/public-164/users/X6zxOW/01-31/sFiTXxB5eRsx63GWaM15XQ9GEsCYuZyCfwYWp49qn5IHc8NXJz.jpg",
@@ -163,12 +163,12 @@
  "net_weight": 300,
  "net_weight_decimal": 300,
  "created_at": "2026-01-31T00:16:54+03:30",
- "updated_at": "2026-08-20T00:55:14+03:30",
+ "updated_at": "2026-10-20T23:41:20+03:30",
  "description": "شلوار اسپان مردانه\nسایزبندی: L | XL | XXL\nدارای جیب با زیپ مخفی\nدمپا ساده و خوش‌فرم\n✔️ راحت و انعطاف‌پذیر\n✔️ دوخت تمیز\n✔️ مناسب استفاده روزانه\nمناسب برای:\n• محل کار\n• استفاده روزمره\n• پیاده‌روی و فعالیت سبک\n• استایل اسپرت و نیمه‌رسمی\n🚚 ارسال به سراسر کشور\n📩 برای راهنمایی سایز و خرید پیام بدهید",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 8900000,
+ "primary_price": 11500000,
  "shipping_area": null,
  "packaged_weight": 350,
  "preparation_day": 1,
@@ -232,8 +232,8 @@
  "variants": [
   {
    "id": 32295532,
-   "price": 8900000,
-   "primary_price": 8900000,
+   "price": 11500000,
+   "primary_price": 11500000,
    "stock": 5,
    "order": null,
    "properties": [
@@ -256,8 +256,8 @@
   },
   {
    "id": 32295534,
-   "price": 8900000,
-   "primary_price": 8900000,
+   "price": 11500000,
+   "primary_price": 11500000,
    "stock": 4,
    "order": null,
    "properties": [
@@ -280,8 +280,8 @@
   },
   {
    "id": 32295535,
-   "price": 8900000,
-   "primary_price": 8900000,
+   "price": 11500000,
+   "primary_price": 11500000,
    "stock": 6,
    "order": null,
    "properties": [
@@ -332,7 +332,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 45007232,

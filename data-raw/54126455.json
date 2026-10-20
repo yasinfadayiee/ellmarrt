@@ -1,7 +1,7 @@
 {
  "id": 54126455,
  "title": "شلوار اسلش شش جیب دمپا کش مردانه اسپرت، خوشاستایل و کاربردی",
- "price": 9800000,
+ "price": 12200000,
  "photo": {
   "id": 380560740,
   "original": "https://statics.basalam.com/public-232/users/X6zxOW/08-07/CnPgqAnAIX4F86uijQbcIp57y7ZmrT4dbX3bvr3qCSnNuUnNIg.jpg",
@@ -147,12 +147,12 @@
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-08-07T20:46:13+03:30",
- "updated_at": "2026-10-03T20:16:47+03:30",
+ "updated_at": "2026-10-20T23:37:06+03:30",
  "description": "# شلوار اسلش شش جیب دمپا کش مردانه | اسپرت، خوش‌استایل و کاربردی\n\nاگر دنبال یک شلوار اسلش شیک و متفاوت برای استفاده روزمره، پیاده‌روی یا استایل خیابانی هستی، این مدل شش جیب یکی از بهترین انتخاب‌هاست.\n\nاین شلوار از **پارچه باکیفیت و خوش‌فرم** تولید شده که علاوه بر راحتی، ایست فوق‌العاده‌ای روی تن داره. طراحی **6 جیب کاربردی** فضای کافی برای وسایل ضروری فراهم می‌کنه و **دمپا کش** باعث میشه شلوار روی کفش اسپرت ظاهر جذاب‌تری داشته باشه. کمر کشی و بنددار هم راحتی و تنظیم سایز رو برای شما فراهم می‌کنه.\n\n**مشخصات محصول:**\n\n* جنس: پارچه باکیفیت و خوش‌فرم\n* مدل: اسلش شش جیب دمپا کش\n* دمپا: کش‌دار\n* جیب: 6 جیب کاربردی\n* کمر: کشی و بنددار\n* مناسب برای: استفاده روزمره، پیاده‌روی، سفر، استایل اسپرت و خیابانی\n\n🎨 **رنگ‌بندی:** 5 رنگ جذاب\n\n✅ **سایزبندی:** XL / 2XL / 3XL\n\nمناسب آقایانی که به‌دنبال یک شلوار اسلش راحت، جادار، خوش‌استایل و باکیفیت برای استفاده روزمره هستند.\n\n📍 **آدرس:** راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 9800000,
+ "primary_price": 12200000,
  "shipping_area": null,
  "packaged_weight": 900,
  "preparation_day": 0,
@@ -268,8 +268,8 @@
  "variants": [
   {
    "id": 59290785,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 1,
    "order": null,
    "properties": [
@@ -292,8 +292,8 @@
   },
   {
    "id": 59290786,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 2,
    "order": null,
    "properties": [
@@ -316,8 +316,8 @@
   },
   {
    "id": 59290787,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 1,
    "order": null,
    "properties": [
@@ -340,8 +340,8 @@
   },
   {
    "id": 59290794,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 2,
    "order": null,
    "properties": [
@@ -364,8 +364,8 @@
   },
   {
    "id": 59290795,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 2,
    "order": null,
    "properties": [
@@ -388,8 +388,8 @@
   },
   {
    "id": 59290796,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 12200000,
+   "primary_price": 12200000,
    "stock": 2,
    "order": null,
    "properties": [
@@ -656,7 +656,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 57202856,

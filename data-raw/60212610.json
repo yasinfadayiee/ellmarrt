@@ -10,8 +10,50 @@
   "md": "https://statics.basalam.com/public-255/users/X6zxOW/09-25/n4CGLzBmCOLjjlL6t8ERvkRS12ZjiNrgtq4Xc3wNaNfEb584P5.jpg_512X512X70.jpg",
   "lg": "https://statics.basalam.com/public-255/users/X6zxOW/09-25/n4CGLzBmCOLjjlL6t8ERvkRS12ZjiNrgtq4Xc3wNaNfEb584P5.jpg_800X800X70.jpg"
  },
- "photos": [],
- "video": null,
+ "photos": [
+  {
+   "id": 455562283,
+   "original": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/eTi7jk3RlskCK5FwITuQClvpoK5Oe0tHSQOtsMbE486tDHKhe2.jpeg",
+   "xs": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/eTi7jk3RlskCK5FwITuQClvpoK5Oe0tHSQOtsMbE486tDHKhe2.jpeg_50X50X70.jpeg",
+   "sm": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/eTi7jk3RlskCK5FwITuQClvpoK5Oe0tHSQOtsMbE486tDHKhe2.jpeg_256X256X70.jpeg",
+   "md": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/eTi7jk3RlskCK5FwITuQClvpoK5Oe0tHSQOtsMbE486tDHKhe2.jpeg_512X512X70.jpeg",
+   "lg": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/eTi7jk3RlskCK5FwITuQClvpoK5Oe0tHSQOtsMbE486tDHKhe2.jpeg_800X800X70.jpeg"
+  },
+  {
+   "id": 455562259,
+   "original": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/kWaT6lWz8uDSAlov9XRVzRkZ7VrR8W2eh5pe3TdpIlCazjCcNq.jpeg",
+   "xs": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/kWaT6lWz8uDSAlov9XRVzRkZ7VrR8W2eh5pe3TdpIlCazjCcNq.jpeg_50X50X70.jpeg",
+   "sm": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/kWaT6lWz8uDSAlov9XRVzRkZ7VrR8W2eh5pe3TdpIlCazjCcNq.jpeg_256X256X70.jpeg",
+   "md": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/kWaT6lWz8uDSAlov9XRVzRkZ7VrR8W2eh5pe3TdpIlCazjCcNq.jpeg_512X512X70.jpeg",
+   "lg": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/kWaT6lWz8uDSAlov9XRVzRkZ7VrR8W2eh5pe3TdpIlCazjCcNq.jpeg_800X800X70.jpeg"
+  },
+  {
+   "id": 455562288,
+   "original": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/6MKlq1QkPvDQrnzBkbQgYEo1HVRsThoTziElznlO2PeoqCAvod.jpeg",
+   "xs": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/6MKlq1QkPvDQrnzBkbQgYEo1HVRsThoTziElznlO2PeoqCAvod.jpeg",
+   "sm": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/6MKlq1QkPvDQrnzBkbQgYEo1HVRsThoTziElznlO2PeoqCAvod.jpeg",
+   "md": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/6MKlq1QkPvDQrnzBkbQgYEo1HVRsThoTziElznlO2PeoqCAvod.jpeg",
+   "lg": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/6MKlq1QkPvDQrnzBkbQgYEo1HVRsThoTziElznlO2PeoqCAvod.jpeg"
+  },
+  {
+   "id": 455562297,
+   "original": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/VCPjU5MAMMGec20BzhcY2FlEA8QNS4OPuK96spsK7BD1xOHvuD.jpeg",
+   "xs": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/VCPjU5MAMMGec20BzhcY2FlEA8QNS4OPuK96spsK7BD1xOHvuD.jpeg",
+   "sm": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/VCPjU5MAMMGec20BzhcY2FlEA8QNS4OPuK96spsK7BD1xOHvuD.jpeg",
+   "md": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/VCPjU5MAMMGec20BzhcY2FlEA8QNS4OPuK96spsK7BD1xOHvuD.jpeg",
+   "lg": "https://statics.basalam.com/public-267/users/X6zxOW/10-20/VCPjU5MAMMGec20BzhcY2FlEA8QNS4OPuK96spsK7BD1xOHvuD.jpeg"
+  }
+ ],
+ "video": {
+  "id": 455565784,
+  "url": "https://statics.basalam.com/public-267/video/product/X6zxOW/10-20/o9fzSJGLR9OLyvbnjJR58CFp9kIobvhP2Rt9hsfk8S2BoF46qX.mov_480X640_1500K.mov",
+  "original": "https://statics.basalam.com/public-267/video/product/X6zxOW/10-20/o9fzSJGLR9OLyvbnjJR58CFp9kIobvhP2Rt9hsfk8S2BoF46qX.mov",
+  "thumbnail": "https://statics.basalam.com/public-267/video/product/X6zxOW/10-20/o9fzSJGLR9OLyvbnjJR58CFp9kIobvhP2Rt9hsfk8S2BoF46qX.mov_thumbnail.jpg",
+  "hls": null,
+  "width": 3840,
+  "height": 2160,
+  "duration": 12
+ },
  "status": {
   "name": "در دسترس",
   "value": 2976,
@@ -98,8 +140,8 @@
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-09-25T19:00:48+03:30",
- "updated_at": "2026-09-25T19:33:19+03:30",
- "description": "🔥 بلوز پنبه نمره 28 | طرح پلو نواری 🔥\n\n✨ یه مدل سبک و کاربردی برای استایل روزمره؛ با طراحی شیک و متفاوت که به‌راحتی با آیتم‌های مختلف ست میشه.\n\nاین بلوز از **پنبه نمره 28** تولید شده و کشسانی عالی‌ای داره که راحتی خوبی هنگام پوشیدن ایجاد می‌کنه. طرح **پلو نواری** ظاهر متفاوت و جذابی به کار داده و ضخامت متعادلش باعث شده برای استفاده روزمره و لایه‌پوشی انتخاب مناسبی باشه.\n\n**مشخصات محصول:**\n✔️ جنس: پنبه نمره 28\n✔️ طرح: پلو نواری\n✔️ کشسانی: عالی و راحت\n✔️ دوخت: دقیق و تمیز\n✔️ ضخامت: متعادل، نه خیلی ضخیم\n✔️ مناسب برای: استفاده روزمره و لایه‌پوشی\n🎨 موجود در 4 رنگ جذاب\n\n📏 **سایزبندی:** XL | 2XL | 3XL\n\n💰 **قیمت: 1,390**\n📩 **برای قیمت عمده پیام دهید**\n\n🏪 **فروشگاه المارت**\n📍 راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
+ "updated_at": "2026-10-20T23:30:45+03:30",
+ "description": "🔥 بلوز پنبه نمره 28 | طرح پلو نواری 🔥\n\n✨ یه مدل سبک و کاربردی برای استایل روزمره؛ با طراحی شیک و متفاوت که به‌راحتی با آیتم‌های مختلف ست میشه.\n\nاین بلوز از **پنبه نمره 28** تولید شده و کشسانی عالی‌ای داره که راحتی خوبی هنگام پوشیدن ایجاد می‌کنه. طرح **پلو نواری** ظاهر متفاوت و جذابی به کار داده و ضخامت متعادلش باعث شده برای استفاده روزمره و لایه‌پوشی انتخاب مناسبی باشه.\n\n**مشخصات محصول:**\n✔️ جنس: پنبه نمره 28\n✔️ طرح: پلو نواری\n✔️ کشسانی: عالی و راحت\n✔️ دوخت: دقیق و تمیز\n✔️ ضخامت: متعادل، نه خیلی ضخیم\n✔️ مناسب برای: استفاده روزمره و لایه‌پوشی\n🎨 موجود در 4 رنگ جذاب\n\n📏 **سایزبندی:** XL | 2XL | 3XL\n*\n📩 **برای قیمت عمده پیام دهید**\n\n🏪 **فروشگاه المارت**\n📍 راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
@@ -111,6 +153,19 @@
   {
    "title": "عمومی",
    "attributes": [
+    {
+     "id": 216,
+     "unit": "میلیمتر - مثال: 120*500",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "ابعاد",
+     "value": "سایز XL  * عرض سینه: 54 سانت * قد: 73 سانت * آستین: 63 سانت * عرض شانه: 48 سانت  سایز 2XL  * عرض سینه: 56 سانت * قد: 75 سانت * آستین: 65 سانت * عرض شانه: 50 سانت  سایز 3XL  * عرض سینه: 58 سانت * قد: 77 سانت * آستین: 67 سانت * عرض شانه: 52 سانت",
+     "selected_values": null,
+     "required": false
+    },
     {
      "id": 219,
      "unit": "",
@@ -535,7 +590,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 64384946,
@@ -571,6 +626,11 @@
    "id": 64384952,
    "key": "سایز",
    "value": "xl.xxl.xxxl"
+  },
+  {
+   "id": 67663033,
+   "key": "ابعاد",
+   "value": "سایز XL  * عرض سینه: 54 سانت * قد: 73 سانت * آستین: 63 سانت * عرض شانه: 48 سانت  سایز 2XL  * عرض سینه: 56 سانت * قد: 75 سانت * آستین: 65 سانت * عرض شانه: 50 سانت  سایز 3XL  * عرض سینه: 58 سانت * قد: 77 سانت * آستین: 67 سانت * عرض شانه: 52 سانت"
   }
  ],
  "barcode": null,

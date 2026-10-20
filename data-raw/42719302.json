@@ -1,7 +1,7 @@
 {
  "id": 42719302,
- "title": "شلوار 4 جیب مچی  سایز بندی مدل سال",
- "price": 7950000,
+ "title": "شلوار 4 جیب مچی سایز بندی مدل سال",
+ "price": 10500000,
  "photo": {
   "id": 324910434,
   "original": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/t6GjgMO8TA1Pjcxlrmgl3c0pd4axviWGKgvoUJ9ow3u2rYhxk0.jpg",
@@ -159,16 +159,16 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 36,
+ "inventory": 12,
  "net_weight": 400,
  "net_weight_decimal": 400,
  "created_at": "2026-04-21T23:19:38+03:30",
- "updated_at": "2026-08-20T00:55:14+03:30",
+ "updated_at": "2026-10-20T23:40:19+03:30",
  "description": " عزیزان 😊\nشلوار راحتی مردانه 4 جیب مچی (دو جیب جلو زیپ‌دار + دو جیب پشت)\n✅ جنس: اسپان نخی (نرم، خنک و بدون چروک)\n✅ سایبندی: L | XL | XXL\n✅ مناسب: خونه، ورزش، مسافرت، مهمونی راحت\n❌ جیب‌های زیپ‌دار امن برای گوشی و پول\nبرای سفارش سایز راهنمایی بدید قد و وزنتونو بگید 🌹\n\n\n",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 7950000,
+ "primary_price": 10500000,
  "shipping_area": null,
  "packaged_weight": 450,
  "preparation_day": 0,
@@ -270,57 +270,9 @@
  "rating": 0,
  "variants": [
   {
-   "id": 33371364,
-   "price": 7950000,
-   "primary_price": 7950000,
-   "stock": 12,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 2,
-      "title": "سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 85,
-      "title": "L",
-      "value": "L",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 33371365,
-   "price": 7950000,
-   "primary_price": 7950000,
-   "stock": 12,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 2,
-      "title": "سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 596,
-      "title": "Xl",
-      "value": "Xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 33371366,
-   "price": 7950000,
-   "primary_price": 7950000,
+   "price": 10500000,
+   "primary_price": 10500000,
    "stock": 12,
    "order": null,
    "properties": [
@@ -371,7 +323,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 48709552,

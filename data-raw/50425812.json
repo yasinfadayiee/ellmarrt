@@ -1,7 +1,7 @@
 {
  "id": 50425812,
  "title": "شلوار اسلش کتان بغل نوار کنفی مردانه سایز بزرگ",
- "price": 9800000,
+ "price": 13700000,
  "photo": {
   "id": 359678416,
   "original": "https://statics.basalam.com/public-219/users/X6zxOW/07-05/fkWWMH5q9pfoJ2VsyTbPQM81Rs03QjE9Cd5JskOLkLw5hFJcet.jpg",
@@ -184,16 +184,16 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 23,
+ "inventory": 11,
  "net_weight": 500,
  "net_weight_decimal": 500,
  "created_at": "2026-07-05T19:10:34+03:30",
- "updated_at": "2026-08-25T22:31:52+03:30",
+ "updated_at": "2026-10-20T23:33:33+03:30",
  "description": "شلوار اسلش کتان بغل‌نوار کنفی | مردانه سا\nیز بزرگ\n\nشلوار اسلش مردانه مدل ترند و خوش‌استایل، مناسب استفاده روزمره، بیرون، پیاده‌روی و استایل اسپرت.\nخاص‌تر و اسپرت‌تر می‌کنه.\nکمر شلوار کشی و بندداره و روی تن راحتجنس کار کتان کشی هست؛ راحت، خوش‌فرم و مناسب استفاده طولانی‌مدت.\n\nبغل شلوار نوار کنفی داره که ظاهر کار رو\n  می‌ایسته. دوخت کار تمیز و دقیق انجام شده و به‌راحتی با تیشرت، هودی، دورس و کتونی ست میشه.\n\nمشخصات محصول:\nجنس: کتان کشی\nمدل: اسلش بغل‌نوار کنفی\nکمر: کشی و بنددار\nاستایل: اسپرت و روزمره\nسایزبندی: 2XL / 3XL / 4XL\n\nقد شلوار:\n2XL: قد 105\n3XL: قد 110\n4XL: قد 110\n\nبرای مشاوره پیام دهید",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 9800000,
+ "primary_price": 13700000,
  "shipping_area": null,
  "packaged_weight": 700,
  "preparation_day": 0,
@@ -295,10 +295,82 @@
  "rating": 3,
  "variants": [
   {
+   "id": 50739409,
+   "price": 13700000,
+   "primary_price": 13700000,
+   "stock": 4,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1037206,
+      "title": "سرمه  2xl",
+      "value": "سرمه  2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 50739410,
+   "price": 13700000,
+   "primary_price": 13700000,
+   "stock": 3,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1006831,
+      "title": "سرمه3xl",
+      "value": "سرمه3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 50739411,
+   "price": 13700000,
+   "primary_price": 13700000,
+   "stock": 4,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1311022,
+      "title": "سرمه‌ای 4xl",
+      "value": "سرمه‌ای 4xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 50739406,
    "price": 9800000,
    "primary_price": 9800000,
-   "stock": 4,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -322,7 +394,7 @@
    "id": 50739407,
    "price": 9800000,
    "primary_price": 9800000,
-   "stock": 4,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -346,7 +418,7 @@
    "id": 50739408,
    "price": 9800000,
    "primary_price": 9800000,
-   "stock": 4,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -359,78 +431,6 @@
       "id": 84811,
       "title": "مشکی 4xl",
       "value": "مشکی 4xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 50739409,
-   "price": 9800000,
-   "primary_price": 9800000,
-   "stock": 4,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1037206,
-      "title": "سرمه  2xl",
-      "value": "سرمه  2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 50739410,
-   "price": 9800000,
-   "primary_price": 9800000,
-   "stock": 3,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1006831,
-      "title": "سرمه3xl",
-      "value": "سرمه3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 50739411,
-   "price": 9800000,
-   "primary_price": 9800000,
-   "stock": 4,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1311022,
-      "title": "سرمه‌ای 4xl",
-      "value": "سرمه‌ای 4xl",
       "order": null
      }
     }
@@ -468,7 +468,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 53893060,

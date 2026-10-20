@@ -51,7 +51,7 @@
  {
   "id": 54127749,
   "name": "تیشرت باکسی مشکی مردانه ترند، راحت و خوش استایل",
-  "price": 8800000,
+  "price": 10560000,
   "stock": 8,
   "sales_count": 0,
   "sales_count_week": 0,
@@ -96,7 +96,7 @@
  {
   "id": 46295449,
   "name": "تیشرت مردانه طرح متفاوت راه راه برجسته مدل سال",
-  "price": 10900000,
+  "price": 13080000,
   "stock": 3,
   "sales_count": 2,
   "sales_count_week": 0,
@@ -125,40 +125,6 @@
   "categoryTitle": "شلوار، شلوارک و سرهمی پسرانه",
   "video": {
    "PRIMARY": "https://statics.basalam.com/public-217/video/product/X6zxOW/07-02/YRkiDi5WvzIremIWFPY3vETLiA3THMLSRnSKPWQfyuL9oLzmE3.mov"
-  }
- },
- {
-  "id": 45326170,
-  "name": "بلوز مردانه نخی یقه گرد آستین دار  سایز XL تا3XL سه رنگ",
-  "price": 12900000,
-  "stock": 3,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "بلوز و پیراهن مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-195/video/product/X6zxOW/05-19/h6I8ubKrCXR16UJjX7b0CIIBrYxb2UDcdGtXOLy2nHKfn3zvNY.mp4"
-  }
- },
- {
-  "id": 45325429,
-  "name": "تیشرت مراکشی طرح کبریتی 6 رنگ سایز XLتا3XL",
-  "price": 7700000,
-  "stock": 6,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "تیشرت و پولوشرت مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-195/video/product/X6zxOW/05-19/vPoxwZcIBuS4tw8VGQ6MIgjRCQwKfH9JBzY19r6KLO10F3t1Dv.mp4"
   }
  },
  {
@@ -243,40 +209,6 @@
   "video": null
  },
  {
-  "id": 44437851,
-  "name": "شلوار اسلش کتان اسپورتی مردانه 4 جیب دمپا مچ ",
-  "price": 9800000,
-  "stock": 20,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-192/video/product/X6zxOW/05-10/ja1i0j5LacjqOKgtH0HT3maDHFfb73CQId7jbAf0wP8gLCoOkX.mp4"
-  }
- },
- {
-  "id": 44436993,
-  "name": "شلوار اسلش کتان اسپورتی مردانه 4 جیب دمپا مچ",
-  "price": 8900000,
-  "stock": 23,
-  "sales_count": 1,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-192/video/product/X6zxOW/05-09/yza1dZ7Dk8cH10eZxGXo18IzAEobpEnmmtX1QRpXnLB7220wbq.mp4"
-  }
- },
- {
   "id": 43998508,
   "name": "تیشرت مردانه نخ پنبه مرغوب طرح boston",
   "price": 6900000,
@@ -309,21 +241,6 @@
   }
  },
  {
-  "id": 42728145,
-  "name": "شلوار اسلش مردانه سایزهای بزرگ 3XL 4XL 5XL",
-  "price": 9800000,
-  "stock": 28,
-  "sales_count": 2,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 5,
-   "count": 1,
-   "signals": 1
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": null
- },
- {
   "id": 42724724,
   "name": "شلوارک کتان دو جیب سایز بزرگ",
   "price": 6900000,
@@ -354,21 +271,6 @@
   "video": null
  },
  {
-  "id": 42719302,
-  "name": "شلوار 4 جیب مچی  سایز بندی مدل سال",
-  "price": 7950000,
-  "stock": 36,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": null
- },
- {
   "id": 39349528,
   "name": "شلوار نخی راحتی مردانه L تا 5xl",
   "price": 6500000,
@@ -384,21 +286,6 @@
   "video": {
    "PRIMARY": "https://statics.basalam.com/public-174/video/product/X6zxOW/03-04/ZaVzHT57aEYttp5aoDr6e4DNVo9QCVqvmA846iuZOCI3Us9IQa.mov"
   }
- },
- {
-  "id": 36854712,
-  "name": "شلوار اسپان مردانه دمپا ساده",
-  "price": 8900000,
-  "stock": 15,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": null
  },
  {
   "id": 36616537,
@@ -437,7 +324,7 @@
  {
   "id": 54235165,
   "name": "تیشرت مشکی مردانه نخ 28، راحت و خوش فرم",
-  "price": 8500000,
+  "price": 10200000,
   "stock": 6,
   "sales_count": 0,
   "sales_count_week": 0,
@@ -503,6 +390,21 @@
   }
  },
  {
+  "id": 63645940,
+  "name": "هودی مردانه مشکی ساده",
+  "price": 36000000,
+  "stock": 8,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "سویشرت ، هودی و ژاکت مردانه",
+  "video": null
+ },
+ {
   "id": 62560754,
   "name": "هودی بیسیک توکرک",
   "price": 19500000,
@@ -550,14 +452,14 @@
  {
   "id": 60467399,
   "name": "پولوشرت کبریتی یقه سفید ترند ",
-  "price": 15000000,
-  "stock": 17,
+  "price": 18560000,
+  "stock": 37,
   "sales_count": 1,
   "sales_count_week": 1,
   "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
+   "average": 5,
+   "count": 1,
+   "signals": 1
   },
   "categoryTitle": "تیشرت و پولوشرت مردانه",
   "video": {
@@ -577,11 +479,13 @@
    "signals": 0
   },
   "categoryTitle": "بلوز، پیراهن و تیشرت پسرانه",
-  "video": null
+  "video": {
+   "PRIMARY": "https://statics.basalam.com/public-267/video/product/X6zxOW/10-20/o9fzSJGLR9OLyvbnjJR58CFp9kIobvhP2Rt9hsfk8S2BoF46qX.mov"
+  }
  },
  {
   "id": 60211729,
-  "name": "بلوز پنبه",
+  "name": "بلوز پنبه مردانه تمام نخ پاییزه",
   "price": 17900000,
   "stock": 20,
   "sales_count": 0,
@@ -628,7 +532,7 @@
   "id": 60191258,
   "name": "دورس دو نخ لاکرا لانگاسلیو ",
   "price": 19500000,
-  "stock": 26,
+  "stock": 24,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -723,7 +627,7 @@
  {
   "id": 54126455,
   "name": "شلوار اسلش شش جیب دمپا کش مردانه اسپرت، خوشاستایل و کاربردی",
-  "price": 9800000,
+  "price": 12200000,
   "stock": 10,
   "sales_count": 3,
   "sales_count_week": 0,
@@ -791,8 +695,8 @@
  {
   "id": 50425812,
   "name": "شلوار اسلش کتان بغل نوار کنفی مردانه سایز بزرگ",
-  "price": 9800000,
-  "stock": 23,
+  "price": 13700000,
+  "stock": 11,
   "sales_count": 3,
   "sales_count_week": 0,
   "rating": {
@@ -821,6 +725,23 @@
   "video": null
  },
  {
+  "id": 44436993,
+  "name": "شلوار اسلش کتان اسپورتی مردانه 4 جیب دمپا مچ",
+  "price": 13700000,
+  "stock": 23,
+  "sales_count": 1,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": {
+   "PRIMARY": "https://statics.basalam.com/public-192/video/product/X6zxOW/05-09/yza1dZ7Dk8cH10eZxGXo18IzAEobpEnmmtX1QRpXnLB7220wbq.mp4"
+  }
+ },
+ {
   "id": 43999644,
   "name": "کفش مردانه اسپورتی طرح آدیداس دور دوخت پی یو",
   "price": 23900000,
@@ -833,6 +754,66 @@
    "signals": 0
   },
   "categoryTitle": "کفش، دمپایی مردانه",
+  "video": null
+ },
+ {
+  "id": 42728145,
+  "name": "شلوار اسلش مردانه سایزهای بزرگ 3XL 4XL 5XL",
+  "price": 12200000,
+  "stock": 28,
+  "sales_count": 2,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 5,
+   "count": 1,
+   "signals": 1
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
+  "id": 42719795,
+  "name": "شلوار اسلشه مردانه پنبه درجه یک ",
+  "price": 12200000,
+  "stock": 24,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
+  "id": 42719302,
+  "name": "شلوار 4 جیب مچی سایز بندی مدل سال",
+  "price": 10500000,
+  "stock": 12,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
+  "id": 36854712,
+  "name": "شلوار اسپان مردانه دمپا ساده",
+  "price": 11500000,
+  "stock": 15,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
   "video": null
  }
 ]

@@ -1,0 +1,394 @@
+{
+ "id": 42719795,
+ "title": "شلوار اسلشه مردانه پنبه درجه یک ",
+ "price": 12200000,
+ "photo": {
+  "id": 324913489,
+  "original": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/SQZF3OZvEgcRYnWJKrhfoJzPWeWMltz6407wosnz3IK2eK79Z5.jpg",
+  "xs": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/SQZF3OZvEgcRYnWJKrhfoJzPWeWMltz6407wosnz3IK2eK79Z5.jpg_50X50X70.jpg",
+  "sm": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/SQZF3OZvEgcRYnWJKrhfoJzPWeWMltz6407wosnz3IK2eK79Z5.jpg_256X256X70.jpg",
+  "md": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/SQZF3OZvEgcRYnWJKrhfoJzPWeWMltz6407wosnz3IK2eK79Z5.jpg_512X512X70.jpg",
+  "lg": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/SQZF3OZvEgcRYnWJKrhfoJzPWeWMltz6407wosnz3IK2eK79Z5.jpg_800X800X70.jpg"
+ },
+ "photos": [
+  {
+   "id": 324913487,
+   "original": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OgoSoXWhC0TGC6KExmWQHFIv5zpUkclh05zL5AsFMaI1LNGVzr.jpg",
+   "xs": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OgoSoXWhC0TGC6KExmWQHFIv5zpUkclh05zL5AsFMaI1LNGVzr.jpg_50X50X70.jpg",
+   "sm": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OgoSoXWhC0TGC6KExmWQHFIv5zpUkclh05zL5AsFMaI1LNGVzr.jpg_256X256X70.jpg",
+   "md": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OgoSoXWhC0TGC6KExmWQHFIv5zpUkclh05zL5AsFMaI1LNGVzr.jpg_512X512X70.jpg",
+   "lg": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OgoSoXWhC0TGC6KExmWQHFIv5zpUkclh05zL5AsFMaI1LNGVzr.jpg_800X800X70.jpg"
+  },
+  {
+   "id": 324913519,
+   "original": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OxsMIsnb57LkdNMEvLXhhcVHhhD9xvUZNEGXI1oAWTgQfy92ad.jpg",
+   "xs": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OxsMIsnb57LkdNMEvLXhhcVHhhD9xvUZNEGXI1oAWTgQfy92ad.jpg_50X50X70.jpg",
+   "sm": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OxsMIsnb57LkdNMEvLXhhcVHhhD9xvUZNEGXI1oAWTgQfy92ad.jpg_256X256X70.jpg",
+   "md": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OxsMIsnb57LkdNMEvLXhhcVHhhD9xvUZNEGXI1oAWTgQfy92ad.jpg_512X512X70.jpg",
+   "lg": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/OxsMIsnb57LkdNMEvLXhhcVHhhD9xvUZNEGXI1oAWTgQfy92ad.jpg_800X800X70.jpg"
+  },
+  {
+   "id": 324913518,
+   "original": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/YBDLz4ZKtnneJuRtQav6RBpz2XEcIUVPvqlAckRCet9UKawhbg.jpg",
+   "xs": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/YBDLz4ZKtnneJuRtQav6RBpz2XEcIUVPvqlAckRCet9UKawhbg.jpg_50X50X70.jpg",
+   "sm": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/YBDLz4ZKtnneJuRtQav6RBpz2XEcIUVPvqlAckRCet9UKawhbg.jpg_256X256X70.jpg",
+   "md": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/YBDLz4ZKtnneJuRtQav6RBpz2XEcIUVPvqlAckRCet9UKawhbg.jpg_512X512X70.jpg",
+   "lg": "https://statics.basalam.com/public-185/users/X6zxOW/04-21/YBDLz4ZKtnneJuRtQav6RBpz2XEcIUVPvqlAckRCet9UKawhbg.jpg_800X800X70.jpg"
+  }
+ ],
+ "video": null,
+ "status": {
+  "name": "در دسترس",
+  "value": 2976,
+  "description": null
+ },
+ "summary": null,
+ "category": {
+  "id": 257,
+  "title": "شلوار و شلوارک مردانه",
+  "placeholder": null,
+  "parent": {
+   "id": 28,
+   "title": "مردانه",
+   "placeholder": null,
+   "parent": {
+    "id": 2,
+    "title": "مد و پوشاک",
+    "placeholder": null,
+    "parent": null,
+    "unit_type_id": null
+   },
+   "unit_type_id": null
+  },
+  "unit_type_id": null
+ },
+ "category_list": [
+  {
+   "id": 7640,
+   "title": "شلوار اسلش بنگال",
+   "slug": "شلوار-اسلش-بنگال"
+  },
+  {
+   "id": 1973,
+   "title": "شلوار چرم مردانه",
+   "slug": "شلوار-چرم-مردانه"
+  },
+  {
+   "id": 1968,
+   "title": "شلوار اسپرت مردانه",
+   "slug": "شلوار-اسپرت-مردانه"
+  },
+  {
+   "id": 1969,
+   "title": "شلوار اسلش مردانه",
+   "slug": "شلوار-اسلش-مردانه"
+  },
+  {
+   "id": 1970,
+   "title": "شلوار پارچه ای مردانه",
+   "slug": "شلوار-پارچه-ای-مردانه"
+  },
+  {
+   "id": 1971,
+   "title": "شلوار جین مردانه",
+   "slug": "شلوار-جین-مردانه"
+  },
+  {
+   "id": 1972,
+   "title": "شلوار جین مشکی مردانه",
+   "slug": "شلوار-جین-مشکی-مردانه"
+  },
+  {
+   "id": 1974,
+   "title": "شلوار زاپ دار مردانه",
+   "slug": "شلوار-زاپ-دار-مردانه"
+  },
+  {
+   "id": 1975,
+   "title": "شلوار شش جیب مردانه",
+   "slug": "شلوار-شش-جیب-مردانه"
+  },
+  {
+   "id": 1976,
+   "title": "شلوار غواصی مردانه",
+   "slug": "شلوار-غواصی-مردانه"
+  },
+  {
+   "id": 1977,
+   "title": "شلوار فاستونی",
+   "slug": "شلوار-فاستونی"
+  },
+  {
+   "id": 1978,
+   "title": "شلوار فاق بلند مردانه",
+   "slug": "شلوار-فاق-بلند-مردانه"
+  },
+  {
+   "id": 1979,
+   "title": "شلوار کبریتی مردانه",
+   "slug": "شلوار-کبریتی-مردانه"
+  },
+  {
+   "id": 1980,
+   "title": "شلوار کتان مردانه",
+   "slug": "شلوار-کتان-مردانه"
+  },
+  {
+   "id": 1981,
+   "title": "شلوار کوتاه مردانه",
+   "slug": "شلوار-کوتاه-مردانه"
+  },
+  {
+   "id": 1982,
+   "title": "شلوار گت مردانه",
+   "slug": "شلوار-گت-مردانه"
+  },
+  {
+   "id": 1983,
+   "title": "شلوار مام استایل مردانه",
+   "slug": "شلوار-مام-استایل-مردانه"
+  },
+  {
+   "id": 1984,
+   "title": "شلوار مشکی مردانه",
+   "slug": "شلوار-مشکی-مردانه"
+  },
+  {
+   "id": 1985,
+   "title": "شلوارک مردانه",
+   "slug": "شلوارک-مردانه"
+  }
+ ],
+ "inventory": 24,
+ "net_weight": 400,
+ "net_weight_decimal": 400,
+ "created_at": "2026-04-21T23:28:47+03:30",
+ "updated_at": "2026-10-20T23:39:26+03:30",
+ "description": "\n✅ جنس: پنبه درجه یک تضمینی (خنک، بدون حساسیت، آنتی باکتریال)\n✅ رنگ: مشکی ساده و شیک – بغل رنگ‌بندی (اختیاری)\n✅ جیب: زیپ‌دار امن برای گوشی/کارت/پول\n✅ قد: 100 | 110 | \n✅ استایل: اسلشا راحت – مناسب تیپ‌های اسپرت و نیمه رسمی\n🧵 دوخت نخ کتان – بدون اتو\nارسال فوری – تعویض سایز رایگان\n",
+ "is_saleable": true,
+ "is_showable": true,
+ "is_available": true,
+ "primary_price": 12200000,
+ "shipping_area": null,
+ "packaged_weight": 450,
+ "preparation_day": 0,
+ "attribute_groups": [
+  {
+   "title": "عمومی",
+   "attributes": [
+    {
+     "id": 219,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "مناسب برای",
+     "value": "مردانه و پسرانه ",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 221,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "جنس",
+     "value": "پنبه درجا یک",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 276,
+     "unit": "سانتیمتر",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "سایز",
+     "value": "قد 100و 110",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 222,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "رنگ",
+     "value": "مشکی نوار رنگ بندی",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1317,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "موارد استفاده",
+     "value": "راحتی و اسپرت",
+     "selected_values": null,
+     "required": false
+    }
+   ]
+  }
+ ],
+ "is_free_shipping": false,
+ "location_deployment": {
+  "name": "ارسال توسط غرفه دار",
+  "value": 3017,
+  "description": null
+ },
+ "is_product_for_revision": false,
+ "has_selectable_variation": false,
+ "can_add_to_cart": true,
+ "review_count": 0,
+ "rating": 0,
+ "variants": [
+  {
+   "id": 33371165,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 8,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 5272,
+      "title": "قد کار",
+      "type": "text"
+     },
+     "value": {
+      "id": 189,
+      "title": "100",
+      "value": "100",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 33371166,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 8,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 5272,
+      "title": "قد کار",
+      "type": "text"
+     },
+     "value": {
+      "id": 194,
+      "title": "110",
+      "value": "110",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 83906895,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 8,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 5272,
+      "title": "قد کار",
+      "type": "text"
+     },
+     "value": {
+      "id": 351,
+      "title": "105",
+      "value": "105",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  }
+ ],
+ "variants_selected_index": 1,
+ "shipping_data": {
+  "illegal_for_iran": false,
+  "illegal_for_same_city": false
+ },
+ "free_shipping": {
+  "result": false,
+  "meta_data": {
+   "illegals": {
+    "from_iran": false,
+    "from_same_city": false
+   },
+   "limits": {
+    "to_iran": null,
+    "to_same_city": null
+   }
+  }
+ },
+ "allow_category_change": null,
+ "unit_quantity": 1,
+ "unit_type": {
+  "name": "عددی",
+  "value": 6304,
+  "description": null
+ },
+ "sku": null,
+ "discount": null,
+ "packaging_dimensions": null,
+ "is_wholesale": false,
+ "is_service_variation": false,
+ "attributes": [
+  {
+   "id": 48710076,
+   "key": "موارد استفاده",
+   "value": "راحتی و اسپرت"
+  },
+  {
+   "id": 48710077,
+   "key": "مناسب برای",
+   "value": "مردانه و پسرانه "
+  },
+  {
+   "id": 48710078,
+   "key": "جنس",
+   "value": "پنبه درجا یک"
+  },
+  {
+   "id": 48710079,
+   "key": "رنگ",
+   "value": "مشکی نوار رنگ بندی"
+  },
+  {
+   "id": 48710080,
+   "key": "سایز",
+   "value": "قد 100و 110"
+  }
+ ],
+ "barcode": null,
+ "kalabarg": {
+  "enable": false,
+  "is_bulk": false
+ }
+}

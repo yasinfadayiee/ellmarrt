@@ -1,7 +1,7 @@
 {
  "id": 60467399,
  "title": "پولوشرت کبریتی یقه سفید ترند ",
- "price": 15000000,
+ "price": 18560000,
  "photo": {
   "id": 430944095,
   "original": "https://statics.basalam.com/public-256/users/X6zxOW/09-27/5y8n93MwdD0WdqNqXhfxYS9JOwTCSeeNlvzkuwFxHcnfpCiHgO.jpeg",
@@ -128,16 +128,16 @@
    "slug": "تیشرت-یقه-دار-مردانه"
   }
  ],
- "inventory": 17,
+ "inventory": 37,
  "net_weight": 600,
  "net_weight_decimal": 600,
  "created_at": "2026-09-27T23:00:07+03:30",
- "updated_at": "2026-10-15T12:51:51+03:30",
+ "updated_at": "2026-10-20T22:07:02+03:30",
  "description": "\nترند جدید المارت 😍\n\nاگه دنبال یه پولو شرت شیک و متفاوت برا\nی استایل روزمره هستید، این مدل می‌تونه انتخاب خیلی خوبی باشه.\n\nپولو شرت آستین بلند با جنس مراکشی کبریتی؛ بافت پارچه ظاهر خاص و شیکی به کار داده و در عین حال تن‌خور راحت و خوش‌فرمی داره. \nمدل آستین بلندش باعث میشه هم برای استفاده روزمره مناسب باشه و هم برای استایل‌های پاییزی و لایه‌پوشی خیلی خوب بشینه.\n\nدوخت تمیز و فرم کار طوریه که روی تن مرتب و شیک دیده میشه و به‌راحتی می‌تونید با شلوار جین، کتان یا اسلش ستش کنید.\n\n6 رنگ جذاب و کاربردی موجوده 🌈\n\nسایزبندی:\nXL | 2XL | 3XL\n\nفروش\n عمده و خرده\nارسال به سراسر کشور\n\nاگر برای خرید عمده تعداد بالا می‌خواید، پیام بدید تا قیمت همکاری رو خدمتتون اعلام کنیم.\n\nفروشگاه المارت\n",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 15000000,
+ "primary_price": 32000000,
  "shipping_area": null,
  "packaged_weight": 800,
  "preparation_day": 0,
@@ -248,10 +248,511 @@
  "is_product_for_revision": false,
  "has_selectable_variation": false,
  "can_add_to_cart": true,
- "review_count": 0,
- "rating": 0,
- "variants": null,
- "variants_selected_index": null,
+ "review_count": 1,
+ "rating": 5,
+ "variants": [
+  {
+   "id": 83881014,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 3,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1141,
+      "title": "مشکی xl",
+      "value": "مشکی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881015,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 27558,
+      "title": "مشکی 2xl",
+      "value": "مشکی 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881016,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 61423,
+      "title": "مشکی 3xl",
+      "value": "مشکی 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881017,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 161791,
+      "title": "یشمی xl",
+      "value": "یشمی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881018,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 419294,
+      "title": "یشمی 2xl",
+      "value": "یشمی 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881019,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 467834,
+      "title": "یشمی 3xl",
+      "value": "یشمی 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881020,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1142,
+      "title": "سفید xl",
+      "value": "سفید xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881021,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 33183,
+      "title": "سفید 2xl",
+      "value": "سفید 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881022,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 61425,
+      "title": "سفید 3xl",
+      "value": "سفید 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881023,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 95318,
+      "title": "کرمی xl",
+      "value": "کرمی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881024,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1157169,
+      "title": "کرمی  2xl",
+      "value": "کرمی  2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881025,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 140648,
+      "title": "کرمی 3xl",
+      "value": "کرمی 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881026,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 142269,
+      "title": "سرمه‌ای xl",
+      "value": "سرمه‌ای xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881027,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 162506,
+      "title": "سرمه‌ای 2xl",
+      "value": "سرمه‌ای 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881028,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 601356,
+      "title": "سرمه‌ای 3xl",
+      "value": "سرمه‌ای 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881029,
+   "price": 32000000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1678114,
+      "title": "نسکافه‌ایxl",
+      "value": "نسکافه‌ایxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 83881030,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1027943,
+      "title": "نسکافه‌ای 2xl",
+      "value": "نسکافه‌ای 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881031,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 2,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1027944,
+      "title": "نسکافه‌ای 3xl",
+      "value": "نسکافه‌ای 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  }
+ ],
+ "variants_selected_index": 0,
  "shipping_data": {
   "illegal_for_iran": false,
   "illegal_for_same_city": false

@@ -102,11 +102,11 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 26,
+ "inventory": 24,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-09-25T16:04:39+03:30",
- "updated_at": "2026-10-03T20:17:42+03:30",
+ "updated_at": "2026-10-20T21:56:11+03:30",
  "description": "🔥 ترند جدید | دورس دو نخ لاکرا لانگ‌اسلیو 🔥\n\n✨ یک مدل ترند و کاربردی برای استایل پاییزه؛ راحت، خوش‌فرم و مناسب استفاده روزمره.\n\nاین مدل از **100٪ پنبه** تولید شده و بافتی نرم و راحت داره. طراحی **دو آستینه با آستین ساده**، دوخت تمیز و تن‌خور خوش‌فرم باعث شده برای استایل‌های روزمره و پاییزه انتخاب جذابی باشه.\n\n**مشخصات محصول:**\n✔️ جنس: 100٪ پنبه\n✔️ مدل: دورس دو نخ لاکرا لانگ‌اسلیو\n✔️ آستین: ساده\n✔️ حالت پارچه: نرم و راحت\n✔️ دوخت: تمیز و باکیفیت\n✔️ تن‌خور: خوش‌فرم و راحت\n✔️ مناسب برای: استفاده روزمره و استایل پاییزه\n🎨 موجود در 6 رنگ کاربردی\n📦 جین کار: 18 تایی\n\n📏 **سایزبندی:** XL | 2XL | 3XL\n\n📦 فروش عمده و خرده\n🚚 ارسال به سراسر کشور\n\n🏪 **فروشگاه المارت**\n📍 راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n",
  "is_saleable": true,
  "is_showable": true,
@@ -514,30 +514,6 @@
    "discount": null
   },
   {
-   "id": 75030905,
-   "price": 19500000,
-   "primary_price": 19500000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 117701,
-      "title": "قهوه ایxl",
-      "value": "قهوه ایxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 75030893,
    "price": 19500000,
    "primary_price": 19500000,
@@ -602,6 +578,30 @@
       "id": 76140,
       "title": "مشکیxxxl",
       "value": "مشکیxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 75030905,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 117701,
+      "title": "قهوه ایxl",
+      "value": "قهوه ایxl",
       "order": null
      }
     }
@@ -687,7 +687,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 64335433,
