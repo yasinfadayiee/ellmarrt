@@ -35,6 +35,9 @@ const copyDir = (src, dst) => {
   }
 };
 
+// Enamad domain ownership verification; preserve on every rebuild.
+write("25394575.txt", "");
+
 // assets
 copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
 fs.mkdirSync(path.join(OUT, "assets/fonts"), { recursive: true });
