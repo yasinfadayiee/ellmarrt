@@ -82,6 +82,7 @@ function layout(ctx, o) {
 <html lang="fa" dir="rtl" data-base="${BASE}">
 <head>
 <meta charset="utf-8">
+${o.path === "/" ? '<meta name="enamad" content="25394575" />' : ""}
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(o.desc)}">
