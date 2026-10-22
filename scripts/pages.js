@@ -1,4 +1,5 @@
 // Page templates for the ELLMARRT static site.
+const { CAT } = require("./copy");
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fa = (n) => Number(n).toLocaleString("fa-IR");
 const json = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
@@ -387,18 +388,14 @@ function itemList(ctx, list) {
   return { "@context": "https://schema.org", "@type": "ItemList", itemListElement: list.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `${ctx.SITE_URL}/p/${p.id}/`, name: p.title })) };
 }
 
-const CAT_FAQ = {
-  pants: [["شلوار اسلش مردانه چه جنسی بهتر است؟", "برای استفاده روزمره کتان کشی خوش‌فرم‌تر است و چروک کمتری می‌گیرد؛ برای راحتی و پیاده‌روی اسپان نخی و تمام‌نخ خنک‌تر و نرم‌تر است."], ["شلوار اسلش سایز بزرگ تا چه سایزی دارید؟", "مدل‌های اسلش المارت تا 6XL موجودند؛ قد شلوار در سایزهای بزرگ ۱۰۵ تا ۱۱۰ سانتی‌متر است."]],
-  tshirt: [["تیشرت نخ پنبه بهتر است یا پنبه 28؟", "پنبه نمره ۲۸ و نخ ۳۰ گرم ضخامت و ایستایی بیشتری دارند و بعد از شستشو فرمشان را حفظ می‌کنند؛ نخ پنبه نازک‌تر برای تابستان خنک‌تر است."], ["تیشرت باکسی را یک سایز بزرگ‌تر بخرم؟", "خیر؛ تیشرت‌های باکسی خودشان گشاد دوخته شده‌اند. سایز همیشگی خود را انتخاب کنید."]],
-};
-
 function category(ctx, c) {
   const { products: P } = ctx;
   const key = Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c);
   const list = P.filter((p) => p.cat === key).sort((a, b) => (b.featured - a.featured) || (b.inStock - a.inStock) || (b.sales - a.sales));
   const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name]];
   const min = Math.min(...list.map((p) => p.price)), max = Math.max(...list.map((p) => p.price));
-  const qa = CAT_FAQ[key] || [];
+  const copy = CAT[key];
+  const qa = copy.faq;
   return layout(ctx, {
     path: `/c/${c.slug}/`,
     title: `خرید ${c.h1} | قیمت از ${fa(min)} تومان`,
@@ -408,6 +405,7 @@ function category(ctx, c) {
     body: `${crumbs(ctx, items)}
 <header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
 <section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
+<section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
