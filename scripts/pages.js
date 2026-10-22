@@ -117,8 +117,8 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
 <header class="hdr">
   <div class="wrap hdr-in">
     <button class="ibtn menu-btn" aria-label="منو">${I.menu}</button>
-    <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42"><span><b>${STORE.name}</b><small>ELLMARRT</small></span></a>
-    <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76"><button class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
+    <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42" decoding="async"><span><b>${STORE.name}</b><small>ELLMARRT</small></span></a>
+    <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76" loading="lazy" decoding="async"><button class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <div class="hdr-act">
       <button class="ibtn theme-tg" id="theme-toggle" aria-label="حالت شب" aria-pressed="false">${I.moon}${I.sun}</button>
       <a class="ibtn" href="${BASE}/shop/#q" aria-label="جستجو">${I.search}</a>
@@ -135,7 +135,7 @@ ${o.body}
   <div class="wrap">
     <div class="ftr-g">
       <div>
-        <img src="${BASE}/assets/img/logo-light.svg" alt="${STORE.latin} — ${STORE.name}" width="170" height="143" loading="lazy" style="width:150px;height:auto;margin-bottom:16px">
+        <img src="${BASE}/assets/img/logo-light.svg" alt="${STORE.latin} — ${STORE.name}" width="170" height="143" loading="lazy" style="width:150px;height:auto;margin-bottom:16px" decoding="async">
         <p>${SITE.footer && SITE.footer.blurb ? esc(SITE.footer.blurb) : `${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}.`} پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا 6XL.</p>
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a></div>
       </div>
@@ -155,7 +155,7 @@ ${o.body}
 </nav>
 <a class="fab" href="tel:${STORE.phones[0]}" aria-label="تماس برای سفارش">${I.phone}<span>سفارش تلفنی</span></a>
 <aside class="drawer" aria-label="علاقه‌مندی‌ها"><div class="drawer-h"><b>علاقه‌مندی‌های شما</b><button class="ibtn drawer-x" aria-label="بستن">✕</button></div><div class="drawer-b"></div></aside>
-<div class="lb" role="dialog" aria-label="نمایش بزرگ تصویر"><button class="lb-x" aria-label="بستن">✕</button><button class="lb-n lb-prev" aria-label="قبلی">›</button><img alt=""><button class="lb-n lb-next" aria-label="بعدی">‹</button></div>
+<div class="lb" role="dialog" aria-label="نمایش بزرگ تصویر"><button class="lb-x" aria-label="بستن">✕</button><button class="lb-n lb-prev" aria-label="قبلی">›</button><img alt="" width="960" height="1200" loading="lazy" decoding="async" style="width:auto;height:auto"><button class="lb-n lb-next" aria-label="بعدی">‹</button></div>
 <div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="om-t"><div class="modal-c"><button class="ibtn modal-x" aria-label="بستن">✕</button>
 <h2 id="om-t">سفارش مستقیم از المارت</h2><p class="om-p"></p>
 <div class="om-code"><span>کد پیگیری سفارش شما</span><b class="num" id="om-code"></b><small>این کد را هنگام تماس یا در پیام بگویید.</small></div>
@@ -205,7 +205,7 @@ function cardData(ctx, p) {
 function card(ctx, p, eager = false) {
   const d = cardData(ctx, p);
   return `<article class="card rv${d.st ? "" : " out"}">
-<div class="card-media"><img src="${d.img}" alt="${esc(p.title)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${d.alt ? `<img class="alt" src="${d.alt}" alt="" loading="lazy" decoding="async">` : ""}
+<div class="card-media"><img src="${d.img}" srcset="${d.img} 480w, ${d.img.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(p.title)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${d.alt ? `<img class="alt" src="${d.alt}" srcset="${d.alt} 480w, ${d.alt.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="" width="480" height="600" loading="lazy" decoding="async">` : ""}
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button></div>
 <div class="card-body"><div class="card-cat">${d.cn}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
@@ -269,7 +269,7 @@ function home(ctx) {
       <div class="hero-stats"><div><b class="num" data-count="${STORE.years}" data-suffix="+">${fa(STORE.years)}+</b><span>سال در بازار تبریز</span></div><div><b class="num" data-count="${P.length}">${fa(P.length)}</b><span>مدل در کالکشن</span></div><div><b class="num">6XL</b><span>بزرگ‌ترین سایز</span></div></div>
     </div>
     <div class="arches" aria-hidden="true">
-      ${heroIds.map((id, i) => `<div class="arch"><img src="${BASE}/assets/p/${id}-480.webp"${i === 1 ? ` srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:900px) 33vw, 16vw"` : ""} alt="" width="480" height="600" ${i === 1 ? 'fetchpriority="high"' : 'loading="eager"'}></div>`).join("")}
+      ${heroIds.map((id, i) => `<div class="arch"><img src="${BASE}/assets/p/${id}-480.webp" srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:900px) 33vw, 16vw" alt="" width="480" height="600" ${i === 1 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`).join("")}
       <div class="seal"><div class="seal-in"><span class="num">${fa(STORE.years)}</span>سال<br>بازار تبریز</div></div>
     </div>
   </div>
@@ -285,7 +285,7 @@ function home(ctx) {
 
 <section class="sec" style="padding-top:20px"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">دسته‌بندی‌ها</span><h2>دنبال چی می‌گردی؟</h2></div><a class="link" href="${BASE}/shop/">همه محصولات</a></div>
-  <div class="cats">${cats.map(({ k, c, n }) => `<a class="cat rv" href="${BASE}/c/${c.slug}/"><img src="${BASE}/assets/p/${catImg[k]}-480.webp" alt="${c.name}" width="480" height="600" loading="lazy"><span class="cat-go">${I.arrow}</span><span class="cat-t"><b>${c.name}</b><span>${fa(n)} مدل</span></span></a>`).join("")}</div>
+  <div class="cats">${cats.map(({ k, c, n }) => `<a class="cat rv" href="${BASE}/c/${c.slug}/"><img src="${BASE}/assets/p/${catImg[k]}-480.webp" srcset="${BASE}/assets/p/${catImg[k]}-480.webp 480w, ${BASE}/assets/p/${catImg[k]}-960.webp 960w" sizes="(max-width:900px) 50vw, 25vw" alt="${c.name}" width="480" height="600" loading="lazy" decoding="async"><span class="cat-go">${I.arrow}</span><span class="cat-t"><b>${c.name}</b><span>${fa(n)} مدل</span></span></a>`).join("")}</div>
 </div></section>
 
 <section class="sec bg-cream"><div class="wrap">
@@ -294,7 +294,7 @@ function home(ctx) {
 </div></section>
 
 <section class="sec"><div class="wrap story">
-  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
+  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy" decoding="async"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
   <div class="rv">
     <span class="kicker">داستان المارت</span>
     <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : "یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد."}</h2>
@@ -310,7 +310,7 @@ function home(ctx) {
 </div></section>
 
 <section class="look" aria-label="لوک‌بوک المارت"><div class="wrap"><div class="sec-head rv"><div><span class="kicker" style="color:var(--gold-2)">لوک‌بوک فصل</span><h2>استایل‌های آماده؛ فقط انتخاب کن.</h2><p>ترکیب‌هایی که در حجره بیشترین سوال را داشته‌اند. برای دیدن هر قطعه بزنید.</p></div><div class="look-nav"><button class="ibtn look-prev" aria-label="قبلی">›</button><button class="ibtn look-next" aria-label="بعدی">‹</button></div></div></div>
-<div class="look-track">${[60209573,53765502,60467399,54126455,46296076,58897534,47475290,60192679].map((id,i)=>{const p=byId(id);return p?`<a class="look-card" href="${pUrl(ctx,p)}"><img src="${BASE}/assets/p/${id}-960.webp" alt="${esc(p.title)}" loading="lazy" width="960" height="1200"><span class="look-no num">${String(i+1).padStart(2,"0")}</span><span class="look-cap"><b>${esc(p.title)}</b><span class="num">${fa(p.price)} تومان</span></span></a>`:""}).join("")}</div></section>
+<div class="look-track">${[60209573,53765502,60467399,54126455,46296076,58897534,47475290,60192679].map((id,i)=>{const p=byId(id);return p?`<a class="look-card" href="${pUrl(ctx,p)}"><img src="${BASE}/assets/p/${id}-960.webp" srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:600px) 240px, 28vw" alt="${esc(p.title)}" loading="lazy" width="960" height="1200" decoding="async"><span class="look-no num">${String(i+1).padStart(2,"0")}</span><span class="look-cap"><b>${esc(p.title)}</b><span class="num">${fa(p.price)} تومان</span></span></a>`:""}).join("")}</div></section>
 <div class="stitch-div" aria-hidden="true"></div>
 <section class="sec" style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">تازه‌های کالکشن</span><h2>تازه رسیده‌ها</h2></div><a class="link" href="${BASE}/shop/?sort=new">همه جدیدها</a></div>
@@ -347,6 +347,8 @@ return `<section class="sec reviews"><div class="wrap">
     title: `${STORE.name} | پوشاک مردانه بازار تبریز؛ تیشرت، شلوار اسلش و سایز بزرگ تا 6XL`,
     desc: `خرید آنلاین پوشاک مردانه از ${STORE.name}، ${fa(STORE.years)} سال در بازار بزرگ تبریز: تیشرت نخ پنبه، شلوار اسلش، هودی، پیراهن و لباس سایز بزرگ مردانه تا 6XL با قیمت منصفانه و ارسال به سراسر ایران.`,
     preload: `${BASE}/assets/p/${heroIds[1]}-480.webp`,
+    preloadSet: `${BASE}/assets/p/${heroIds[1]}-480.webp 480w, ${BASE}/assets/p/${heroIds[1]}-960.webp 960w`,
+    preloadSizes: "(max-width:900px) 33vw, 16vw",
     schema: [orgSchema(ctx), { "@context": "https://schema.org", "@type": "WebSite", name: STORE.name, alternateName: STORE.latin, url: `${ctx.SITE_URL}/`, inLanguage: "fa-IR", potentialAction: { "@type": "SearchAction", target: `${ctx.SITE_URL}/shop/?q={search_term_string}`, "query-input": "required name=search_term_string" } }, faqSchema(HOME_FAQ)],
     body,
   });
@@ -379,7 +381,7 @@ function shop(ctx) {
     desc: `همه ${fa(P.length)} مدل پوشاک مردانه المارت: تیشرت، پولوشرت، پیراهن، هودی، دورس، شلوار اسلش، شلوارک، کفش و لباس پسرانه؛ فیلتر بر اساس سایز تا 6XL.`,
     schema: [crumbSchema(ctx, items), itemList(ctx, sorted)],
     body: `${crumbs(ctx, items)}
-<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن کامل</span><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(sorted[0])}-480.webp" alt="" width="480" height="600"></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن کامل</span><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(sorted[0])}-480.webp" alt="" width="480" height="600" loading="lazy" decoding="async"></header>
 <section id="shop">${filters(ctx, null)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${sorted.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>`,
   });
 }
@@ -401,10 +403,13 @@ function category(ctx, c) {
     title: `خرید ${c.h1} | قیمت از ${fa(min)} تومان`,
     desc: c.desc,
     image: `${ctx.SITE_URL}/assets/og/${list[0].id}.jpg`,
+    preload: `${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp`,
+    preloadSet: `${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp 480w, ${ctx.BASE}/assets/p/${mainBase(list[0])}-960.webp 960w`,
+    preloadSizes: "(max-width:600px) 50vw, 25vw",
     schema: [crumbSchema(ctx, items), itemList(ctx, list), ...(qa.length ? [faqSchema(qa)] : [])],
     body: `${crumbs(ctx, items)}
-<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
-<section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600" loading="lazy" decoding="async"></header>
+<section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i === 0)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
@@ -452,8 +457,8 @@ function product(ctx, p) {
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
   <div class="gal">
-    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
-    <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" data-tc="${esc(g.color)}" aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95"></button>`).join("")}</div>
+    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high" decoding="async"><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
+    <div class="thumbs">${gal.map((g, i) => `<button data-full="${g.full}" data-tc="${esc(g.color)}" aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="" loading="lazy" width="76" height="95" decoding="async"></button>`).join("")}</div>
   </div>
   <div class="pinfo">
     <a class="kicker" href="${BASE}/c/${c.slug}/">${c.name}</a>
@@ -461,7 +466,7 @@ function product(ctx, p) {
     <div class="pmeta">${p.rating ? `<span class="stars">${I.star}<span class="num">${fa(p.rating.avg)}</span></span><span>${fa(p.rating.count)} نظر در باسلام</span>` : ""}${p.sales ? `<span>${fa(p.sales)} فروش موفق</span>` : ""}<span>کد کالا: <span class="num">${p.id}</span></span></div>
     ${priceBlock}
     ${promoOn() ? `<div class="promo"><b>کد تخفیف ${esc(SITE.promo.code)}</b><span>${esc(SITE.promo.text || "هنگام پرداخت در باسلام وارد کنید")}</span><button type="button" data-copy="${esc(SITE.promo.code)}">کپی کد</button></div>` : ""}
-    ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
+    ${colors.length > 1 ? `<div class="opt"><div class="opt-h">رنگ: <span id="sel-color">انتخاب کنید</span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy" decoding="async">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
     ${sizes.length ? `<div class="opt"><div class="opt-h">سایز: <span id="sel-size">انتخاب کنید</span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">راهنمای سایز</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div></div>` : ""}
     <div class="buy">
       ${p.inStock ? `<a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>` : `<div class="oos"><b>این مدل فعلاً ناموجود است</b><span>موجودی هر ۶ ساعت از باسلام به‌روز می‌شود. برای خبر شدن از شارژ مجدد پیام بدهید.</span></div><a class="btn btn-ink btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">خبرم کن وقتی موجود شد</a>`}
@@ -482,7 +487,7 @@ function product(ctx, p) {
   </div>
 </div>
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
-<div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="300" height="300"></button>`).join("")}</div></div></section>` : ""}
+<div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
@@ -519,7 +524,7 @@ function bigSize(ctx) {
     desc: "خرید لباس سایز بزرگ مردانه از 3XL تا 6XL: تیشرت سایز بزرگ، شلوار اسلش سایز بزرگ، شلوارک و پوشاک راحتی برای آقایان درشت‌اندام؛ با قواره و قد واقعی از بازار تبریز.",
     schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
-<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا 6XL را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600"></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا 6XL را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="" width="480" height="600" loading="lazy" decoding="async"></header>
 <section class="sec-sm" style="padding-top:12px"><div class="wrap"><div class="grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="fit rv"><div><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا 6XL پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">تا 3XL</span><h2>مدل‌های دیگر با سایز 3XL</h2></div></div><div class="grid">${xl3.slice(0, 8).map((p) => card(ctx, p)).join("")}</div></div></section>
@@ -563,10 +568,13 @@ function about(ctx) {
     title: "داستان المارت؛ ۶۰ سال در بازار سرپوشیده تبریز",
     desc: `المارت (ELLMARRT) تولیدی و پخش پوشاک مردانه در بازار بزرگ تبریز است؛ کاری خانوادگی که ${fa(STORE.years)} سال پیش آغاز شد و حالا آنلاین به سراسر ایران می‌فروشد.`,
     image: `${ctx.SITE_URL}/assets/og/hojreh.jpg`,
+    preload: `${ctx.BASE}/assets/p/60209573-960.webp`,
+    preloadSet: `${ctx.BASE}/assets/p/60209573-480.webp 480w, ${ctx.BASE}/assets/p/60209573-960.webp 960w`,
+    preloadSizes: "(max-width:900px) 92vw, 46vw",
     schema: [crumbSchema(ctx, items), orgSchema(ctx)],
     body: `${crumbs(ctx, items)}
 <section class="sec-sm"><div class="wrap story">
-<div class="story-media"><div class="arch"><img src="${ctx.BASE}/assets/p/60209573-960.webp" alt="ست مردانه المارت" width="960" height="1200" fetchpriority="high"></div><div class="badge-yr"><b class="num">${fa(STORE.years)}</b>سال سابقه</div></div>
+<div class="story-media"><div class="arch"><img src="${ctx.BASE}/assets/p/60209573-960.webp" srcset="${ctx.BASE}/assets/p/60209573-480.webp 480w, ${ctx.BASE}/assets/p/60209573-960.webp 960w" sizes="(max-width:900px) 92vw, 46vw" alt="ست مردانه المارت" width="960" height="1200" fetchpriority="high" decoding="async"></div><div class="badge-yr"><b class="num">${fa(STORE.years)}</b>سال سابقه</div></div>
 <div class="prose" style="margin:0">
 <span class="kicker">داستان ما</span>
 <h1 style="font-size:clamp(28px,4vw,46px)">از یک حجره در بازار تبریز تا خانه شما</h1>
@@ -576,7 +584,7 @@ function about(ctx) {
 <ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه چند نسل انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
 <p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} @${STORE.igHandle}</a></p>
 </div></div></section>
-<section class="sec-sm"><div class="wrap"><figure class="hojreh"><img src="${ctx.BASE}/assets/img/hojreh-1280.webp" srcset="${ctx.BASE}/assets/img/hojreh-640.webp 640w, ${ctx.BASE}/assets/img/hojreh-1280.webp 1280w" sizes="(max-width:1240px) 94vw, 1200px" alt="غرفه المارت در بازار سرپوشیده تبریز؛ هودی، سویشرت، شلوار و کفش مردانه" width="1280" height="960" loading="lazy"><figcaption>غرفه المارت در بازار سرپوشیده تبریز. همین‌جا هر کالا را قبل از ارسال با دست بررسی می‌کنیم.</figcaption></figure></div></section>`,
+<section class="sec-sm"><div class="wrap"><figure class="hojreh"><img src="${ctx.BASE}/assets/img/hojreh-1280.webp" srcset="${ctx.BASE}/assets/img/hojreh-640.webp 640w, ${ctx.BASE}/assets/img/hojreh-1280.webp 1280w" sizes="(max-width:1240px) 94vw, 1200px" alt="غرفه المارت در بازار سرپوشیده تبریز؛ هودی، سویشرت، شلوار و کفش مردانه" width="1280" height="960" loading="lazy" decoding="async"><figcaption>غرفه المارت در بازار سرپوشیده تبریز. همین‌جا هر کالا را قبل از ارسال با دست بررسی می‌کنیم.</figcaption></figure></div></section>`,
   });
 }
 
@@ -757,7 +765,7 @@ function guideCover(ctx, g) {
 }
 function gcard(ctx, g, h = "h3") {
   const p = guideCover(ctx, g);
-  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" alt="" width="480" height="600" loading="lazy">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><${h}>${g.title}</${h}><p>${g.desc}</p></div></a>`;
+  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" srcset="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${ctx.BASE}/assets/p/${mainBase(p)}-960.webp 960w" sizes="(max-width:600px) 100vw, 33vw" alt="" width="480" height="600" loading="lazy" decoding="async">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><${h}>${g.title}</${h}><p>${g.desc}</p></div></a>`;
 }
 
 function guide(ctx, g) {
