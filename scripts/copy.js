@@ -1,6 +1,4 @@
 // Professional product copy: hand-written hook (data/curated.js) + structured facts from Basalam data.
-const fa = (n) => String(n).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
-
 const CAT = {
   tshirt: {
     intro: "دوخت تمیز صنعتی، یقه کشباف مقاوم که بعد از شستشو باز نمی‌شود و پارچه‌ای که روی تن خوش می‌نشیند.", use: "استفاده روزمره، دانشگاه، سفر و دورهمی", care: "در آب سرد یا ولرم (حداکثر ۳۰ درجه) و پشت‌ورو بشویید؛ برای حفظ چاپ، روی طرح اتو نکنید.", size: "اگر بین دو سایز هستید، برای فرم اورسایز سایز بزرگ‌تر و برای فرم معمولی سایز همیشگی خود را بردارید.",
@@ -103,6 +101,38 @@ const CAT = {
 const pick = (attrs, key) => (attrs.find(([k]) => k === key) || [])[1];
 const tidy = (s) => String(s || "").replace(/\s+/g, " ").replace(/^[\s.،:;-]+|[\s.،:;-]+$/g, "").trim();
 
+// Match only explicit Basalam wording; category membership is not evidence of fit
+// or construction. Keep these independent of curated hooks and owner overrides.
+function productParagraph(p) {
+  const title = tidy(p.basalamTitle);
+  const source = `${title} ${tidy(p.description)}`.replace(/‌/g, " ");
+  const material = tidy(p.material) || (title.match(/نخ\s*[0-9۰-۹]+/) || [])[0];
+  const details = [
+    [/باکسی/, "برش باکسی دارد"],
+    [/مدل راسته|اسلش راسته/, "فرم آن راسته است"],
+    [/مدل: بگ|مدل: نیم بگ|شلوار بگ|شلوار نیم بگ/, "با قواره بگ معرفی شده است"],
+    [/تن ?خور[:، ]+آزاد|تن ?خور آزاد/, "تن‌خور آن آزاد است"],
+    [/سنگ[ ‌]?شور/, "پرداخت سنگ‌شور از مشخصه‌های این مدل است"],
+    [/شش جیب|6 جیب|۶ جیب/, "شش جیب دارد"],
+    [/جیب[ ‌]?های زیپ[ ‌]?دار|جیب[:، ]+زیپ[ ‌]?دار|جیب با زیپ مخفی/, "جیب زیپ‌دار دارد"],
+    [/یقه انگلیسی/, "با یقه انگلیسی طراحی شده است"],
+    [/نیم[ ‌]?زیپ/, "یقه آن با نیم‌زیپ باز و بسته می‌شود"],
+    [/تمام[ ‌]?زیپ/, "جلوی لباس تمام‌زیپ است"],
+    [/دمپا کش|دمپا[:، ]+کش[ ‌]?دار/, "دمپای کش‌دار دارد"],
+    [/بغل[ ‌]?نوار سه[ ‌-]?خط/, "نوار سه‌خط در کناره‌ها دارد"],
+    [/بغل[ ‌]?نوار کنفی/, "نوار کنفی در کنار شلوار کار شده است"],
+  ].filter(([re]) => re.test(source)).map(([, text]) => text);
+  const sentences = [
+    `${title}${material ? `؛ جنس این مدل ${material} است` : ""}.`,
+    details.length && `این مدل ${details.join("؛ ")}.`,
+    p.sizes.length && `سایزهای ثبت‌شده برای آن ${p.sizes.join("، ")} هستند.`,
+    !p.sizes.length && tidy(pick(p.attrs, "سایز")) && `اطلاعات سایز در غرفه: ${tidy(pick(p.attrs, "سایز"))}.`,
+    p.colors.length && `رنگ‌بندی ثبت‌شده شامل ${p.colors.join("، ")} است.`,
+    !p.colors.length && tidy(pick(p.attrs, "رنگ")) && !/تصویر|عکس/.test(pick(p.attrs, "رنگ")) && `رنگ در مشخصات غرفه «${tidy(pick(p.attrs, "رنگ"))}» درج شده است.`,
+  ];
+  return sentences.filter(Boolean).join(" ");
+}
+
 function build(p) {
   const c = CAT[p.cat] || CAT.tshirt;
   const inStockColors = p.colors.filter((col) => p.variants.some((v) => v.color === col && v.stock > 0));
@@ -112,19 +142,16 @@ function build(p) {
   if (material) facts.push(["جنس", material]);
   if (p.sizes.length) facts.push(["سایزبندی", p.sizes.join(" / ") + (sizesOk.length && sizesOk.length < p.sizes.length ? ` (موجود: ${sizesOk.join("، ")})` : "")]);
   if (inStockColors.length) facts.push(["رنگ‌های موجود", inStockColors.join("، ")]);
-  const extra = tidy(pick(p.attrs, "سایر توضیحات"));
+  const paragraph = productParagraph(p);
   const bullets = [
-    c.intro,
-    material && `جنس ${material}؛ انتخاب‌شده با تجربه چند دهه فروش پوشاک در بازار تبریز.`,
-    p.sizes.length && `سایزبندی ${p.sizes[0]} تا ${p.sizes[p.sizes.length - 1]}${p.sizes.some((s) => /^[4-6]XL$/.test(s)) ? "، با قواره واقعی برای سایزهای بزرگ" : ""}.`,
-    inStockColors.length > 1 && `${fa(inStockColors.length)} رنگ موجود: ${inStockColors.join("، ")}.`,
-    extra && extra.length < 120 && !/http|@|09\d{9}/.test(extra) && extra + (/[.!؟]$/.test(extra) ? "" : "."),
+    sizesOk.length && `سایزهای موجود: ${sizesOk.join("، ")}.`,
+    inStockColors.length && `رنگ‌های موجود: ${inStockColors.join("، ")}.`,
     p.extra,
-    `مناسب برای ${c.use}.`,
   ].filter(Boolean);
-  const lead = p.hook || `${p.title}؛ انتخابی خوش‌دوخت و بادوام از کالکشن المارت.`;
-  const plain = [lead,...bullets, `نکته سایز: ${c.size}`, `نگهداری: ${c.care}`].join(" ");
-  return { lead, bullets, sizeNote: c.size, care: c.care, facts, plain };
+  const lead = p.hook || p.title;
+  const sizeNote = "اندازه‌های همین مدل را با لباس خوش‌اندازه خود مقایسه کنید؛ نام سایز به‌تنهایی معیار انتخاب نیست.";
+  const plain = [lead, paragraph, ...bullets, `نکته سایز: ${sizeNote}`, `نگهداری: ${c.care}`].join(" ");
+  return { lead, paragraph, bullets, sizeNote, care: c.care, facts, plain };
 }
 
 module.exports = { build, CAT };
