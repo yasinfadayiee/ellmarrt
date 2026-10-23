@@ -37,6 +37,8 @@ const copyDir = (src, dst) => {
 
 // Enamad domain ownership verification; preserve on every rebuild.
 write("25394575.txt", "");
+// IndexNow key file (Bing/Yandex); preserve on every rebuild.
+write("5553601b0a9b596a60aaaad7a46fb679.txt", "5553601b0a9b596a60aaaad7a46fb679");
 
 // assets
 copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
