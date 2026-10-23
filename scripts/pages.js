@@ -582,9 +582,42 @@ function about(ctx) {
 <p>روزهای اول سخت بود؛ مشتری کم و فروش پایین. اما هر روز یاد گرفتیم و بهتر شدیم. امروز همان حجره کوچک جایی است که مشتری‌ها با لبخند می‌آیند — و حالا با سایت المارت، همان اعتماد بازار را به سراسر ایران می‌بریم.</p>
 <h2>چیزهایی که برایمان مهم است</h2>
 <ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه چند نسل انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
-<p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} @${STORE.igHandle}</a></p>
+<p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} @${STORE.igHandle}</a> <a class="btn btn-ghost" href="${ctx.BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a></p>
 </div></div></section>
 <section class="sec-sm"><div class="wrap"><figure class="hojreh"><img src="${ctx.BASE}/assets/img/hojreh-1280.webp" srcset="${ctx.BASE}/assets/img/hojreh-640.webp 640w, ${ctx.BASE}/assets/img/hojreh-1280.webp 1280w" sizes="(max-width:1240px) 94vw, 1200px" alt="غرفه المارت در بازار سرپوشیده تبریز؛ هودی، سویشرت، شلوار و کفش مردانه" width="1280" height="960" loading="lazy" decoding="async"><figcaption>غرفه المارت در بازار سرپوشیده تبریز. همین‌جا هر کالا را قبل از ارسال با دست بررسی می‌کنیم.</figcaption></figure></div></section>`,
+  });
+}
+
+function tabrizBazaar(ctx) {
+  const items = [["/", "خانه"], ["/tabriz-bazaar/", "بازار سرپوشیده تبریز"]];
+  const inStock = ctx.products.filter((p) => p.inStock);
+  const categories = Object.entries(ctx.CATEGORIES).filter(([key]) => inStock.some((p) => p.cat === key));
+  const prods = inStock.slice(0, 4);
+  return layout(ctx, {
+    path: "/tabriz-bazaar/",
+    title: `پوشاک مردانه بازار سرپوشیده تبریز | ${STORE.name}`,
+    desc: `پوشاک مردانه ${STORE.name} از بازار سرپوشیده تبریز؛ نشانی و مسیریابی غرفه، دسته‌بندی لباس‌ها و سایز بزرگ واقعی، با ارسال به سراسر ایران از روز اول کاری.`,
+    schema: [crumbSchema(ctx, items), orgSchema(ctx)],
+    body: `${crumbs(ctx, items)}
+<section class="sec-sm"><div class="wrap prose">
+<h1>پوشاک مردانه از دل بازار سرپوشیده تبریز</h1>
+<p>المارت کاری خانوادگی است؛ غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعالیت دارد. این کار را از پدرمان به ارث برده‌ایم و راه او را ادامه می‌دهیم.</p>
+<h2>چرا از بازار تبریز بخریم</h2>
+<ul>
+<li><b>انتخاب با تجربه چند نسل:</b> جنس بازاری با قیمت منصفانه.</li>
+<li><b>عکس واقعی و اندازه دقیق:</b> هر کالا را پیش از ارسال بررسی می‌کنیم.</li>
+<li><b>ارسال از روز اول کاری:</b> سفارش‌ها با بسته‌بندی ایمن به سراسر ایران فرستاده می‌شوند.</li>
+<li><b>سایز بزرگ واقعی:</b> لباس برای آقایانی که پیدا کردن سایز مناسب برایشان آسان نیست.</li>
+</ul>
+<h2>نشانی غرفه المارت در بازار تبریز</h2>
+<p>${esc(STORE.address)}</p>
+<p><a class="btn btn-ink" href="https://neshan.org/maps/search/${encodeURIComponent("بازار سرپوشیده تبریز")}" target="_blank" rel="noopener">مسیریابی</a></p>
+<p>تماس با غرفه: ${STORE.phones.map((p) => `<a href="tel:${p}" class="num">${fa0(p)}</a>`).join(" · ")}</p>
+<p><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام المارت</a> · <a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه المارت در باسلام</a></p>
+<p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن همه محصولات</a> <a class="btn btn-ghost" href="${ctx.BASE}/about/">داستان المارت</a> <a class="btn btn-ghost" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز</a> <a class="btn btn-ghost" href="${ctx.BASE}/big-size/">لباس سایز بزرگ مردانه</a></p>
+</div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>دسته‌بندی‌های موجود</h2></div><div class="grid">${categories.map(([, c]) => `<a class="btn btn-ghost" href="${ctx.BASE}/c/${c.slug}/">${esc(c.name)}</a>`).join("")}</div></div></section>
+${prods.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>چند مدل از محصولات موجود</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>` : ""}`,
   });
 }
 
@@ -791,7 +824,7 @@ function guideIndex(ctx) {
     desc: "مقاله‌های راهنمای خرید المارت: شلوار اسلش، لباس سایز بزرگ مردانه، هودی و دورس، قواره تیشرت، پولوشرت و جدول سایز.",
     schema: [crumbSchema(ctx, items)],
     body: `${crumbs(ctx, items)}<header class="wrap phead"><h1>راهنمای خرید</h1><p>تجربه چند دهه فروش در بازار تبریز، خلاصه در چند مقاله کوتاه.</p></header>
-<section class="sec-sm"><div class="wrap"><div class="gcards">${guides.map((g) => gcard(ctx, g, "h2")).join("")}</div><p class="gmore">سایزتان را نمی‌دانید؟ <a class="link" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a> را ببینید.</p></div></section>`,
+<section class="sec-sm"><div class="wrap"><div class="gcards">${guides.map((g) => gcard(ctx, g, "h2")).join("")}</div><p class="gmore">سایزتان را نمی‌دانید؟ <a class="link" href="${ctx.BASE}/size-guide/">سایزیاب و جدول سایز مردانه</a> را ببینید. نشانی غرفه و دسته‌بندی لباس‌ها را هم در صفحه <a class="link" href="${ctx.BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a> پیدا می‌کنید.</p></div></section>`,
   });
 }
 
@@ -820,4 +853,4 @@ ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.l
 }
 
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
-module.exports = { ...info, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, faq, guide, guideIndex, guides, notFound, llms };
+module.exports = { ...info, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
