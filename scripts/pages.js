@@ -183,6 +183,7 @@ const storeReviewsBlock = (ctx, p) => {
   return `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران غرفه</span><h2>${fa(RV.average)} از ۵ <small class="h-sub">از ${fa(RV.count)} امتیاز خریداران المارت در باسلام</small></h2></div><a class="link" href="${STORE.basalam}" target="_blank" rel="noopener">همه نظرها در باسلام</a></div><div class="rv-grid">${picks.map((r) => reviewCard(ctx, r, true)).join("")}</div></div></section>`;
 };
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
+const guideFor = (p) => guides.find((g) => g.cats.includes(p.cat));
 const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
 const pUrl = (ctx, p) => `${ctx.BASE}/p/${p.id}/`;
@@ -419,6 +420,7 @@ ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) =
 function product(ctx, p) {
   const { BASE, SITE_URL, products: P } = ctx;
   const c = catOf(ctx, p);
+  const g = guideFor(p);
   const items = [["/", "خانه"], [`/c/${c.slug}/`, c.name], [`/p/${p.id}/`, short(p)]];
   const hero = `${BASE}/assets/p/${mainBase(p)}-960.webp`;
   // gallery = main studio shot + one studio shot per colour (no duplicate crops)
@@ -436,7 +438,7 @@ function product(ctx, p) {
   const pairCats = PAIRS[p.cat] || [];
   const pair = P.filter((x) => x.inStock && pairCats.includes(x.cat)).sort(rank).slice(0, 4);
   const related = P.filter((x) => x.id !== p.id && x.cat === p.cat && x.inStock).sort(rank).slice(0, 4);
-  const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x) && !pair.includes(x)).slice(0, 4 - related.length) : [];
+  const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x)).slice(0, 4 - related.length) : [];
   const facts = [["دسته‌بندی", c.name], ...(sizes.length ? [["سایزها", sizes.join(" ، ")]] : []), ...(colors.length ? [["رنگ‌ها", colors.join("، ")]] : []), ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند"].includes(k))];
   const desc = `${p.title} از ${STORE.name}، بازار تبریز${p.material ? `؛ جنس ${p.material}` : ""}${sizes.length ? `، سایز ${sizes[0]} تا ${sizes[sizes.length - 1]}` : ""}. قیمت ${fa(p.price)} تومان، خرید امن و ارسال به سراسر ایران.`;
   const offerAvail = p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
@@ -491,7 +493,7 @@ ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
-<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>مدل‌های مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div></div></section>
+<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>محصولات مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div>${g ? `<p class="note-sm">راهنمای خرید: <a href="${BASE}/guide/${g.slug}/">${g.title}</a></p>` : ""}</div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
 <script type="application/json" id="pdp-data">${json(data)}</script>`;
   return layout(ctx, {
@@ -812,7 +814,7 @@ function guide(ctx, g) {
     schema: [crumbSchema(ctx, items), { "@context": "https://schema.org", "@type": "Article", headline: g.title, description: g.desc, inLanguage: "fa-IR", author: { "@type": "Organization", name: STORE.name }, publisher: { "@id": `${ctx.SITE_URL}/#store` }, mainEntityOfPage: `${ctx.SITE_URL}/guide/${g.slug}/`, datePublished: g.date || "2026-10-12" }],
     body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1><p class="gmeta">${fa(readMin(ctx, g))} دقیقه مطالعه · ${new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(g.date || "2026-10-12"))}</p>${g.html(ctx)}</div></article>
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>
-<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>راهنماهای دیگر</h2></div><div class="gcards">${guides.filter((x) => x !== g).sort((a, b) => (b.cats.some((c) => g.cats.includes(c)) - a.cats.some((c) => g.cats.includes(c)))).slice(0, 3).map((x) => gcard(ctx, x)).join("")}</div></div></section>`,
+<section class="sec-sm"><div class="wrap prose"><h2>راهنماهای بیشتر</h2><ul>${guides.filter((x) => x.slug !== g.slug).map((x) => `<li><a href="${ctx.BASE}/guide/${x.slug}/">${x.title}</a></li>`).join("")}</ul></div></section>`,
   });
 }
 
