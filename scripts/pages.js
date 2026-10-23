@@ -477,7 +477,7 @@ function product(ctx, p) {
         <button class="btn btn-ghost fav" data-id="${p.id}" style="position:static;width:54px;padding:0" aria-label="افزودن به علاقه‌مندی‌ها">${I.heart}</button>
         <button class="btn btn-ghost" id="share" style="width:54px;padding:0" aria-label="اشتراک‌گذاری">${I.share}</button>
       </div>
-      ${p.inStock ? "" : "<!--"}<button class="btn btn-gold btn-block" id="direct-order">${I.phone} سفارش مستقیم (تلفنی / پیامکی)</button>${p.inStock ? "" : "-->"}
+      ${p.inStock ? "" : "<!--"}<button class="btn btn-gold btn-block" id="direct-order" data-direct-order>${I.phone} سفارش مستقیم (تلفنی / پیامکی)</button>${p.inStock ? "" : "-->"}
       <p class="buy-note">پرداخت از درگاه امن باسلام با ضمانت بازگشت وجه؛ ارسال از روز اول کاری.</p>
     </div>
     <div class="perks"><div>${I.truck}ارسال سراسری</div><div>${I.shield}ضمانت باسلام</div><div>${I.camera}بررسی قبل از ارسال</div></div>
@@ -490,7 +490,7 @@ function product(ctx, p) {
 </div>
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
-${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a></div>` : ""}
+${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-gold" type="button" data-direct-order>سفارش مستقیم</button></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>محصولات مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div>${g ? `<p class="note-sm">راهنمای خرید: <a href="${BASE}/guide/${g.slug}/">${g.title}</a></p>` : ""}</div></section>

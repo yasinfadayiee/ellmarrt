@@ -325,8 +325,9 @@ p{margin:0 0 1em}
 @media (max-width:900px){
   .mbar{display:flex;position:fixed;inset-inline:0;bottom:0;z-index:40;background:rgba(251,248,242,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:12px;align-items:center;transform:translateY(110%);transition:transform .35s var(--ease)}
   .mbar.on{transform:none}
-  .mbar .btn{flex:1;height:48px}
-  .mbar b{font-size:17px;font-weight:900;white-space:nowrap}
+  .mbar .btn{flex:1;height:46px;padding-inline:8px;font-size:14px;white-space:nowrap}
+  .mbar b{font-size:14px;font-weight:900;white-space:nowrap}
+  .mbar{gap:8px}
 }
 
 /* lightbox */

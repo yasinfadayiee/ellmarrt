@@ -229,7 +229,7 @@
     const close = () => { modal.classList.remove("on"); document.body.style.overflow = ""; };
     $(".modal-x", modal).addEventListener("click", close);
     modal.addEventListener("click", (e) => e.target === modal && close());
-    dob.addEventListener("click", () => {
+    const openDirectOrder = () => {
       const color = $("[data-color][aria-pressed=true]")?.dataset.color || ($$("[data-color]").length ? null : "");
       const size = $("[data-size][aria-pressed=true]")?.dataset.size || ($$("[data-size]").length ? null : "");
       if (size === null) { toast("اول سایز را انتخاب کنید"); $(".opt")?.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
@@ -242,7 +242,8 @@
       $("#om-sms").href = `sms:${(window.__STORE__ || {}).phones?.[0] || ""}?&body=${encodeURIComponent(body)}`;
       modal.classList.add("on"); document.body.style.overflow = "hidden";
       navigator.clipboard?.writeText(body).catch(() => {});
-    });
+    };
+    $$("[data-direct-order]").forEach((b) => b.addEventListener("click", openDirectOrder));
   }
   /* night mode toggle — choice is remembered on this device */
   const tBtn = $("#theme-toggle");
