@@ -257,6 +257,7 @@ function home(ctx) {
   const big = P.filter((p) => isBig(p) && p.inStock).slice(0, 4);
   const catImg = { tshirt: 49701761, polo: 53765502, shirt: 45025631, sweat: 58897534, pants: 54126455, shorts: 42724724, shoes: 43999644, kids: 36616537 };
   const cats = Object.entries(C).map(([k, c]) => ({ k, c, n: P.filter((p) => p.cat === k).length })).filter((x) => x.n);
+  const inStockCategories = Object.entries(C).filter(([key]) => P.some((p) => p.inStock && p.cat === key));
   const body = `
 <section class="hero">
   <svg class="hero-vault" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="vg" x1="0" x2="1"><stop offset="0" stop-color="#e2b45a" stop-opacity=".1"/><stop offset=".5" stop-color="#e2b45a" stop-opacity=".9"/><stop offset="1" stop-color="#e2b45a" stop-opacity=".1"/></linearGradient></defs><path d="M120 800V420C120 230 400 120 720 40c320 80 600 190 600 380v380"/><path d="M240 800V460C240 310 460 220 720 150c260 70 480 160 480 310v340"/><path d="M360 800V500C360 390 520 320 720 260c200 60 360 130 360 240v300"/><path d="M480 800V540c0-80 110-130 240-170 130 40 240 90 240 170v260"/></svg>
@@ -342,6 +343,12 @@ return `<section class="sec reviews"><div class="wrap">
   <div class="gcards rv" style="margin-top:40px">${guides.slice(0, 3).map((g) => gcard(ctx, g)).join("")}</div>
   <p style="text-align:center;margin-top:16px"><a class="link" href="${BASE}/guide/">همه راهنماهای خرید</a></p>
   <p style="text-align:center;margin-top:28px"><a class="btn btn-ghost" href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال دیگری دارید؟ در اینستاگرام بپرسید</a></p>
+</div></section>
+<section class="sec-sm"><div class="wrap">
+  <div class="sec-head"><div><span class="kicker">معرفی المارت</span><h2>پوشاک مردانه از بازار سرپوشیده تبریز</h2></div></div>
+  <p>المارت ادامه راه پدری است که کارش را در بازار سرپوشیده تبریز به ما سپرد؛ غرفه ما ${fa(STORE.years)} سال سابقه فعالیت در این بازار دارد. امروز هم با همان تجربه، لباس مردانه و سایز بزرگ واقعی عرضه می‌کنیم و هر کالا را پیش از فرستادن بررسی می‌کنیم. سفارش‌ها از روز اول کاری پس از خرید به سراسر ایران ارسال می‌شوند. برای خرید می‌توانید از غرفه باسلام یا سفارش مستقیم استفاده کنید.</p>
+  <p>دسته‌بندی‌ها: ${inStockCategories.map(([, c]) => `<a class="link" href="${BASE}/c/${c.slug}/">${c.name}</a>`).join(" · ")}</p>
+  <p><a class="link" href="${BASE}/tabriz-bazaar/">پوشاک مردانه بازار سرپوشیده تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${guides.slice(0, 3).map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></p>
 </div></section>`;
   return layout(ctx, {
     path: "/",
@@ -409,7 +416,7 @@ function category(ctx, c) {
     preloadSizes: "(max-width:600px) 50vw, 25vw",
     schema: [crumbSchema(ctx, items), itemList(ctx, list), ...(qa.length ? [faqSchema(qa)] : [])],
     body: `${crumbs(ctx, items)}
-<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="${esc(`${c.name} مردانه المارت`.slice(0, 120))}" width="480" height="600" loading="lazy" decoding="async"></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ${c.name}</span><h1>${c.h1}</h1><p>${c.desc} قیمت‌ها از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="${esc(`${c.name}${/مردانه|پسرانه/.test(c.name) ? "" : " مردانه"} المارت`.slice(0, 120))}" width="480" height="600" loading="lazy" decoding="async"></header>
 <section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i === 0)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
