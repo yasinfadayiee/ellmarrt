@@ -141,7 +141,7 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 40,
+ "inventory": 39,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-10-02T00:57:44+03:30",
@@ -305,7 +305,7 @@
    "id": 78287249,
    "price": 26500000,
    "primary_price": 26500000,
-   "stock": 10,
+   "stock": 9,
    "order": null,
    "properties": [
     {
