@@ -445,13 +445,18 @@ function product(ctx, p) {
   const schema = {
     "@context": "https://schema.org", "@type": "Product", "@id": `${SITE_URL}/p/${p.id}/#product`,
     name: p.title, sku: String(p.id), mpn: String(p.id), category: c.name,
-    image: [`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.slice(0, 4).map((g) => `${SITE_URL}/assets/p/${g.file}`)],
+    brand: { "@type": "Brand", name: STORE.latin },
+    image: [...new Set([`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.map((g) => `${SITE_URL}/assets/p/${g.file}`)])].slice(0, 5),
     description: p.copy.plain.slice(0, 4900),
     ...(p.material ? { material: p.material } : {}),
     ...(colors.length ? { color: colors.join("، ") } : {}),
     ...(sizes.length ? { size: sizes.join(", ") } : {}),
     audience: { "@type": "PeopleAudience", suggestedGender: p.cat === "kids" ? "unisex" : "male" },
-    offers: { "@type": "Offer", url: `${SITE_URL}/p/${p.id}/`, priceCurrency: "IRR", price: p.price * 10, availability: offerAvail, itemCondition: "https://schema.org/NewCondition", seller: { "@id": `${SITE_URL}/#store` } },
+    ...(p.price > 0 ? { offers: {
+      "@type": "Offer", url: `${SITE_URL}/p/${p.id}/`, priceCurrency: "IRR", price: p.price * 10,
+      priceValidUntil: `${new Date().getFullYear()}-12-31`, availability: offerAvail,
+      itemCondition: "https://schema.org/NewCondition", seller: { "@id": `${SITE_URL}/#store` },
+    } } : {}),
     ...(p.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating.avg, reviewCount: p.rating.count, bestRating: 5 } } : {}),
   };
   const data = { id: p.id, hero: true, variants: p.variants.map(({ color, size, stock }) => ({ color, size, stock })) };
