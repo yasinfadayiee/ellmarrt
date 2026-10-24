@@ -114,7 +114,7 @@
   "id": 45029484,
   "name": "شلوار کتان پنبهای شسته سایز بزرگ 2XL 3XL کمر کش بند",
   "price": 5500000,
-  "stock": 8,
+  "stock": 2,
   "sales_count": 1,
   "sales_count_week": 0,
   "rating": {
@@ -124,40 +124,6 @@
   },
   "categoryTitle": "شلوار و شلوارک مردانه",
   "video": null
- },
- {
-  "id": 44440219,
-  "name": "تیشرت مردانه طرح ساده  پنبه 28 ",
-  "price": 7700000,
-  "stock": 19,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "تیشرت و پولوشرت مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-191/video/product/X6zxOW/05-07/iiHUPZ3lcXbizU6jCQHT4ACYSyix6iQp053p0JnMJDqoQJj4zb.mp4"
-  }
- },
- {
-  "id": 45025631,
-  "name": "پیراهن آستین کوتاه یقه انگلیسی مراکشی سایز M تا XXL",
-  "price": 9900000,
-  "stock": 3,
-  "sales_count": 1,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "بلوز و پیراهن مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-194/video/product/X6zxOW/05-15/5sV2JXcEJrEt0FARArCjvPWUJOKgUN35enNjXSkIdDPYzC9Csl.mp4"
-  }
  },
  {
   "id": 44438897,
@@ -758,7 +724,7 @@
   "id": 49701761,
   "name": "تیشرت باکسی مردانه ترند سال",
   "price": 11900000,
-  "stock": 18,
+  "stock": 12,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {

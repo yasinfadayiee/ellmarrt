@@ -143,11 +143,11 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 8,
+ "inventory": 2,
  "net_weight": 400,
  "net_weight_decimal": 400,
  "created_at": "2026-05-15T18:12:38+03:30",
- "updated_at": "2026-08-20T00:55:13+03:30",
+ "updated_at": "2026-10-24T23:35:33+03:30",
  "description": "\n\nسلام عزیزان\nاین شلوار کتان پنبه درجه یک هست با یه ویژگی خاص که توی بازار کم هست:\n\n✨ شسته\nیعنی بعد از دوخت، یه بار شستشو کامل رفته. این کار باعث میشه:\n✔️ پرز و مواد اضافی پارچه بره\n✔️ چروک اولیه از بین بره\n✔️ سایز نهایی ثابت بشه (دیگه آب نرود)\n\n📏 قد 75 (روی بیشتر قدها خوب مینشیند)\n🧵 جنس: کتان پنبه، لطیف و خنک، مناسب بهار و تابستان\n🎨 رنگ‌بندی مطابق تصویر\n👖 دو جیب کاربردی\n🩴 کمر کش + بند (نیاز به کمرشکن نداره، خیلی راحته)\n\n📦 فقط سایز 2XL و 3XL موجود\n\n\n\n🚚 ارسال به سراسر کشور\n\n📌 نکته مهم: این شلوار برای مشتریایی که سایز بزرگ نیاز دارن و از شلوارهای معمولی خسته شدن، عالیه. کمر کش + قد بلند + جنس شسته = خریدی بی‌دغدغه.\n\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -270,78 +270,6 @@
       "id": 38927,
       "title": "زرد 2xl",
       "value": "زرد 2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 38142479,
-   "price": 5500000,
-   "primary_price": 5500000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 135231,
-      "title": "زرد 3xl",
-      "value": "زرد 3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 38142482,
-   "price": 5500000,
-   "primary_price": 5500000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 62267,
-      "title": "قرمز 2xl",
-      "value": "قرمز 2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 38142483,
-   "price": 5500000,
-   "primary_price": 5500000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 207393,
-      "title": "قرمز 3xl",
-      "value": "قرمز 3xl",
       "order": null
      }
     }
@@ -494,6 +422,30 @@
    "discount": null
   },
   {
+   "id": 38142479,
+   "price": 5500000,
+   "primary_price": 5500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 135231,
+      "title": "زرد 3xl",
+      "value": "زرد 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 38142480,
    "price": 5500000,
    "primary_price": 5500000,
@@ -534,6 +486,54 @@
       "id": 140648,
       "title": "کرمی 3xl",
       "value": "کرمی 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 38142482,
+   "price": 5500000,
+   "primary_price": 5500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 62267,
+      "title": "قرمز 2xl",
+      "value": "قرمز 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 38142483,
+   "price": 5500000,
+   "primary_price": 5500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 207393,
+      "title": "قرمز 3xl",
+      "value": "قرمز 3xl",
       "order": null
      }
     }
