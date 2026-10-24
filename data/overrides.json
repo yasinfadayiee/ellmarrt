@@ -1,1 +1,7 @@
-{ "site": {}, "products": {}, "reviewsHidden": [] }
+{
+  "site": {
+    "years": 23
+  },
+  "products": {},
+  "reviewsHidden": []
+}
