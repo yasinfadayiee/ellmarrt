@@ -176,11 +176,11 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 8,
+ "inventory": 18,
  "net_weight": 800,
  "net_weight_decimal": 800,
  "created_at": "2026-07-05T21:32:22+03:30",
- "updated_at": "2026-08-20T00:55:13+03:30",
+ "updated_at": "2026-10-24T21:38:18+03:30",
  "description": "\nشلوار اسلش راحتی مخصوص پیاده‌روی | تمام نخ \n\nشلوار اسلش مردانه راحتی، مخصوص پیاده‌روی، بیرون و استفاده روزمره.\nن خیلی راحت می‌ایسته و موقع راه رفتن بدن رو اذیت نمی‌کنه.\n\nپارچه نخ این شلوار برای استفاده طولانی‌مدت عالیه؛ هم تنفس‌پذیره، جنس کار تمام نخ هست؛ بسیار خنک، نرم و سبک، با حالت لخت و ریزش‌دار که روی \nتنکی خوبی داره و برای فصل گرم، پیاده‌روی، سفر، خرید و استفاده روزانه انتخاب خیلی خوبیه.\n\nمشخصات محصول:\nجنس: تمام نخ\nمدل: اسلش راحتی مخصوص پیاده‌روی\nحالت پارچه: لخت، نرم و خنک\nکمر: کشی و بنددار\nجیب: زیپ‌دار\n بدید ✅سایزبندی: 2XL / 3XL / 4XL\n\nقد شلوار:\n2XL: قد 105\n3XL: قد 110\n4XL: قد 110\n\nمناسب آقایانی که دنبال شلوار راحت، خنک و خوش‌فرم برای پیاده‌روی و استفاده روزمره هستن.\n",
  "is_saleable": true,
  "is_showable": true,
@@ -300,6 +300,30 @@
  "rating": 4.3,
  "variants": [
   {
+   "id": 50757648,
+   "price": 9300000,
+   "primary_price": 9300000,
+   "stock": 10,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 2,
+      "title": "سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 658,
+      "title": "2xl",
+      "value": "2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 50757649,
    "price": 9300000,
    "primary_price": 9300000,
@@ -346,30 +370,6 @@
    ],
    "sku": null,
    "discount": null
-  },
-  {
-   "id": 50757648,
-   "price": 9300000,
-   "primary_price": 9300000,
-   "stock": 0,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 2,
-      "title": "سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 658,
-      "title": "2xl",
-      "value": "2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
   }
  ],
  "variants_selected_index": 0,
@@ -401,7 +401,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "attributes": [
   {
    "id": 53899404,

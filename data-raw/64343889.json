@@ -1,0 +1,640 @@
+{
+ "id": 64343889,
+ "title": "دورس نیم زییپ پشت چاپ مردانه",
+ "price": 19520000,
+ "photo": {
+  "id": 460027916,
+  "original": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/d9EMfGC7ZAXg5VHEPzUEEy0XABHhQGGHJGyhfR7h8ASYgKFM9V.jpeg",
+  "xs": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/d9EMfGC7ZAXg5VHEPzUEEy0XABHhQGGHJGyhfR7h8ASYgKFM9V.jpeg",
+  "sm": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/d9EMfGC7ZAXg5VHEPzUEEy0XABHhQGGHJGyhfR7h8ASYgKFM9V.jpeg",
+  "md": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/d9EMfGC7ZAXg5VHEPzUEEy0XABHhQGGHJGyhfR7h8ASYgKFM9V.jpeg",
+  "lg": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/d9EMfGC7ZAXg5VHEPzUEEy0XABHhQGGHJGyhfR7h8ASYgKFM9V.jpeg"
+ },
+ "photos": [
+  {
+   "id": 460027891,
+   "original": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/lk9ExU2LlqKGlJFT5HWuOTpbXDTGiv6MuWuoezmb2rEbHPNNkl.jpeg",
+   "xs": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/lk9ExU2LlqKGlJFT5HWuOTpbXDTGiv6MuWuoezmb2rEbHPNNkl.jpeg",
+   "sm": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/lk9ExU2LlqKGlJFT5HWuOTpbXDTGiv6MuWuoezmb2rEbHPNNkl.jpeg",
+   "md": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/lk9ExU2LlqKGlJFT5HWuOTpbXDTGiv6MuWuoezmb2rEbHPNNkl.jpeg",
+   "lg": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/lk9ExU2LlqKGlJFT5HWuOTpbXDTGiv6MuWuoezmb2rEbHPNNkl.jpeg"
+  },
+  {
+   "id": 460027919,
+   "original": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/PdV23ciEdNPWhBna5m6oF60cnDuiQU5uR14Z4g6MVjGR33xvbO.jpeg",
+   "xs": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/PdV23ciEdNPWhBna5m6oF60cnDuiQU5uR14Z4g6MVjGR33xvbO.jpeg_50X50X70.jpeg",
+   "sm": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/PdV23ciEdNPWhBna5m6oF60cnDuiQU5uR14Z4g6MVjGR33xvbO.jpeg_256X256X70.jpeg",
+   "md": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/PdV23ciEdNPWhBna5m6oF60cnDuiQU5uR14Z4g6MVjGR33xvbO.jpeg_512X512X70.jpeg",
+   "lg": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/PdV23ciEdNPWhBna5m6oF60cnDuiQU5uR14Z4g6MVjGR33xvbO.jpeg_800X800X70.jpeg"
+  },
+  {
+   "id": 460027907,
+   "original": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/ZHtTJTorNxHJ4DLKrpqIp8s6KkGEv9heAtJqgaKFpuuOAfGc1b.jpeg",
+   "xs": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/ZHtTJTorNxHJ4DLKrpqIp8s6KkGEv9heAtJqgaKFpuuOAfGc1b.jpeg_50X50X70.jpeg",
+   "sm": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/ZHtTJTorNxHJ4DLKrpqIp8s6KkGEv9heAtJqgaKFpuuOAfGc1b.jpeg_256X256X70.jpeg",
+   "md": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/ZHtTJTorNxHJ4DLKrpqIp8s6KkGEv9heAtJqgaKFpuuOAfGc1b.jpeg_512X512X70.jpeg",
+   "lg": "https://statics.basalam.com/public-269/users/X6zxOW/10-24/ZHtTJTorNxHJ4DLKrpqIp8s6KkGEv9heAtJqgaKFpuuOAfGc1b.jpeg_800X800X70.jpeg"
+  }
+ ],
+ "video": null,
+ "status": {
+  "name": "در دسترس",
+  "value": 2976,
+  "description": null
+ },
+ "summary": null,
+ "category": {
+  "id": 256,
+  "title": "سویشرت ، هودی و ژاکت مردانه",
+  "placeholder": null,
+  "parent": {
+   "id": 28,
+   "title": "مردانه",
+   "placeholder": null,
+   "parent": {
+    "id": 2,
+    "title": "مد و پوشاک",
+    "placeholder": null,
+    "parent": null,
+    "unit_type_id": null
+   },
+   "unit_type_id": null
+  },
+  "unit_type_id": null
+ },
+ "category_list": [
+  {
+   "id": 1959,
+   "title": "بافت مردانه",
+   "slug": "بافت-مردانه"
+  },
+  {
+   "id": 1960,
+   "title": "پلیور مردانه",
+   "slug": "پلیور-مردانه"
+  },
+  {
+   "id": 1961,
+   "title": "ژاکت بافت مردانه",
+   "slug": "ژاکت-بافت-مردانه"
+  },
+  {
+   "id": 1962,
+   "title": "ژاکت بافتنی مردانه",
+   "slug": "ژاکت-بافتنی-مردانه"
+  },
+  {
+   "id": 1963,
+   "title": "ژاکت مردانه",
+   "slug": "ژاکت-مردانه"
+  },
+  {
+   "id": 1964,
+   "title": "سویشرت مردانه",
+   "slug": "سویشرت-مردانه"
+  },
+  {
+   "id": 1965,
+   "title": "سویشرت و شلوار مردانه",
+   "slug": "سویشرت-و-شلوار-مردانه"
+  },
+  {
+   "id": 1966,
+   "title": "هودی لش مردانه",
+   "slug": "هودی-لش-مردانه"
+  },
+  {
+   "id": 1967,
+   "title": "هودی مردانه",
+   "slug": "هودی-مردانه"
+  }
+ ],
+ "inventory": 12,
+ "net_weight": 800,
+ "net_weight_decimal": 800,
+ "created_at": "2026-10-24T22:22:18+03:30",
+ "updated_at": "2026-10-24T22:50:05+03:30",
+ "description": "\nیه دورس حوله نیم‌زیپ پشت‌چاپ آوردم که واقعاً ارزش دیدن داره.\n\nجنسش دورس حوله‌ست — همون حس گرم و نرم و خوش‌دست که برای پاییز و زمستون آدم دلش می‌خواد. اسپان هم نیست، یعنی نه کش میاد نه زود خراب میشه؛ همون پارچه‌ی سنگین و با دوام که سال‌ها همراهته.\n\nپشتش چاپ داره، و این چاپش یه چیز دیگه‌ست. با کیفیت و ثابت، جوری نیست که با دو تا شستن محو بشه یا ترک بخوره. می‌دونم چاپ‌های بی‌کیفیت چقدر حرص آدمو درمیارن — این یکی خیالتو راحت می‌کنه.\n\nچهار رنگ داریم و سایز L و XL و XXL موجوده.\n\nاگه دنبال یه ست گرم و خوش‌دست هستی که هم خیابونی باشه هم راحت، هم بپوشی و حس کنی کیفیتش رو، اینو از دست نده.\n\nبرای انتخاب سایز و رنگ پیام بده، خودم راهنماییت می‌کنم کدوم بهت می‌خوره\n\n",
+ "is_saleable": true,
+ "is_showable": true,
+ "is_available": true,
+ "primary_price": 32000000,
+ "shipping_area": null,
+ "packaged_weight": 1000,
+ "preparation_day": 0,
+ "attribute_groups": [
+  {
+   "title": "عمومی",
+   "attributes": [
+    {
+     "id": 219,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "مناسب برای",
+     "value": "جوان",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 221,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "جنس",
+     "value": "دورس حوله ای   (اسپان نیست)",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 276,
+     "unit": "سانتیمتر",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "سایز",
+     "value": "l   xl  xxl",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 222,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "رنگ",
+     "value": "مشکی   سفید    طوسی    کرمی ",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1751,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "برند",
+     "value": "المارت",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1319,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "نحوه ی نگهداری و شستشو",
+     "value": "لباس شویی و دستی",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1317,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "موارد استفاده",
+     "value": " مهمانی   روزمره  اسپورت ",
+     "selected_values": null,
+     "required": false
+    }
+   ]
+  }
+ ],
+ "is_free_shipping": false,
+ "location_deployment": {
+  "name": "ارسال توسط غرفه دار",
+  "value": 3017,
+  "description": null
+ },
+ "is_product_for_revision": false,
+ "has_selectable_variation": false,
+ "can_add_to_cart": true,
+ "review_count": 0,
+ "rating": 0,
+ "variants": [
+  {
+   "id": 85123875,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 119103,
+      "title": "مشکی l",
+      "value": "مشکی l",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123876,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 36287,
+      "title": "مشکیxl",
+      "value": "مشکیxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123877,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 69653,
+      "title": "مشکیxxl",
+      "value": "مشکیxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123878,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 47675,
+      "title": "سفید l",
+      "value": "سفید l",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123879,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1142,
+      "title": "سفید xl",
+      "value": "سفید xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123880,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 76134,
+      "title": "سفیدxxl",
+      "value": "سفیدxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123881,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 95816,
+      "title": "طوسی l",
+      "value": "طوسی l",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123882,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 54264,
+      "title": "طوسیxl",
+      "value": "طوسیxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123883,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 110236,
+      "title": "طوسیxxl",
+      "value": "طوسیxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123884,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 33320,
+      "title": "کرمی L",
+      "value": "کرمی L",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123885,
+   "price": 19520000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 145070,
+      "title": "کرمیxl",
+      "value": "کرمیxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 39,
+    "rollback_at": "2027-01-22T23:59:00+03:30",
+    "created_at": "2026-10-24T22:50:05+03:30"
+   }
+  },
+  {
+   "id": 85123886,
+   "price": 32000000,
+   "primary_price": 32000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 763409,
+      "title": "کرمیxxl",
+      "value": "کرمیxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  }
+ ],
+ "variants_selected_index": 0,
+ "shipping_data": {
+  "illegal_for_iran": false,
+  "illegal_for_same_city": false
+ },
+ "free_shipping": {
+  "result": false,
+  "meta_data": {
+   "illegals": {
+    "from_iran": false,
+    "from_same_city": false
+   },
+   "limits": {
+    "to_iran": null,
+    "to_same_city": null
+   }
+  }
+ },
+ "allow_category_change": null,
+ "unit_quantity": 1,
+ "unit_type": {
+  "name": "عددی",
+  "value": 6304,
+  "description": null
+ },
+ "sku": null,
+ "discount": null,
+ "packaging_dimensions": null,
+ "is_wholesale": false,
+ "is_service_variation": false,
+ "attributes": [
+  {
+   "id": 68325353,
+   "key": "موارد استفاده",
+   "value": " مهمانی   روزمره  اسپورت "
+  },
+  {
+   "id": 68325354,
+   "key": "مناسب برای",
+   "value": "جوان"
+  },
+  {
+   "id": 68325355,
+   "key": "جنس",
+   "value": "دورس حوله ای   (اسپان نیست)"
+  },
+  {
+   "id": 68325352,
+   "key": "برند",
+   "value": "المارت"
+  },
+  {
+   "id": 68325356,
+   "key": "رنگ",
+   "value": "مشکی   سفید    طوسی    کرمی "
+  },
+  {
+   "id": 68325357,
+   "key": "سایز",
+   "value": "l   xl  xxl"
+  },
+  {
+   "id": 68325358,
+   "key": "نحوه ی نگهداری و شستشو",
+   "value": "لباس شویی و دستی"
+  }
+ ],
+ "barcode": null,
+ "kalabarg": {
+  "enable": false,
+  "is_bulk": false
+ }
+}
