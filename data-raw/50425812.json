@@ -1,7 +1,7 @@
 {
  "id": 50425812,
  "title": "شلوار اسلش کتان بغل نوار کنفی مردانه سایز بزرگ",
- "price": 13700000,
+ "price": 14500000,
  "photo": {
   "id": 359678416,
   "original": "https://statics.basalam.com/public-219/users/X6zxOW/07-05/fkWWMH5q9pfoJ2VsyTbPQM81Rs03QjE9Cd5JskOLkLw5hFJcet.jpg",
@@ -193,7 +193,7 @@
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 13700000,
+ "primary_price": 14500000,
  "shipping_area": null,
  "packaged_weight": 700,
  "preparation_day": 0,
@@ -296,8 +296,8 @@
  "variants": [
   {
    "id": 50739409,
-   "price": 13700000,
-   "primary_price": 13700000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 4,
    "order": null,
    "properties": [
@@ -320,8 +320,8 @@
   },
   {
    "id": 50739410,
-   "price": 13700000,
-   "primary_price": 13700000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 3,
    "order": null,
    "properties": [
@@ -344,8 +344,8 @@
   },
   {
    "id": 50739411,
-   "price": 13700000,
-   "primary_price": 13700000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 4,
    "order": null,
    "properties": [
@@ -368,8 +368,8 @@
   },
   {
    "id": 50739406,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 0,
    "order": null,
    "properties": [
@@ -392,8 +392,8 @@
   },
   {
    "id": 50739407,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 0,
    "order": null,
    "properties": [
@@ -416,8 +416,8 @@
   },
   {
    "id": 50739408,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 0,
    "order": null,
    "properties": [

@@ -257,7 +257,7 @@
   "id": 36616362,
   "name": "شلوار اسلش مردانه بغل نوار",
   "price": 9800000,
-  "stock": 34,
+  "stock": 33,
   "sales_count": 6,
   "sales_count_week": 0,
   "rating": {
@@ -689,8 +689,8 @@
  {
   "id": 50436324,
   "name": "شلوار اسلش راحتی مخصوص پیادهروی تمام نخ ",
-  "price": 9300000,
-  "stock": 18,
+  "price": 14500000,
+  "stock": 17,
   "sales_count": 6,
   "sales_count_week": 0,
   "rating": {
@@ -706,7 +706,7 @@
  {
   "id": 50425812,
   "name": "شلوار اسلش کتان بغل نوار کنفی مردانه سایز بزرگ",
-  "price": 13700000,
+  "price": 14500000,
   "stock": 11,
   "sales_count": 3,
   "sales_count_week": 0,

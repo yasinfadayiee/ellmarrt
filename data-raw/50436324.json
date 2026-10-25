@@ -1,7 +1,7 @@
 {
  "id": 50436324,
  "title": "شلوار اسلش راحتی مخصوص پیادهروی تمام نخ ",
- "price": 9300000,
+ "price": 14500000,
  "photo": {
   "id": 359789230,
   "original": "https://statics.basalam.com/public-219/users/X6zxOW/07-05/gldhoQLmUsgPE6m2E70kUFMkvw6iYBTyeW1QEH2joK8EMwEyQp.jpg",
@@ -176,7 +176,7 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 18,
+ "inventory": 17,
  "net_weight": 800,
  "net_weight_decimal": 800,
  "created_at": "2026-07-05T21:32:22+03:30",
@@ -185,7 +185,7 @@
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 9300000,
+ "primary_price": 14500000,
  "shipping_area": null,
  "packaged_weight": 900,
  "preparation_day": 0,
@@ -301,8 +301,8 @@
  "variants": [
   {
    "id": 50757648,
-   "price": 9300000,
-   "primary_price": 9300000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 10,
    "order": null,
    "properties": [
@@ -325,8 +325,8 @@
   },
   {
    "id": 50757649,
-   "price": 9300000,
-   "primary_price": 9300000,
+   "price": 14500000,
+   "primary_price": 14500000,
    "stock": 5,
    "order": null,
    "properties": [
@@ -349,9 +349,9 @@
   },
   {
    "id": 50757650,
-   "price": 9300000,
-   "primary_price": 9300000,
-   "stock": 3,
+   "price": 14500000,
+   "primary_price": 14500000,
+   "stock": 2,
    "order": null,
    "properties": [
     {
