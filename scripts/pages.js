@@ -520,6 +520,12 @@ function product(ctx, p) {
     </div>
   </div>
 </div>
+${(() => {
+  const keys = new Set(p.copy.facts.map(([k]) => k));
+  const rows = [...p.copy.facts, ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند", "سایر توضیحات"].includes(k) && !keys.has(k))];
+  return `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیش از خرید</span><h2>مشخصات و نگهداری</h2></div></div>
+<div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
+})()}
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-gold" type="button" data-direct-order>سفارش مستقیم</button></div>` : ""}

@@ -30,7 +30,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
 - Finally write a one-line summary in simple Persian for the owner to the summary file the prompt names.
 
 ## Backlog
-- [ ] Product page depth: a per-product «مشخصات و نگهداری» block (fabric, fit, available sizes, care, who it
+- [x] (2026-10-26) Product page depth: a per-product «مشخصات و نگهداری» block (fabric, fit, available sizes, care, who it
   suits) generated in `scripts/pages.js` ONLY from each product's existing data (title, attributes,
   description, sizes, colours in `data/`). If a fact is not in the data, leave that line out. Add a link to
   `/size-guide/` and to the product's category guide when one exists. Prices, Basalam button and direct-order
