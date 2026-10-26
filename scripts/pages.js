@@ -385,7 +385,7 @@ function shop(ctx) {
   const items = [["/", "خانه"], ["/shop/", "فروشگاه"]];
   return layout(ctx, {
     path: "/shop/",
-    title: "فروشگاه پوشاک مردانه؛ همه محصولات",
+    title: "فروشگاه پوشاک مردانه المارت؛ همه محصولات از بازار تبریز",
     desc: `همه ${fa(P.length)} مدل پوشاک مردانه المارت: تیشرت، پولوشرت، پیراهن، هودی، دورس، شلوار اسلش، شلوارک، کفش و لباس پسرانه؛ فیلتر بر اساس سایز تا 6XL.`,
     schema: [crumbSchema(ctx, items), itemList(ctx, sorted)],
     body: `${crumbs(ctx, items)}
@@ -398,6 +398,26 @@ function itemList(ctx, list) {
   return { "@context": "https://schema.org", "@type": "ItemList", itemListElement: list.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `${ctx.SITE_URL}/p/${p.id}/`, name: p.title })) };
 }
 
+/* CTR titles/descriptions: first candidate that fits the SERP limits (title <= 70 chars incl. brand suffix, desc <= 160) */
+const TITLE_MAX = 70, DESC_MAX = 160;
+function ctrTitle(c, min) {
+  const withBrand = (t) => (t.includes(STORE.name) ? t : `${t} | ${STORE.name}`);
+  const options = [
+    `خرید ${c.h1} از بازار تبریز | از ${fa(min)} تومان`,
+    `خرید ${c.h1} از بازار تبریز`,
+    `خرید ${c.name} از بازار تبریز | از ${fa(min)} تومان`,
+    `خرید ${c.name} از بازار تبریز`,
+    `خرید ${c.h1} | قیمت از ${fa(min)} تومان`,
+  ];
+  return options.map(withBrand).find((t) => t.length <= TITLE_MAX) || withBrand(options[options.length - 1]);
+}
+function ctrDesc(base) {
+  const ships = base.includes("ارسال به سراسر ایران");
+  const options = ships
+    ? [`${base} خرید از باسلام یا سفارش مستقیم.`]
+    : [`${base} خرید از باسلام یا سفارش مستقیم؛ ارسال به سراسر ایران.`, `${base} خرید از باسلام یا سفارش مستقیم.`, `${base} ارسال به سراسر ایران.`];
+  return options.find((d) => d.length <= DESC_MAX) || base;
+}
 function category(ctx, c) {
   const { products: P } = ctx;
   const key = Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c);
@@ -408,8 +428,8 @@ function category(ctx, c) {
   const qa = copy.faq;
   return layout(ctx, {
     path: `/c/${c.slug}/`,
-    title: `خرید ${c.h1} | قیمت از ${fa(min)} تومان`,
-    desc: c.desc,
+    title: ctrTitle(c, min),
+    desc: ctrDesc(c.desc),
     image: `${ctx.SITE_URL}/assets/og/${list[0].id}.jpg`,
     preload: `${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp`,
     preloadSet: `${ctx.BASE}/assets/p/${mainBase(list[0])}-480.webp 480w, ${ctx.BASE}/assets/p/${mainBase(list[0])}-960.webp 960w`,
