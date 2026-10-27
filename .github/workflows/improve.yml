@@ -1,6 +1,6 @@
 name: Daily improvement
 
-# Once a day Claude does the next item of AUTOPILOT.md (product pages, category copy, small UX fixes), then this
+# Twice a day Claude does the next item of AUTOPILOT.md (product pages, category copy, small UX fixes), then this
 # workflow checks the change itself before it goes live:
 #   - only allowed paths changed (no workflows, admin data, Basalam sync or dependencies),
 #   - the full build passes and the site output exists.
@@ -11,7 +11,9 @@ name: Daily improvement
 # 2026-10-26 portfolio focus: the first Claude account is kept for AgedSocials. 05:00 in Iran (UTC+3:30).
 on:
   schedule:
+    # 2026-10-27: owner no longer uses the second Claude account itself, so this runs twice a day to use its limit.
     - cron: '30 1 * * *'
+    - cron: '30 13 * * *'
   workflow_dispatch:
 
 # one build at a time, shared with the Basalam sync and the admin-panel build
