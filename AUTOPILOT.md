@@ -36,7 +36,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   `/size-guide/` and to the product's category guide when one exists. Prices, Basalam button and direct-order
   flow untouched. Done = every product page shows the block, build passes. (Why: product pages carry ~110
   words and Google says "crawled – not indexed".)
-- [ ] Fix (review): product pages now show the same facts twice. The new «مشخصات و نگهداری» section
+- [x] (2026-10-27) Fix (review): product pages now show the same facts twice. The new «مشخصات و نگهداری» section
   (`scripts/pages.js`, `product()`, right after the buy box) repeats «نکته سایز», «نگهداری» and the spec rows
   that are already in the `.pbox` details («توضیحات محصول» / «مشخصات»). Keep the new visible section as the
   single place for spec table + size note + care + links; remove sizeNote/care from «توضیحات محصول» and remove

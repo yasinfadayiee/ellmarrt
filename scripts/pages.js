@@ -466,7 +466,6 @@ function product(ctx, p) {
   const pair = P.filter((x) => x.inStock && pairCats.includes(x.cat)).sort(rank).slice(0, 4);
   const related = P.filter((x) => x.id !== p.id && x.cat === p.cat && x.inStock).sort(rank).slice(0, 4);
   const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x)).slice(0, 4 - related.length) : [];
-  const facts = [["دسته‌بندی", c.name], ...(sizes.length ? [["سایزها", sizes.join(" ، ")]] : []), ...(colors.length ? [["رنگ‌ها", colors.join("، ")]] : []), ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند"].includes(k))];
   const desc = `${p.title} از ${STORE.name}، بازار تبریز${p.material ? `؛ جنس ${p.material}` : ""}${sizes.length ? `، سایز ${sizes[0]} تا ${sizes[sizes.length - 1]}` : ""}. قیمت ${fa(p.price)} تومان، خرید امن و ارسال به سراسر ایران.`;
   const offerAvail = p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
   const schema = {
@@ -514,8 +513,7 @@ function product(ctx, p) {
     </div>
     <div class="perks"><div>${I.truck}ارسال سراسری</div><div>${I.shield}ضمانت باسلام</div><div>${I.camera}بررسی قبل از ارسال</div></div>
     <div class="pbox">
-      <details open><summary>توضیحات محصول</summary><div class="copy"><p class="lead">${esc(p.copy.lead)}</p><p>${esc(p.copy.paragraph)}</p>${p.copy.bullets.length ? `<ul class="ticks">${p.copy.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p></div></details>
-      <details><summary>مشخصات</summary><table class="spec">${facts.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table></details>
+      <details open><summary>توضیحات محصول</summary><div class="copy"><p class="lead">${esc(p.copy.lead)}</p><p>${esc(p.copy.paragraph)}</p>${p.copy.bullets.length ? `<ul class="ticks">${p.copy.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}</div></details>
       <details><summary>ارسال و خرید</summary><div class="desc">سفارش از طریق غرفه رسمی المارت در باسلام ثبت و پرداخت می‌شود. ارسال با پست پیشتاز یا سفارشی به سراسر کشور و برای تبریز با پیک انجام می‌شود. هر سفارش قبل از ارسال بررسی و ایمن بسته‌بندی می‌شود.</div></details>
     </div>
   </div>
