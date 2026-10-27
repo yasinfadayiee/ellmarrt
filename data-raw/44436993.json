@@ -352,6 +352,7 @@
  "packaging_dimensions": null,
  "is_wholesale": false,
  "is_service_variation": false,
+ "is_service_request_enabled": null,
  "attributes": [
   {
    "id": 50021958,

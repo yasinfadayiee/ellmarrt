@@ -84,11 +84,11 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 36,
+ "inventory": 32,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-10-15T20:56:20+03:30",
- "updated_at": "2026-10-15T20:56:33+03:30",
+ "updated_at": "2026-10-27T19:41:09+03:30",
  "description": "\n\n🔥 هودی بیسیک توکرک | گرم و خوش‌استایل 🔥\n\nبچه‌هاا 😍 اگه دنبال یه هودی گرم و راحت برای روزای سردین، این مدل رو از دست ندین! 🖤👌🏻\n\nیه مدل ساده و شیک که با کلی استایل می‌تونین ستش کنین؛ هم برای دخترا مناسبه، هم پسرا 😎🍂\n\n✨ **مشخصات محصول:**\n\n✔️ جنس دورس لاکرادار حوله‌ای توکرک\n✔️ داخل گرم و نرم، مناسب روزای سرد\n✔️ مدل بیسیک و ساده، بدون طرح\n✔️ کلاه بنددار و کاربردی\n✔️ پارچه نرم، کشسان و ضدحساسیت\n✔️ تن‌خور راحت و اسپرت\n✔️ مناسب استایل پاییزی و زمستونی\n✔️ مدل یونیسکس؛ مناسب دخترونه و پسرونه\n\n📏 **سایزبندی:** XL | XXL | XXXL\n\n💰 **قیمت: 1,950**\n\n📩 برای قیمت عمده بهمون پیام بدین 💌\n\n📍 **فروشگاه المارت**\nراسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -328,30 +328,6 @@
    "discount": null
   },
   {
-   "id": 82454789,
-   "price": 22000000,
-   "primary_price": 22000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 130673,
-      "title": "سفید xxxl",
-      "value": "سفید xxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 82454790,
    "price": 22000000,
    "primary_price": 22000000,
@@ -368,30 +344,6 @@
       "id": 360148,
       "title": "آبی تیره xl",
       "value": "آبی تیره xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 82454791,
-   "price": 22000000,
-   "primary_price": 22000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 722565,
-      "title": "آبی تیره xxl",
-      "value": "آبی تیره xxl",
       "order": null
      }
     }
@@ -638,6 +590,54 @@
    ],
    "sku": null,
    "discount": null
+  },
+  {
+   "id": 82454789,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 130673,
+      "title": "سفید xxxl",
+      "value": "سفید xxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454791,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 722565,
+      "title": "آبی تیره xxl",
+      "value": "آبی تیره xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
   }
  ],
  "variants_selected_index": 0,
@@ -670,6 +670,7 @@
  "packaging_dimensions": null,
  "is_wholesale": false,
  "is_service_variation": false,
+ "is_service_request_enabled": null,
  "attributes": [
   {
    "id": 66678343,

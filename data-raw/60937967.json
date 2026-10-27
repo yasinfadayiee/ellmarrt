@@ -141,11 +141,11 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 23,
+ "inventory": 10,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-10-02T00:57:44+03:30",
- "updated_at": "2026-10-24T20:36:45+03:30",
+ "updated_at": "2026-10-27T19:39:48+03:30",
  "description": "🔥 سویشرت تمام‌زیپ کلاه‌دار | داخل کرکی\n\nیه انتخاب گرم و خوش‌استایل برای روزهای خنک و سرد 👌\nهم برای استایل روزمره عالیه، هم ورزش، پیاده‌روی، مسافرت و دورهمی.\n\n▪️ داخل کرکی، گرم و نرم\n▪️ تمام‌زیپ و کاربردی\n▪️ کلاه‌دار\n▪️ دوخت تمیز و باکیفیت\n▪️ تن‌خور اسپرت و راحت\n▪️ عرضه‌شده در 2 طرح متفاوت\n\n📏 سایزها:\nXL | XXL\n\n📩 برای قیمت عمده پیام دهید\n\n📍 فروشگاه المارت\nراسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n",
  "is_saleable": true,
  "is_showable": true,
@@ -305,7 +305,7 @@
    "id": 78287249,
    "price": 26500000,
    "primary_price": 26500000,
-   "stock": 3,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -329,7 +329,7 @@
    "id": 78287250,
    "price": 26500000,
    "primary_price": 26500000,
-   "stock": 10,
+   "stock": 0,
    "order": null,
    "properties": [
     {
@@ -404,6 +404,7 @@
  "packaging_dimensions": null,
  "is_wholesale": false,
  "is_service_variation": false,
+ "is_service_request_enabled": null,
  "attributes": [
   {
    "id": 65224186,
