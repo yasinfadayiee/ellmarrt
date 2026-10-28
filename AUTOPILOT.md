@@ -42,7 +42,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   single place for spec table + size note + care + links; remove sizeNote/care from «توضیحات محصول» and remove
   the «مشخصات» `<details>` (or show there only rows not in the section). Done = each fact appears once per
   product page (check 2 pages in `docs/p/`), build passes.
-- [ ] Fix (review): `/guide/boys-pants-guide/` (last entry of `guides` in `scripts/pages.js`) is padded and
+- [x] (2026-10-28) Fix (review): `/guide/boys-pants-guide/` (last entry of `guides` in `scripts/pages.js`) is padded and
   robotic: almost every paragraph says "don't assume / ask the seller / read the product page"
   («نتیجه نگیرید»، «حدس نزنید»، «نسبت ندهید»). Rewrite to ~350 natural, useful words: real kids models and
   sizes from `data/` (in stock), what اسلش بغل‌نوار / راحتی / نیم‌بگ look like, school vs home, cold-water
