@@ -47,7 +47,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   («نتیجه نگیرید»، «حدس نزنید»، «نسبت ندهید»). Rewrite to ~350 natural, useful words: real kids models and
   sizes from `data/` (in stock), what اسلش بغل‌نوار / راحتی / نیم‌بگ look like, school vs home, cold-water
   care, one sentence on asking for size help. Link 3 in-stock kids products and `/c/kids/`. Keep slug/title.
-- [ ] Fix (review): `/size-guide/` FAQ copies the «اندازه‌گیری درست در خانه» list word for word (Q3) and the
+- [x] (2026-10-28) Fix (review): `/size-guide/` FAQ copies the «اندازه‌گیری درست در خانه» list word for word (Q3) and the
   pants-length Q also exists on `/big-size/`. Replace Q3 with a new, real question (e.g. which size for
   شلوار کمرکش vs a snug fit, using facts already on the site) and reword the pants-length answer so the two
   pages do not share sentences. Keep FAQPage schema matching the visible text.
