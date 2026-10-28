@@ -51,40 +51,60 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   pants-length Q also exists on `/big-size/`. Replace Q3 with a new, real question (e.g. which size for
   شلوار کمرکش vs a snug fit, using facts already on the site) and reword the pants-length answer so the two
   pages do not share sentences. Keep FAQPage schema matching the visible text.
-- [ ] Winter first (season = Aban/Azar, buyers want warm clothes now): on the home page (`home()` in
-  `scripts/pages.js`) add or move up a section «برای پاییز و زمستان» showing up to 8 IN-STOCK products from
-  category `sweat` (هودی، دورس، بلوز), plus winter pants if their title says so, with a link to
-  `/c/sweatshirt/`. Sort by featured/sales like `category()`. Done = section near the top of the home page,
-  only in-stock items, build passes.
+- [ ] Fix (review): `/guide/boys-pants-guide/` (last entry of `guides` in `scripts/pages.js`) hard-codes stock in
+  prose: «در سایزهای ۸۰، ۸۵، ۹۰ و ۹۵ موجود است»، «در سایز ۸۰ و ۹۰ داریم»، «فعلاً سایز ۷۵ و ۹۵ آن موجود است»،
+  «رنگ موجودش طوسی است». The Basalam sync changes stock several times a day, so these go false. Remove the
+  per-size/colour stock words (keep the model descriptions and links); if the guide template does not already
+  show product cards, add the 3 linked products with the existing `card()` helper so sizes stay live.
+  Done = no size/colour availability claims in the guide text, build passes.
+- [ ] Fix (review): size claims in FAQ answers in `scripts/pages.js` — `HOME_FAQ_DEFAULT` («از XL تا 6XL… تیشرت 5XL
+  تا شلوار اسلش 6XL»), `bigSize()` Q1 («تیشرت تا 5XL، شلوار… تا 6XL، هودی و دورس تا 3XL») and `sizeGuide()`
+  hoodie Q («هودی و دورس… تا 3XL موجود است»). Check each against the sizes of IN-STOCK products in `data-raw/`
+  (read-only). Reword to what we make/offer by product type without the word «موجود», and correct any max
+  size that is wrong. Keep FAQPage schema equal to the visible text. List changes in the summary.
 - [ ] Direct-order clarity on mobile: read the «سفارش مستقیم» modal/JS (`assets/js/`) and the product
   template. If the buyer can open the order form without the size/colour being asked or shown, make the
   form show the product's real available sizes (from data) as required choices, and show the EL-XXXX code
   plus "what happens next" (who calls/sends SMS, how payment works — only what the code/site already says).
   One fix only; do not break the existing flow or code format.
-- [ ] Big sizes are our rare advantage (Iranian sellers rarely list 5XL/6XL): on `/big-size/` (`bigSize()`)
+- [ ] Winter first (season = Aban/Azar, buyers search «دورس مردانه»، «هودی مردانه» now): on the home page (`home()`
+  in `scripts/pages.js`) add or move up a section «برای پاییز و زمستان» showing up to 8 IN-STOCK products from
+  category `sweat` (هودی، دورس، بلوز), plus winter pants if their title says so, with a link to the sweat
+  category page. Sort like `category()`. Done = section in the first half of the home page, only in-stock
+  items, build passes. If the home page already has such a section, only move it up.
+- [ ] Size help at the moment of choice: on the product page, next to the size chips, add one small link
+  «سایزم را نمی‌دانم» to `/size-guide/` (and to the contact the site already uses for size help). If the
+  product's own description in `data-raw/` has measurements («دور کمر»، «قد»), make sure they are visible near
+  the size chips once (move, do not copy — the page must not show them twice). Done = 2 product pages in
+  `docs/p/` checked, build passes. (Competing Basalam listings show waist range per size.)
+- [ ] Big sizes are our rare advantage (Basalam sellers mostly stop at 3XL–4XL): on `/big-size/` (`bigSize()`)
   make sure the product list contains only in-stock products that really have 3XL+ in their size data,
-  and each card/line shows which big sizes are available (e.g. «موجود در 4XL، 5XL»). Title/H1 should target
-  «لباس سایز بزرگ مردانه تا 6XL» only if a 6XL item is really in stock; otherwise use the real max.
+  and each card/line shows which big sizes are available, computed at build time (e.g. «4XL، 5XL»).
+  Title/H1 «لباس سایز بزرگ مردانه تا 6XL» only if a 6XL item is really in stock; otherwise use the real max.
 - [ ] Fact check category intros: `CATEGORIES[*].desc` in `scripts/catalog.js` claim size ranges
   («تا 5XL»، «M تا 3XL»، «L تا 6XL»، «تا 6XL»، «41 تا 45»). Compare each with the real sizes of in-stock
   products in that category (`data/`, `data-raw/` read-only) and correct any claim that is false. If
   `catalog.js` is the wrong place, fix the text where it is defined. List what changed in the summary.
-- [ ] Internal links to products (Google: "crawled – not indexed"): each guide page (`guide()`) gets a
-  «محصولات مرتبط» row with up to 4 in-stock product cards from the guide's `cats`, using the existing
-  `card()` helper. Skip if the guide template already shows products. Done = every guide links ≥3 products.
-- [ ] Trust from real data only: check `data-raw/_meta.json` and one product file for the Basalam booth's
-  real rating, review count or sales count. If present, show one short line near the Basalam button on the
-  product page («امتیاز غرفه در باسلام: …»). If no such data exists, tick the item with "no data" and change
-  nothing. Never write a number that is not in the data; no fake review schema.
-- [ ] Product schema check: in the product page JSON-LD make sure `offers` has price, priceCurrency (IRR
-  with the rial value, or the existing convention), availability from `inStock`, url and seller/brand, and
-  `image`. Fix only missing/wrong fields; never add aggregateRating/review without real data.
 - [ ] `/shipping-returns/` and `/faq/`: add a short «سفارش مستقیم چطور است؟» answer (EL-XXXX code, phone/SMS,
   how payment and sending work) using only what the site's direct-order code and pages already say, and
   link it from the product page buy-note. Skip if both pages already explain it.
+- [ ] Trust from real data only: check `data-raw/_meta.json` and one product file for the Basalam booth's
+  real rating, review count or sales count. If present, show one short line near the Basalam button on the
+  product page («امتیاز غرفه در باسلام: …», read from data at build time). If no such data exists, tick the
+  item with "no data" and change nothing. Never write a number that is not in the data; no fake review schema.
+- [ ] Duplicate guides: `hoodie-sweatshirt` and `sweatshirt-buying-guide` (`guides` in `scripts/pages.js`) both
+  cover fabric, layering size and care for the same `sweat` products. Keep `hoodie-sweatshirt` as the
+  comparison («هودی، سویشرت یا دورس؟») and make `sweatshirt-buying-guide` a short practical page (zip, cuff,
+  neck, choosing size for layering) with no shared sentences; each links to the other once. Keep both slugs.
+  Done = no paragraph says the same thing on both pages, build passes.
+- [ ] Internal links to products (Google: "crawled – not indexed"): each guide page (`guide()`) gets a
+  «محصولات مرتبط» row with up to 4 in-stock product cards from the guide's `cats`, using the existing
+  `card()` helper. Skip if the guide template already shows products. Done = every guide links ≥3 products.
+- [ ] Product schema check: in the product page JSON-LD make sure `offers` has price, priceCurrency (IRR
+  with the rial value, or the existing convention), availability from `inStock`, url and seller/brand, and
+  `image`. Fix only missing/wrong fields; never add aggregateRating/review without real data.
 - [ ] Broken links / out-of-stock: after a build, check that every internal link in `docs/` points to an
   existing page and that guides do not link out-of-stock products. Fix what is broken.
-- [ ] Persian copy quality: the 3 longest guides — fix unnatural wording, typos and repeated hedging only.
 
 ## Rules learned
 - Before adding a block, check what the page already shows: do not repeat the same facts, notes or FAQ
@@ -93,3 +113,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
 - Being honest does not mean hedging: state the facts from the data once, plainly. One "ask us" line per page
   is enough. Never fill a guide with "don't assume / ask the seller" sentences.
 - Every new guide or section links to real in-stock products; a page with no product links does not sell.
+- Never write stock in prose («موجود است»، «فعلاً سایز … داریم»): the Basalam sync changes stock every day.
+  Show live sizes with `card()` or build-time data; text may say what we make, not what is in stock
+  (Oct 2026: kids guide, big-size FAQ, size-guide FAQ).
+- Check every size range / "up to 6XL" claim against in-stock data in the same run that writes it.
