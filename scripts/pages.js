@@ -1,5 +1,6 @@
 // Page templates for the ELLMARRT static site.
 const { CAT } = require("./copy");
+const { measures } = require("./measures");
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fa = (n) => Number(n).toLocaleString("fa-IR");
 const json = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
@@ -494,7 +495,8 @@ function product(ctx, p) {
   const real = p.images.gallery.map((g) => `${BASE}/assets/p/${g.file}`);
   const colors = p.colors;
   const sizes = p.sizes;
-  const low = p.inStock && p.stock <= 3;
+  const msr = measures(p);
+  const low =p.inStock && p.stock <= 3;
   // "complete the look": tops pair with bottoms and the other way round; items sharing a size with this one come first
   const fit = (x) => x.sizes.filter((z) => sizes.includes(z)).length;
   const rank = (a, b) => (fit(b) > 0) - (fit(a) > 0) || (b.sales || 0) - (a.sales || 0);
@@ -517,7 +519,7 @@ function product(ctx, p) {
     ...(p.price > 0 ? { offers: {
       "@type": "Offer", url: `${SITE_URL}/p/${p.id}/`, priceCurrency: "IRR", price: p.price * 10,
       priceValidUntil: `${new Date().getFullYear()}-12-31`, availability: offerAvail,
-      itemCondition: "https://schema.org/NewCondition", seller: { "@id": `${SITE_URL}/#store` },
+      itemCondition: "https://schema.org/NewCondition", seller: { "@type": "Organization", "@id": `${SITE_URL}/#store`, name: STORE.name, url: `${SITE_URL}/` },
     } } : {}),
     ...(p.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating.avg, reviewCount: p.rating.count, bestRating: 5 } } : {}),
   };
@@ -536,7 +538,7 @@ function product(ctx, p) {
     ${priceBlock}
     ${promoOn() ? `<div class="promo"><b>کد تخفیف ${esc(SITE.promo.code)}</b><span>${esc(SITE.promo.text || "هنگام پرداخت در باسلام وارد کنید")}</span><button type="button" data-copy="${esc(SITE.promo.code)}">کپی کد</button></div>` : ""}
     ${colors.length > 1 ? `<div class="opt"><div class="opt-h"><span class="opt-t"><i class="step num">${fa(1)}</i>رنگ: <span id="sel-color">انتخاب کنید</span></span></div><div class="opts">${colors.map((x, i) => `<button data-color="${esc(x)}"${colorImg(i) ? ` data-img="${colorImg(i)}" class="sw"` : ""}>${colorImg(i) ? `<img src="${BASE}/assets/p/${p.id}-k${i}-480.webp" alt="" width="28" height="35" loading="lazy" decoding="async">` : ""}${esc(x)}</button>`).join("")}</div></div>` : colors.length === 1 ? `<p><b>رنگ:</b> ${esc(colors[0])}</p>` : ""}
-    ${sizes.length ? `<div class="opt"><div class="opt-h"><span class="opt-t">${colors.length > 1 ? `<i class="step num">${fa(2)}</i>` : ""}سایز: <span id="sel-size">انتخاب کنید</span></span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">سایزم را نمی‌دانم</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div></div>` : ""}
+    ${sizes.length ? `<div class="opt"><div class="opt-h"><span class="opt-t">${colors.length > 1 ? `<i class="step num">${fa(2)}</i>` : ""}سایز: <span id="sel-size">انتخاب کنید</span></span> <a class="link" href="${BASE}/size-guide/" style="font-size:13px">سایزم را نمی‌دانم</a></div><div class="opts">${sizes.map((s) => `<button class="sz" data-size="${s}">${s}</button>`).join("")}</div>${msr ? `<details class="msr"><summary>اندازه‌های هر سایز (سانتی‌متر)</summary><div class="msr-t"><table><thead><tr><th>سایز</th>${msr.cols.map((k) => `<th>${k}</th>`).join("")}</tr></thead><tbody>${msr.rows.map(([s, v]) => `<tr data-msr="${s}"><th>${s}</th>${msr.cols.map((k) => `<td class="num">${v[k] ? fa0(v[k]) : "—"}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p>از توضیحات همین مدل در غرفه باسلام. لباس خوش‌اندازه‌تان را صاف روی میز بگذارید و با این اعداد مقایسه کنید.</p></details>` : ""}</div>` : ""}
     <div class="buy">
       ${p.inStock ? `<a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>` : `<div class="oos"><b>این مدل فعلاً ناموجود است</b><span>موجودی هر ۶ ساعت از باسلام به‌روز می‌شود. برای خبر شدن از شارژ مجدد پیام بدهید.</span></div><a class="btn btn-ink btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">خبرم کن وقتی موجود شد</a>`}
       ${p.inStock ? "" : "<!--"}<button class="btn btn-ghost btn-block" id="direct-order" data-direct-order>${I.phone} یا سفارش تلفنی / پیامکی</button>${p.inStock ? "" : "-->"}

@@ -304,6 +304,16 @@ p{margin:0 0 1em}
 .opts button.sz{direction:ltr}
 .opts button:hover:not(:disabled){border-color:var(--ink)}
 .opts button[aria-pressed=true]{background:var(--dk1);color:var(--on-dk);border-color:var(--ink)}
+.msr{margin-top:12px;font-size:13px}
+.msr summary{cursor:pointer;color:var(--ink-2);font-weight:700;width:max-content;max-width:100%}
+.msr-t{overflow-x:auto;margin-top:10px;border:1px solid var(--line);border-radius:12px}
+.msr table{width:100%;border-collapse:collapse;white-space:nowrap}
+.msr th,.msr td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line-2)}
+.msr thead th{background:var(--cream);font-weight:700;color:var(--ink-2)}
+.msr tbody th{direction:ltr;font-weight:800}
+.msr tbody tr:last-child>*{border-bottom:0}
+.msr tr.on>*{background:var(--gold-soft)}
+.msr p{margin:8px 0 0;color:var(--muted);font-size:12.5px;line-height:1.8}
 .opts button:disabled{opacity:.38;text-decoration:line-through;cursor:not-allowed}
 .buy{display:grid;gap:10px;margin:24px 0}
 .buy-note{font-size:13px;color:var(--muted);text-align:center}

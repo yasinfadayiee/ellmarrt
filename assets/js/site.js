@@ -154,6 +154,7 @@
       $("#sel-size") && ($("#sel-size").textContent = sel.size || "انتخاب کنید");
       $("#sel-color")?.closest(".opt").classList.toggle("ok", !!sel.color);
       $("#sel-size")?.closest(".opt").classList.toggle("ok", !!sel.size);
+      $$("[data-msr]").forEach((r) => r.classList.toggle("on", r.dataset.msr === sel.size));
       const st = $("#stock");
       const match = V.filter((v) => (!sel.color || v.color === sel.color) && (!sel.size || v.size === sel.size));
       const n = match.reduce((a, v) => a + (v.stock || 0), 0);

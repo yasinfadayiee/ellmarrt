@@ -128,6 +128,7 @@ function load() {
       material,
       attrs,
       description: clean(d.description),
+      sizeText: [clean(d.description), ...(d.attributes || []).flatMap((g) => (g.attributes || [g]).map((x) => clean(x.value)))].filter(Boolean),
       rating,
       sales: s.sales_count || 0,
       salesWeek: s.sales_count_week || 0,

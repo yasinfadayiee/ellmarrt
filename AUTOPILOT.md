@@ -72,7 +72,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   category `sweat` (هودی، دورس، بلوز), plus winter pants if their title says so, with a link to the sweat
   category page. Sort like `category()`. Done = section in the first half of the home page, only in-stock
   items, build passes. If the home page already has such a section, only move it up.
-- [ ] Size help at the moment of choice: the «سایزم را نمی‌دانم» link next to the size chips is done (2026-10-29). If the
+- [x] (2026-10-29, owner session) Per-size measurements (`scripts/measures.js`, from description + attribute text) shown once under the size chips as «اندازه‌های هر سایز», selected size highlighted; 14 products have a chart. Original: Size help at the moment of choice: the «سایزم را نمی‌دانم» link next to the size chips is done (2026-10-29). If the
   product's own description in `data-raw/` has measurements («دور کمر»، «قد»), make sure they are visible near
   the size chips once (move, do not copy — the page must not show them twice). Done = 2 product pages in
   `docs/p/` checked, build passes. (Competing Basalam listings show waist range per size.)
@@ -99,11 +99,14 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
 - [x] (2026-10-29, owner session) guide() related row sorted by best seller and topped up from PAIRS, every guide shows 4 in-stock products. Original: Internal links to products (Google: "crawled – not indexed"): each guide page (`guide()`) gets a
   «محصولات مرتبط» row with up to 4 in-stock product cards from the guide's `cats`, using the existing
   `card()` helper. Skip if the guide template already shows products. Done = every guide links ≥3 products.
-- [ ] Product schema check: in the product page JSON-LD make sure `offers` has price, priceCurrency (IRR
+- [x] (2026-10-29, owner session) offers already complete; seller now a named Organization instead of a bare @id. Original: Product schema check: in the product page JSON-LD make sure `offers` has price, priceCurrency (IRR
   with the rial value, or the existing convention), availability from `inStock`, url and seller/brand, and
   `image`. Fix only missing/wrong fields; never add aggregateRating/review without real data.
-- [ ] Broken links / out-of-stock: after a build, check that every internal link in `docs/` points to an
+- [x] (2026-10-29, owner session) 0 broken internal links, 0 guide links to out-of-stock products. Original: Broken links / out-of-stock: after a build, check that every internal link in `docs/` points to an
   existing page and that guides do not link out-of-stock products. Fix what is broken.
+- [ ] Size chart for kids pants: `50020130` (and other `kids` items) write «سایزبندی: 80، 85، 90، 95 عرض ران به ترتیب: 50، 52، 54، 56» — a list «به ترتیب» that `scripts/measures.js` does not read. Teach `measures()` the «X به ترتیب: a، b، c» form only when the count equals the size list, so the kids pages get the same table. Done = kids product page in `docs/p/` shows the table with the right numbers, other 14 tables unchanged, build passes.
+- [ ] Size finder uses the real chart: on `/size-guide/` (`sizeGuide()`), add one line under each category table: «جدول دقیق هر مدل در صفحه همان محصول، زیر انتخاب سایز آمده است» with links to 2 in-stock products that have a chart (`measures(p)` not null). No new numbers in the text. Done = links point to products with a chart, build passes.
+- [ ] Category pages: on `category()` cards, products that have a size chart (`measures(p)`) get a small «جدول سایز دارد» tag in the card meta line (existing card markup, no new colours). Done = tag shows only where the product page has the table, build passes.
 
 ## Rules learned
 - Size claims: never hard-code «تا 6XL» / «تا 3XL». Write `{MAX}` or `{MAX:pants}`; `layout()` and `llms()` fill them
