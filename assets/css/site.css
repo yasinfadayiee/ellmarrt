@@ -795,3 +795,10 @@ body{background-color:var(--paper)}
   .mbar .mbar-call{flex:0 0 48px;padding:0}
   .mbar .btn-ink{flex:1}
 }
+/* seasonal row: a swipeable rail on phones so it adds one row, not a long grid */
+@media (max-width:720px){
+  .grid.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:calc(var(--gut) * -1);padding:0 var(--gut) 6px;scrollbar-width:none}
+  .grid.rail::-webkit-scrollbar{display:none}
+  .grid.rail>.card{flex:0 0 44vw;scroll-snap-align:start}
+  .home-winter{padding-block:28px 8px}
+}

@@ -252,8 +252,11 @@ function home(ctx) {
   const { products: P, CATEGORIES: C, BASE } = ctx;
   const byId = (id) => P.find((p) => p.id === id);
   const heroIds = [60937967, 47475290, 53762676];
-  const best = [...P].filter((p) => p.inStock).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8);
-  const fresh = [...P].filter((p) => p.inStock && !best.includes(p)).sort((a, b) => b.created.localeCompare(a.created)).slice(0, 8);
+  // cold season (Sep–Feb, i.e. Mehr–Bahman): warm tops get their own row near the top; the daily build hides it in spring
+  const cold = [8, 9, 10, 11, 0, 1].includes(new Date().getMonth());
+  const winter = cold ? P.filter((p) => p.cat === "sweat" && p.inStock).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8) : [];
+  const best = [...P].filter((p) => p.inStock && !winter.includes(p)).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8);
+  const fresh = [...P].filter((p) => p.inStock && !best.includes(p) && !winter.includes(p)).sort((a, b) => b.created.localeCompare(a.created)).slice(0, 8);
   const big = P.filter((p) => isBig(p) && p.inStock).slice(0, 4);
   const catImg = { tshirt: 49701761, polo: 53765502, shirt: 45025631, sweat: 58897534, pants: 54126455, shorts: 42724724, shoes: 43999644, kids: 36616537 };
   const cats = Object.entries(C).map(([k, c]) => ({ k, c, n: P.filter((p) => p.cat === k).length })).filter((x) => x.n);
@@ -290,7 +293,12 @@ function home(ctx) {
   <div>${I.camera}<p style="margin:0"><b>عکس واقعی کالا</b><span>بررسی قبل از ارسال</span></p></div>
 </div></div></section>
 
-<section class="sec bg-cream"><div class="wrap">
+${winter.length ? `<section class="sec-sm home-winter"><div class="wrap">
+  <div class="sec-head rv"><div><span class="kicker">فصل سرما</span><h2>برای پاییز و زمستان</h2><p>هودی، سویشرت، دورس و بلوز آستین‌بلند برای روزهای سرد.</p></div><a class="link" href="${BASE}/c/${C.sweat.slug}/">همه ${C.sweat.plural}</a></div>
+  <div class="grid rail">${winter.map((p) => card(ctx, p)).join("")}</div>
+</div></section>
+
+` : ""}<section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">پرفروش‌های غرفه</span><h2>انتخاب مشتری‌های همیشگی</h2><p>مدل‌هایی که بیشترین سفارش را در باسلام داشته‌اند.</p></div><a class="link" href="${BASE}/shop/?sort=best">همه پرفروش‌ها</a></div>
   <div class="grid">${best.map((p) => card(ctx, p)).join("")}</div>
 </div></section>

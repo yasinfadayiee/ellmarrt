@@ -67,7 +67,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   form show the product's real available sizes (from data) as required choices, and show the EL-XXXX code
   plus "what happens next" (who calls/sends SMS, how payment works — only what the code/site already says).
   One fix only; do not break the existing flow or code format.
-- [ ] Winter first (season = Aban/Azar, buyers search «دورس مردانه»، «هودی مردانه» now): on the home page (`home()`
+- [x] (2026-10-29, owner session) Winter first — `winter` row in `home()` after the trust strip, shown Sep–Feb only, swipe rail on phones (season = Aban/Azar, buyers search «دورس مردانه»، «هودی مردانه» now): on the home page (`home()`
   in `scripts/pages.js`) add or move up a section «برای پاییز و زمستان» showing up to 8 IN-STOCK products from
   category `sweat` (هودی، دورس، بلوز), plus winter pants if their title says so, with a link to the sweat
   category page. Sort like `category()`. Done = section in the first half of the home page, only in-stock
