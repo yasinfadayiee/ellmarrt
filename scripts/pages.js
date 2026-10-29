@@ -63,6 +63,24 @@ const I = {
 };
 
 
+/* ---------------- size claims ---------------- */
+// «تا {MAX}» / «تا {MAX:pants}» in copy becomes the largest size in stock at build time, so the
+// Basalam sync can never leave a "up to 6XL" claim that the shelf no longer backs up.
+const LETTER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
+const maxSizes = new WeakMap();
+function sizeMax(ctx) {
+  if (!maxSizes.has(ctx)) {
+    const top = (list) => list.flatMap((p) => p.variants.filter((v) => v.stock > 0).map((v) => v.size)).filter((s) => LETTER.includes(s)).sort((a, b) => LETTER.indexOf(b) - LETTER.indexOf(a))[0];
+    const listed = (list) => list.flatMap((p) => p.sizes).filter((s) => LETTER.includes(s)).sort((a, b) => LETTER.indexOf(b) - LETTER.indexOf(a))[0];
+    const live = ctx.products.filter((p) => p.inStock);
+    const m = { "": top(live) || listed(ctx.products) || "6XL" };
+    for (const k of Object.keys(ctx.CATEGORIES)) m[k] = top(live.filter((p) => p.cat === k)) || listed(ctx.products.filter((p) => p.cat === k)) || m[""];
+    maxSizes.set(ctx, m);
+  }
+  return maxSizes.get(ctx);
+}
+const fillSizes = (ctx, html) => html.replace(/\{MAX(?::(\w+))?\}/g, (_, k) => sizeMax(ctx)[k || ""]);
+
 /* ---------------- layout ---------------- */
 function layout(ctx, o) {
   const { SITE_URL, BASE, VERSION } = ctx;
@@ -79,7 +97,7 @@ function layout(ctx, o) {
     ["/about/", "داستان ما"],
     ["/contact/", "تماس"],
   ];
-  return `<!doctype html>
+  return fillSizes(ctx, `<!doctype html>
 <html lang="fa" dir="rtl" data-base="${BASE}">
 <head>
 <meta charset="utf-8">
@@ -113,7 +131,7 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
 </head>
 <body>
 <a class="skip" href="#main">رفتن به محتوای اصلی</a>
-<div class="topbar" aria-label="مزایای خرید"><div class="marquee">${Array(2).fill([...(promoOn() ? [`کد تخفیف ${SITE.promo.code}${SITE.promo.text ? " — " + SITE.promo.text : ""}`] : []), ...((SITE.announcements || []).filter(Boolean).length ? SITE.announcements.filter(Boolean) : ["ارسال به سراسر ایران از روز اول کاری", `بیش از ${fa(STORE.years)} سال در ${STORE.bazaar}`, "سایزبندی واقعی تا 6XL", "خرید امن با ضمانت باسلام", "عکس‌ها و سایز دقیق، بررسی قبل از ارسال"])].map((t) => `<span>${esc(t)}</span>`).join("")).join("")}</div></div>
+<div class="topbar" aria-label="مزایای خرید"><div class="marquee">${Array(2).fill([...(promoOn() ? [`کد تخفیف ${SITE.promo.code}${SITE.promo.text ? " — " + SITE.promo.text : ""}`] : []), ...((SITE.announcements || []).filter(Boolean).length ? SITE.announcements.filter(Boolean) : ["ارسال به سراسر ایران از روز اول کاری", `بیش از ${fa(STORE.years)} سال در ${STORE.bazaar}`, "سایزبندی واقعی تا {MAX}", "خرید امن با ضمانت باسلام", "عکس‌ها و سایز دقیق، بررسی قبل از ارسال"])].map((t) => `<span>${esc(t)}</span>`).join("")).join("")}</div></div>
 <header class="hdr">
   <div class="wrap hdr-in">
     <button class="ibtn menu-btn" aria-label="منو">${I.menu}</button>
@@ -136,7 +154,7 @@ ${o.body}
     <div class="ftr-g">
       <div>
         <img src="${BASE}/assets/img/logo-light.svg" alt="${STORE.latin} — ${STORE.name}" width="170" height="143" loading="lazy" style="width:150px;height:auto;margin-bottom:16px" decoding="async">
-        <p>${SITE.footer && SITE.footer.blurb ? esc(SITE.footer.blurb) : `${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}.`} پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا 6XL.</p>
+        <p>${SITE.footer && SITE.footer.blurb ? esc(SITE.footer.blurb) : `${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}.`} پوشاک روزمره مردانه با کیفیت بازار، قیمت منصفانه و سایزبندی واقعی تا {MAX}.</p>
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a></div>
       </div>
       <div><h2>فروشگاه</h2><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}</ul></div>
@@ -163,7 +181,7 @@ ${o.body}
 <script>window.__STORE__=${json({phones:STORE.phones})}</script>
 <script src="${BASE}/assets/js/site.js?v=${VERSION}" defer></script>
 </body>
-</html>`;
+</html>`);
 }
 
 /* ---------------- shared pieces ---------------- */
@@ -180,14 +198,20 @@ const storeReviewsBlock = (ctx, p) => {
   const picks = RV.reviews.filter((r) => r.text && r.text.length >= 15 && r.star >= 4 && r.productId !== p.id)
     .sort((a, b) => (catOf(b) === p.cat) - (catOf(a) === p.cat) || b.star - a.star || b.text.length - a.text.length).slice(0, 3);
   if (!picks.length) return "";
-  return `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران غرفه</span><h2>${fa(RV.average)} از ۵ <small class="h-sub">از ${fa(RV.count)} امتیاز خریداران المارت در باسلام</small></h2></div><a class="link" href="${STORE.basalam}" target="_blank" rel="noopener">همه نظرها در باسلام</a></div><div class="rv-grid">${picks.map((r) => reviewCard(ctx, r, true)).join("")}</div></div></section>`;
+  return `<section class="sec-sm" id="reviews"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران غرفه</span><h2>${fa(RV.average)} از ۵ <small class="h-sub">از ${fa(RV.count)} امتیاز خریداران المارت در باسلام</small></h2></div><a class="link" href="${STORE.basalam}" target="_blank" rel="noopener">همه نظرها در باسلام</a></div><div class="rv-grid">${picks.map((r) => reviewCard(ctx, r, true)).join("")}</div></div></section>`;
 };
+// the booth rating exactly as Basalam reports it; empty when the sync has no reviews
+const storeRating = (ctx, href) => { const RV = ctx.storeReviews; return RV && RV.count ? `<a class="srating" href="${href}">${stars(RV.average)}<b class="num">${fa(RV.average)}</b><span>از ${fa(RV.count)} امتیاز خریداران در باسلام</span></a>` : ""; };
 const catOf = (ctx, p) => ctx.CATEGORIES[p.cat];
 const guideFor = (p) => guides.find((g) => g.cats.includes(p.cat));
 const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
 const pUrl = (ctx, p) => `${ctx.BASE}/p/${p.id}/`;
-const isBig = (p) => p.sizes.some((s) => ["4XL", "5XL", "6XL"].includes(s));
+// sizes a shopper can buy right now, in the listed order (sold-out products keep their listed sizes)
+const liveSizes = (p) => { if (!p.inStock) return p.sizes; const ok = new Set(p.variants.filter((v) => v.stock > 0).map((v) => v.size)); return p.sizes.filter((z) => ok.has(z)); };
+// long size runs keep the smallest and the three largest, so 6XL is never cut off a card
+const cardSizes = (z) => (z.length > 5 ? [z[0], "…", ...z.slice(-3)] : z);
+const isBig = (p) => liveSizes(p).some((s) => ["4XL", "5XL", "6XL"].includes(s));
 const tagFor = (p) => {
   if (!p.inStock) return ["ناموجود", "tag-ink"];
   if (p.sales >= 10) return ["پرفروش", "tag-gold"];
@@ -198,7 +222,7 @@ const tagFor = (p) => {
 function cardData(ctx, p) {
   const t = tagFor(p);
   return {
-    id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: p.sizes, st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
+    id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: liveSizes(p), st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
     url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`, alt: (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
     tag: t && t[0], tagc: t && t[1], dots: dotsHtml(p.colors.filter((c, i) => p.colorInStock.includes(i))),
   };
@@ -210,7 +234,7 @@ function card(ctx, p, eager = false) {
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button></div>
 <div class="card-body"><div class="card-cat">${d.cn}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
-<div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small></div>${dotsHtml(p.colors.filter((c, i) => p.colorInStock.includes(i)))}<div class="card-sizes">${p.sizes.slice(0, 5).map((s) => `<span>${s}</span>`).join("")}</div></div></article>`;
+<div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small></div>${dotsHtml(p.colors.filter((c, i) => p.colorInStock.includes(i)))}<div class="card-sizes">${cardSizes(liveSizes(p)).map((s) => s === "…" ? `<i>…</i>` : `<span>${s}</span>`).join("")}</div></div></article>`;
 }
 const crumbs = (ctx, items) => `<nav class="crumbs wrap" aria-label="مسیر"><ol>${items.map(([h, t], i) => `<li>${i < items.length - 1 ? `<a href="${ctx.BASE}${h}">${t}</a>` : `<span aria-current="page">${t}</span>`}</li>`).join("")}</ol></nav>`;
 const crumbSchema = (ctx, items) => ({
@@ -221,7 +245,7 @@ const orgSchema = (ctx) => ({
   "@context": "https://schema.org", "@type": "ClothingStore", "@id": `${ctx.SITE_URL}/#store`,
   name: `${STORE.name} (${STORE.latin})`, alternateName: [STORE.latin, STORE.full, "پیرایش"],
   url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: [`${ctx.SITE_URL}/assets/og/site.jpg`, `${ctx.SITE_URL}/assets/og/hojreh.jpg`],
-  description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا 6XL.`,
+  description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا {MAX}.`,
   address: { "@type": "PostalAddress", streetAddress: STORE.address, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
   areaServed: { "@type": "Country", name: "Iran" }, currenciesAccepted: "IRR", priceRange: "$$",
   foundingDate: String(new Date().getFullYear() - STORE.years),
@@ -241,7 +265,7 @@ const HOME_FAQ_DEFAULT = [
   ["خرید از المارت چطور انجام می‌شود؟", "هر محصول در غرفه رسمی المارت در باسلام ثبت شده است. سایز و رنگ را در سایت انتخاب کنید و با دکمه «خرید امن از باسلام» سفارش را با درگاه و ضمانت باسلام تکمیل کنید."],
   ["ارسال چقدر طول می‌کشد؟", "سفارش‌ها از روز اول کاری بعد از ثبت، با پست پیشتاز یا سفارشی به سراسر ایران ارسال می‌شوند. برای تبریز ارسال با پیک موتوری هم امکان‌پذیر است."],
   ["سایز مناسب خودم را چطور پیدا کنم؟", "از سایزیاب المارت استفاده کنید: قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید. همچنین در صفحه هر محصول اندازه‌های واقعی آن آمده است و می‌توانید قبل از خرید در اینستاگرام از ما بپرسید."],
-  ["آیا لباس سایز بزرگ دارید؟", "بله. بخش بزرگی از محصولات المارت از XL تا 6XL تولید می‌شوند؛ از تیشرت 5XL تا شلوار اسلش 6XL. صفحه «سایز بزرگ» همه این محصولات را یک‌جا نشان می‌دهد."],
+  ["آیا لباس سایز بزرگ دارید؟", "بله. بخش بزرگی از محصولات المارت در سایزهای بزرگ دوخته می‌شوند؛ تیشرت تا {MAX:tshirt} و شلوار تا {MAX:pants}. صفحه «سایز بزرگ» همه این محصولات را یک‌جا نشان می‌دهد."],
   ["عکس محصولات واقعی است؟", "عکس‌های اصلی با نورپردازی استودیویی بازسازی شده‌اند و جنس، رنگ و دوخت هر لباس دقیقاً همان کالای ارسالی است. عکس‌های واقعی گرفته‌شده در غرفه هم در گالری هر محصول قرار دارند."],
 ];
 
@@ -269,9 +293,10 @@ function home(ctx) {
     <div>
       <span class="eyebrow">${esc(hero("eyebrow", `از دل ${STORE.bazaar} — شش دهه تجربه`))}</span>
       <h1>${esc(hero("line1", "شیک بپوش،"))} <br>${esc(hero("pre", "مثل"))} <em>${esc(hero("em", "بازاری‌ها"))}<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 12 Q150 2 298 12"/></svg></em> ${esc(hero("post", "بخر."))}</h1>
-      <p class="hero-lead">${hero("lead", "") ? esc(hero("lead", "")) : `${fa(STORE.years)} سال تجربه در انتخاب پارچه و دوخت؛ حالا مستقیم برای شما. تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا <b class="num">6XL</b> با قیمت منصفانه و ارسال به سراسر ایران.`}</p>
+      <p class="hero-lead">${hero("lead", "") ? esc(hero("lead", "")) : `${fa(STORE.years)} سال تجربه در انتخاب پارچه و دوخت؛ حالا مستقیم برای شما. تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا <b class="num">{MAX}</b> با قیمت منصفانه و ارسال به سراسر ایران.`}</p>
       <div class="hero-cta"><a class="btn btn-gold" href="${BASE}/shop/">${esc(hero("cta1", "دیدن کالکشن"))} ${I.arrow}</a><a class="btn btn-ghost" href="${BASE}/size-guide/">${esc(hero("cta2", "سایزم چیه؟"))}</a></div>
-      <div class="hero-stats"><div><b class="num" data-count="${STORE.years}" data-suffix="+">${fa(STORE.years)}+</b><span>سال در بازار تبریز</span></div><div><b class="num" data-count="${P.length}">${fa(P.length)}</b><span>مدل در کالکشن</span></div><div><b class="num">6XL</b><span>بزرگ‌ترین سایز</span></div></div>
+      ${storeRating(ctx, "#reviews")}
+      <div class="hero-stats"><div><b class="num" data-count="${STORE.years}" data-suffix="+">${fa(STORE.years)}+</b><span>سال در بازار تبریز</span></div><div><b class="num" data-count="${P.length}">${fa(P.length)}</b><span>مدل در کالکشن</span></div><div><b class="num">{MAX}</b><span>بزرگ‌ترین سایز</span></div></div>
     </div>
     <div class="arches" aria-hidden="true">
       ${heroIds.map((id, i) => `<div class="arch"><img src="${BASE}/assets/p/${id}-480.webp" srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:900px) 33vw, 16vw" alt="${esc((byId(id)?.title || "پوشاک مردانه المارت").slice(0, 120))}" width="480" height="600" ${i === 1 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`).join("")}
@@ -289,7 +314,7 @@ function home(ctx) {
 <section class="sec-sm home-trust"><div class="wrap"><div class="trust rv">
   <div>${I.truck}<p style="margin:0"><b>ارسال از روز اول کاری</b><span>پست پیشتاز و سفارشی به کل ایران</span></p></div>
   <div>${I.shield}<p style="margin:0"><b>خرید امن با باسلام</b><span>پرداخت و ضمانت بازگشت وجه</span></p></div>
-  <div>${I.ruler}<p style="margin:0"><b>سایزبندی واقعی</b><span>از L تا 6XL، اندازه دقیق هر مدل</span></p></div>
+  <div>${I.ruler}<p style="margin:0"><b>سایزبندی واقعی</b><span>از L تا {MAX}، اندازه دقیق هر مدل</span></p></div>
   <div>${I.camera}<p style="margin:0"><b>عکس واقعی کالا</b><span>بررسی قبل از ارسال</span></p></div>
 </div></div></section>
 
@@ -304,17 +329,17 @@ ${winter.length ? `<section class="sec-sm home-winter"><div class="wrap">
 </div></section>
 
 <section class="sec-sm"><div class="wrap"><div class="fit rv">
-  <div><span class="kicker" style="color:var(--gold-2)">سایزیاب المارت</span><h2>سایزت رو در ۱۰ ثانیه پیدا کن.</h2><p>قد و وزنت را بزن؛ سایز پیشنهادی و محصولات موجود در همان سایز را نشانت می‌دهیم. از S تا 6XL.</p><a class="link" style="color:var(--cream)" href="${BASE}/size-guide/">جدول کامل سایزها</a></div>
+  <div><span class="kicker" style="color:var(--gold-2)">سایزیاب المارت</span><h2>سایزت رو در ۱۰ ثانیه پیدا کن.</h2><p>قد و وزنت را بزن؛ سایز پیشنهادی و محصولات موجود در همان سایز را نشانت می‌دهیم. از S تا 6XL.</p><a class="link" style="color:var(--on-dk)" href="${BASE}/size-guide/">جدول کامل سایزها</a></div>
   ${sizer()}
 </div></div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head rv"><div><span class="kicker">مخصوص هیکل‌های درشت</span><h2>لباس سایز بزرگ مردانه</h2><p>سایز بزرگ واقعی، نه فقط یک برچسب؛ تا 6XL با قواره و قد درست.</p></div><a class="link" href="${BASE}/big-size/">کالکشن سایز بزرگ</a></div>
+  <div class="sec-head rv"><div><span class="kicker">مخصوص هیکل‌های درشت</span><h2>لباس سایز بزرگ مردانه</h2><p>سایز بزرگ واقعی، نه فقط یک برچسب؛ تا {MAX} با قواره و قد درست.</p></div><a class="link" href="${BASE}/big-size/">کالکشن سایز بزرگ</a></div>
   <div class="grid">${big.map((p) => card(ctx, p)).join("")}</div>
 </div></section>
 
 ${(() => { const RV = ctx.storeReviews; if (!RV || !RV.count) return ""; const good = RV.reviews.filter((r) => r.text && r.star >= 4).slice(0, 9); const total = Object.values(RV.groups).reduce((a, b) => a + b, 0) || 1;
-return `<section class="sec reviews"><div class="wrap">
+return `<section class="sec reviews" id="reviews"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">از زبان خریداران</span><h2>اعتماد واقعی، نه تبلیغ</h2><p>نظرهای ثبت‌شده خریداران در غرفه رسمی المارت در باسلام؛ بدون ویرایش.</p></div><a class="link" href="${STORE.basalam}" target="_blank" rel="noopener">همه نظرها در باسلام</a></div>
   <div class="rv-wrap">
     <div class="rv-score rv"><b class="num">${fa(RV.average)}</b>${stars(RV.average)}<span>از ${fa(RV.count)} امتیاز خریداران</span>
@@ -360,8 +385,8 @@ return `<section class="sec reviews"><div class="wrap">
 </div></section>`;
   return layout(ctx, {
     path: "/",
-    title: `${STORE.name} | پوشاک مردانه بازار تبریز؛ تیشرت، شلوار اسلش و سایز بزرگ تا 6XL`,
-    desc: `خرید آنلاین پوشاک مردانه از ${STORE.name}، ${fa(STORE.years)} سال در بازار بزرگ تبریز: تیشرت نخ پنبه، شلوار اسلش، هودی، پیراهن و لباس سایز بزرگ مردانه تا 6XL با قیمت منصفانه و ارسال به سراسر ایران.`,
+    title: `${STORE.name} | پوشاک مردانه بازار تبریز؛ تیشرت، شلوار اسلش و سایز بزرگ تا {MAX}`,
+    desc: `خرید آنلاین پوشاک مردانه از ${STORE.name}، ${fa(STORE.years)} سال در بازار بزرگ تبریز: تیشرت نخ پنبه، شلوار اسلش، هودی، پیراهن و لباس سایز بزرگ مردانه تا {MAX} با قیمت منصفانه و ارسال به سراسر ایران.`,
     preload: `${BASE}/assets/p/${heroIds[1]}-480.webp`,
     preloadSet: `${BASE}/assets/p/${heroIds[1]}-480.webp 480w, ${BASE}/assets/p/${heroIds[1]}-960.webp 960w`,
     preloadSizes: "(max-width:900px) 33vw, 16vw",
@@ -380,9 +405,12 @@ ${Object.entries(C).map(([k, c]) => { const n = P.filter((p) => p.cat === k).len
 </div>
 <div class="tb-row">
 <label class="search">${I.search}<input id="q" type="search" placeholder="جستجو: شلوار اسلش، تیشرت 4XL، هودی…" aria-label="جستجو در محصولات"></label>
+<button class="chip tb-toggle" type="button" aria-expanded="false" aria-controls="tb-more">${I.ruler} سایز و ترتیب</button>
+<div class="tb-more" id="tb-more">
 <select id="sort" class="sel" aria-label="مرتب‌سازی"><option value="featured">پیشنهاد المارت</option><option value="best">پرفروش‌ترین</option><option value="new">جدیدترین</option><option value="low">ارزان‌ترین</option><option value="high">گران‌ترین</option></select>
 <div class="sizes-f" role="group" aria-label="سایز">${sizes.map((s) => `<button data-size-f="${s}" aria-pressed="false">${s}</button>`).join("")}</div>
 <button class="chip" id="stock-f" aria-pressed="false">فقط موجودها</button>
+</div>
 <span class="count" id="shop-count">${fa(activeCat ? P.filter((p) => p.cat === activeCat).length : P.length)} محصول</span>
 </div></div></div>`;
 }
@@ -394,7 +422,7 @@ function shop(ctx) {
   return layout(ctx, {
     path: "/shop/",
     title: "فروشگاه پوشاک مردانه المارت؛ همه محصولات از بازار تبریز",
-    desc: `همه ${fa(P.length)} مدل پوشاک مردانه المارت: تیشرت، پولوشرت، پیراهن، هودی، دورس، شلوار اسلش، شلوارک، کفش و لباس پسرانه؛ فیلتر بر اساس سایز تا 6XL.`,
+    desc: `همه ${fa(P.length)} مدل پوشاک مردانه المارت: تیشرت، پولوشرت، پیراهن، هودی، دورس، شلوار اسلش، شلوارک، کفش و لباس پسرانه؛ فیلتر بر اساس سایز تا {MAX}.`,
     schema: [crumbSchema(ctx, items), itemList(ctx, sorted)],
     body: `${crumbs(ctx, items)}
 <header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن کامل</span><h1>فروشگاه المارت</h1><p>کل کالکشن پوشاک مردانه بازار تبریز در یک صفحه. با فیلتر سایز، مدل‌هایی که در سایز شما موجودند را ببینید.</p></div><img class="banner-img" src="${ctx.BASE}/assets/p/${mainBase(sorted[0])}-480.webp" alt="کالکشن پوشاک مردانه المارت" width="480" height="600" loading="lazy" decoding="async"></header>
@@ -513,6 +541,7 @@ function product(ctx, p) {
       ${p.inStock ? `<a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>` : `<div class="oos"><b>این مدل فعلاً ناموجود است</b><span>موجودی هر ۶ ساعت از باسلام به‌روز می‌شود. برای خبر شدن از شارژ مجدد پیام بدهید.</span></div><a class="btn btn-ink btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">خبرم کن وقتی موجود شد</a>`}
       ${p.inStock ? "" : "<!--"}<button class="btn btn-ghost btn-block" id="direct-order" data-direct-order>${I.phone} یا سفارش تلفنی / پیامکی</button>${p.inStock ? "" : "-->"}
       <p class="buy-note">پرداخت از درگاه امن باسلام با ضمانت بازگشت وجه؛ ارسال از روز اول کاری.</p>
+      ${p.inStock ? storeRating(ctx, "#reviews") : ""}
       <div class="buy-more">
         <a href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال قبل از خرید</a>
         <button class="fav" data-id="${p.id}" aria-label="افزودن به علاقه‌مندی‌ها">${I.heart}</button>
@@ -535,7 +564,7 @@ ${(() => {
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-ghost mbar-call" type="button" data-direct-order aria-label="سفارش تلفنی یا پیامکی">${I.phone}</button></div>` : ""}
-${p.reviews.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
+${p.reviews.length ? `<section class="sec-sm" id="reviews"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>محصولات مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div>${g ? `<p class="note-sm">راهنمای خرید: <a href="${BASE}/guide/${g.slug}/">${g.title}</a></p>` : ""}</div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
@@ -556,21 +585,21 @@ ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"
 
 function bigSize(ctx) {
   const { products: P, BASE } = ctx;
-  const list = P.filter(isBig).sort((a, b) => b.inStock - a.inStock);
-  const xl3 = P.filter((p) => !isBig(p) && p.sizes.includes("3XL")).sort((a, b) => b.inStock - a.inStock);
+  const list = P.filter((p) => p.inStock && isBig(p));
+  const xl3 = P.filter((p) => p.inStock && !isBig(p) && liveSizes(p).includes("3XL"));
   const items = [["/", "خانه"], ["/big-size/", "لباس سایز بزرگ مردانه"]];
   const qa = [
-    ["لباس سایز بزرگ مردانه تا چه سایزی دارید؟", "در المارت تیشرت تا 5XL، شلوار اسلش و شلوارک تا 6XL و هودی و دورس تا 3XL موجود است."],
+    ["لباس سایز بزرگ مردانه تا چه سایزی دارید؟", "در المارت تیشرت تا {MAX:tshirt}، شلوار تا {MAX:pants}، شلوارک تا {MAX:shorts} و هودی و دورس تا {MAX:sweat} دوخته می‌شود."],
     ["سایز 4XL برای چه وزنی مناسب است؟", "به طور معمول 4XL برای وزن حدود ۱۰۵ تا ۱۱۸ کیلوگرم و 5XL برای ۱۱۸ تا ۱۳۲ کیلوگرم مناسب است؛ برای دقت بیشتر از سایزیاب استفاده کنید."],
     ["قد شلوارهای سایز بزرگ چقدر است؟", "شلوارهای اسلش سایز بزرگ را بلندتر از معمول می‌دوزیم: ۱۰۵ تا ۱۱۰ سانتی‌متر، که برای آقایان قدبلند هم کافی است."],
   ];
   return layout(ctx, {
     path: "/big-size/",
-    title: "لباس سایز بزرگ مردانه تا 6XL | تیشرت و شلوار اسلش سایز بزرگ",
-    desc: "خرید لباس سایز بزرگ مردانه از 3XL تا 6XL: تیشرت سایز بزرگ، شلوار اسلش سایز بزرگ، شلوارک و پوشاک راحتی برای آقایان درشت‌اندام؛ با قواره و قد واقعی از بازار تبریز.",
+    title: "لباس سایز بزرگ مردانه تا {MAX} | تیشرت و شلوار اسلش سایز بزرگ",
+    desc: "خرید لباس سایز بزرگ مردانه از 3XL تا {MAX}: تیشرت سایز بزرگ، شلوار اسلش سایز بزرگ، شلوارک و پوشاک راحتی برای آقایان درشت‌اندام؛ با قواره و قد واقعی از بازار تبریز.",
     schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
-<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا 6XL را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="لباس سایز بزرگ مردانه المارت" width="480" height="600" loading="lazy" decoding="async"></header>
+<header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا {MAX} را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="لباس سایز بزرگ مردانه المارت" width="480" height="600" loading="lazy" decoding="async"></header>
 <section class="sec-sm" style="padding-top:12px"><div class="wrap"><div class="grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="fit rv"><div><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا 6XL پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">تا 3XL</span><h2>مدل‌های دیگر با سایز 3XL</h2></div></div><div class="grid">${xl3.slice(0, 8).map((p) => card(ctx, p)).join("")}</div></div></section>
@@ -583,7 +612,7 @@ function sizeGuide(ctx) {
   const qa = [
     ["تیشرت باکسی را چه سایزی سفارش بدهم؟", "تیشرت‌های باکسی را در سایز همیشگی خود سفارش دهید؛ قواره این مدل‌ها با تیشرت‌های جذب متفاوت است."],
     ["اگر بین دو سایز باشم، کدام را انتخاب کنم؟", "برای مدل‌های کتان کشی سایز کوچک‌تر و برای اسپان سایز بزرگ‌تر را انتخاب کنید. اندازه دقیق هر مدل را در صفحه محصول ببینید."],
-    ["برای هودی و دورس چه سایزی بگیرم؟", "هودی معمولاً روی تیشرت پوشیده می‌شود و به جای بیشتری نیاز دارد، پس یک سایز بالاتر از سایز همیشگی‌تان مناسب‌تر است. دورس را که مستقیم روی تن می‌پوشید، در سایز همیشگی بگیرید. هودی و دورس در المارت تا 3XL موجود است."],
+    ["برای هودی و دورس چه سایزی بگیرم؟", "هودی معمولاً روی تیشرت پوشیده می‌شود و به جای بیشتری نیاز دارد، پس یک سایز بالاتر از سایز همیشگی‌تان مناسب‌تر است. دورس را که مستقیم روی تن می‌پوشید، در سایز همیشگی بگیرید. هودی و دورس در المارت تا {MAX:sweat} دوخته می‌شود."],
     ["قد شلوار در سایزهای بزرگ چقدر است؟", "در جدول شلوار همین صفحه، قد از ۱۰۰ سانتی‌متر در L و XL شروع می‌شود، در 2XL به ۱۰۵ می‌رسد و از 3XL تا 6XL روی ۱۱۰ می‌ماند. اندازه دقیق هر مدل در صفحه محصول آمده است."],
     ["اگر هنوز از انتخاب سایزم مطمئن نباشم، چطور راهنمایی بگیرم؟", "عکس و اندازه‌هایتان را در اینستاگرام المارت بفرستید تا برای انتخاب سایز کمکتان کنیم. برای دیدن مدل‌های بزرگ‌تر، صفحه لباس سایز بزرگ مردانه را ببینید."],
   ];
@@ -679,6 +708,7 @@ ${prods.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head
 
 const FAQ_FULL = [
   ["چطور سفارش بدهم؟", "در صفحه هر محصول سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید. سفارش و پرداخت در باسلام انجام می‌شود."],
+  ["سفارش تلفنی یا پیامکی چطور است؟", "اگر نمی‌خواهید از باسلام بخرید، در صفحه محصول سایز و رنگ را انتخاب کنید و «سفارش تلفنی / پیامکی» را بزنید. یک کد پیگیری مثل EL-4K2Q می‌گیرید و متن سفارش آماده می‌شود؛ آن را پیامک کنید، با شماره‌های المارت تماس بگیرید یا در روبیکا پیام بدهید و کد را بگویید. پرداخت و ارسال همان‌جا با شما هماهنگ می‌شود."],
   ["چرا پرداخت در باسلام انجام می‌شود؟", "باسلام بازار آنلاین معتبر ایرانی است؛ پرداخت شما تا زمان دریافت کالا نزد باسلام امن می‌ماند و از ضمانت بازگشت وجه باسلام بهره‌مند می‌شوید."],
   ["هزینه و زمان ارسال چقدر است؟", "ارسال از روز اول کاری بعد از سفارش با پست پیشتاز یا سفارشی انجام می‌شود و هزینه دقیق هنگام ثبت سفارش در باسلام محاسبه می‌شود. در تبریز پیک موتوری هم داریم."],
   ["اگر سایز اندازه نبود چه کنم؟", "قبل از خرید از سایزیاب و جدول سایز استفاده کنید. اگر مشکلی پیش آمد، از طریق پیام باسلام یا اینستاگرام با ما در تماس باشید تا مطابق قوانین باسلام راهنمایی‌تان کنیم."],
@@ -702,7 +732,7 @@ const guides = [
   {
     slug: "slash-pants",
     title: "راهنمای خرید شلوار اسلش مردانه؛ جنس، مدل و سایز",
-    desc: "شلوار اسلش مردانه چه جنسی بخریم؟ تفاوت کتان کشی، اسپان و تمام‌نخ، مدل‌های بغل‌نوار، کارگو، بگ و مچی، و انتخاب سایز درست تا 6XL.",
+    desc: "شلوار اسلش مردانه چه جنسی بخریم؟ تفاوت کتان کشی، اسپان و تمام‌نخ، مدل‌های بغل‌نوار، کارگو، بگ و مچی، و انتخاب سایز درست تا {MAX:pants}.",
     cats: ["pants"],
     html: (ctx) => `<p>شلوار اسلش پرکاربردترین شلوار کمد هر مرد است؛ از پیاده‌روی و سفر تا دورهمی و محیط کار نیمه‌رسمی. اما «اسلش» اسم یک مدل نیست و ده‌ها جنس و برش دارد. در این راهنما، با تجربه چند دهه فروش در بازار تبریز، می‌گوییم چه بخرید.</p>
 <h2>۱. جنس: کتان کشی، اسپان یا تمام‌نخ؟</h2>
@@ -716,7 +746,7 @@ const guides = [
   {
     slug: "big-size-men",
     title: "لباس سایز بزرگ مردانه؛ چطور شیک و اندازه بپوشیم",
-    desc: "راهنمای خرید لباس سایز بزرگ مردانه: انتخاب تیشرت و شلوار 4XL تا 6XL، قواره درست، رنگ‌ها و مدل‌هایی که آقایان درشت‌اندام را خوش‌استایل‌تر نشان می‌دهند.",
+    desc: "راهنمای خرید لباس سایز بزرگ مردانه: انتخاب تیشرت و شلوار 4XL تا {MAX}، قواره درست، رنگ‌ها و مدل‌هایی که آقایان درشت‌اندام را خوش‌استایل‌تر نشان می‌دهند.",
     cats: ["tshirt", "pants"],
     html: (ctx) => `<p>خیلی از برندها «سایز بزرگ» را فقط روی برچسب می‌نویسند؛ لباس عرض دارد اما قد و سرشانه‌اش اندازه نیست. اینجا یاد می‌گیرید لباس سایز بزرگ واقعی را چطور تشخیص دهید.</p>
 <h2>۱. سرشانه و قد لباس مهم‌تر از عرض است</h2>
@@ -725,7 +755,7 @@ const guides = [
 <p>پنبه نمره ۲۸ یا نخ ۳۰ گرم روی بدن نمی‌چسبد و برجستگی‌ها را کمتر نشان می‌دهد. پارچه‌های خیلی نازک و کش‌دار را برای سایزهای بزرگ توصیه نمی‌کنیم.</p>
 <h2>۳. رنگ و مدل</h2>
 <ul><li>رنگ‌های تیره و یکدست (مشکی، سرمه‌ای، زغالی، یشمی) هیکل را متناسب‌تر نشان می‌دهند.</li><li>تیشرت یقه‌دار و پولوشرت ظاهر مرتب‌تری از یقه گرد می‌دهند.</li><li>شلوار اسلش با دمپای ساده (نه خیلی تنگ) تناسب بالا و پایین تنه را حفظ می‌کند.</li></ul>
-<p><a href="${ctx.BASE}/big-size/">کالکشن سایز بزرگ المارت</a> را ببینید؛ تیشرت تا 5XL و شلوار تا 6XL.</p>`,
+<p><a href="${ctx.BASE}/big-size/">کالکشن سایز بزرگ المارت</a> را ببینید؛ تیشرت تا {MAX:tshirt} و شلوار تا {MAX:pants}.</p>`,
   },
   {
     slug: "hoodie-sweatshirt",
@@ -947,8 +977,8 @@ function notFound(ctx) {
 }
 
 function llms(ctx) {
-  return `# ${STORE.name} (${STORE.latin})
-> ${STORE.full} — ${STORE.bazaar}، ${fa(STORE.years)} سال سابقه. پوشاک مردانه روزمره و سایز بزرگ تا 6XL. خرید از طریق غرفه باسلام: ${STORE.basalam}
+  return fillSizes(ctx, `# ${STORE.name} (${STORE.latin})
+> ${STORE.full} — ${STORE.bazaar}، ${fa(STORE.years)} سال سابقه. پوشاک مردانه روزمره و سایز بزرگ تا {MAX}. خرید از طریق غرفه باسلام: ${STORE.basalam}
 
 ## صفحات
 - ${ctx.SITE_URL}/shop/ : همه محصولات
@@ -958,7 +988,7 @@ function llms(ctx) {
 
 ## محصولات
 ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.length ? ` — سایز ${p.sizes.join("/")}` : ""}: ${ctx.SITE_URL}/p/${p.id}/`).join("\n")}
-`;
+`);
 }
 
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });

@@ -60,7 +60,7 @@
   paintFavs(); favBadge();
 
   /* product card template (for shop filtering) */
-  const sizeTags = (p) => (p.s || []).slice(0, 5).map((s) => `<span>${s}</span>`).join("");
+  const sizeTags = (p) => { const z = p.s || []; return (z.length > 5 ? [z[0], "…", ...z.slice(-3)] : z).map((s) => (s === "…" ? "<i>…</i>" : `<span>${s}</span>`)).join(""); };
   const card = (p) => `<article class="card rv${p.st ? "" : " out"}">
     <div class="card-media"><img src="${p.img}" alt="${p.t}" width="480" height="600" loading="lazy" decoding="async">${p.alt ? `<img class="alt" src="${p.alt}" alt="" loading="lazy" decoding="async">` : ""}
     <div class="card-tags">${p.tag ? `<span class="tag ${p.tagc}">${p.tag}</span>` : ""}</div>
@@ -110,6 +110,11 @@
     let qt; q.addEventListener("input", () => { clearTimeout(qt); qt = setTimeout(() => { state.q = q.value.trim(); run(); }, 160); });
     sort.addEventListener("change", () => { state.sort = sort.value; run(); });
     if (params.toString()) run(false); else sync();
+    // phones: sort / size / in-stock sit behind one button so the products start higher up
+    const tbt = $(".tb-toggle"), tb = $(".toolbar");
+    const openTb = (on) => { tb.classList.toggle("open", on); tbt.setAttribute("aria-expanded", on); };
+    tbt?.addEventListener("click", () => openTb(!tb.classList.contains("open")));
+    if (state.sizes.size || state.stock || state.sort !== "featured") openTb(true);
   }
 
   /* product page */
@@ -163,6 +168,15 @@
     // one size left for the chosen colour: pick it, so the buyer has one step less
     const only = $$("[data-size]").filter((b) => avail(sel.color, b.dataset.size));
     if (only.length === 1) sel.size = only[0].dataset.size;
+    // the size finder result follows the shopper to every product page
+    const mine = store.get("elm-size", null);
+    const mineBtn = mine && $$("[data-size]").find((b) => b.dataset.size === mine.s);
+    if (mineBtn) {
+      mineBtn.classList.add("mine");
+      const hint = document.createElement("p"); hint.className = "size-hint";
+      hint.innerHTML = `سایزیاب برای شما <b>${mine.s}</b> پیشنهاد داده است${avail(sel.color, mine.s) ? "" : " (در این رنگ تمام شده)"}.`;
+      mineBtn.closest(".opt").append(hint);
+    }
     paint();
     // phones: the long description starts folded so the buy box and reviews come sooner
     if (matchMedia("(max-width:900px)").matches) $(".pbox details[open]")?.removeAttribute("open");

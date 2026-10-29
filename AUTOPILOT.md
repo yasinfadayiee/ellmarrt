@@ -57,7 +57,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   per-size/colour stock words (keep the model descriptions and links); if the guide template does not already
   show product cards, add the 3 linked products with the existing `card()` helper so sizes stay live.
   Done = no size/colour availability claims in the guide text, build passes.
-- [ ] Fix (review): size claims in FAQ answers in `scripts/pages.js` — `HOME_FAQ_DEFAULT` («از XL تا 6XL… تیشرت 5XL
+- [x] (2026-10-29, owner session) Size claims now come from `{MAX}` / `{MAX:cat}` tokens filled at build time from in-stock sizes (`sizeMax()` in pages.js). Original: Fix (review): size claims in FAQ answers in `scripts/pages.js` — `HOME_FAQ_DEFAULT` («از XL تا 6XL… تیشرت 5XL
   تا شلوار اسلش 6XL»), `bigSize()` Q1 («تیشرت تا 5XL، شلوار… تا 6XL، هودی و دورس تا 3XL») and `sizeGuide()`
   hoodie Q («هودی و دورس… تا 3XL موجود است»). Check each against the sizes of IN-STOCK products in `data-raw/`
   (read-only). Reword to what we make/offer by product type without the word «موجود», and correct any max
@@ -76,18 +76,18 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   product's own description in `data-raw/` has measurements («دور کمر»، «قد»), make sure they are visible near
   the size chips once (move, do not copy — the page must not show them twice). Done = 2 product pages in
   `docs/p/` checked, build passes. (Competing Basalam listings show waist range per size.)
-- [ ] Big sizes are our rare advantage (Basalam sellers mostly stop at 3XL–4XL): on `/big-size/` (`bigSize()`)
+- [x] (2026-10-29, owner session) /big-size/ lists only in-stock items with 4XL+ live; cards show live sizes (`liveSizes()`), long runs keep the largest sizes; title uses {MAX}. Original: Big sizes are our rare advantage (Basalam sellers mostly stop at 3XL–4XL): on `/big-size/` (`bigSize()`)
   make sure the product list contains only in-stock products that really have 3XL+ in their size data,
   and each card/line shows which big sizes are available, computed at build time (e.g. «4XL، 5XL»).
   Title/H1 «لباس سایز بزرگ مردانه تا 6XL» only if a 6XL item is really in stock; otherwise use the real max.
-- [ ] Fact check category intros: `CATEGORIES[*].desc` in `scripts/catalog.js` claim size ranges
+- [x] (2026-10-29, owner session) Category intros use {MAX:cat} tokens (polo corrected to L). Original: Fact check category intros: `CATEGORIES[*].desc` in `scripts/catalog.js` claim size ranges
   («تا 5XL»، «M تا 3XL»، «L تا 6XL»، «تا 6XL»، «41 تا 45»). Compare each with the real sizes of in-stock
   products in that category (`data/`, `data-raw/` read-only) and correct any claim that is false. If
   `catalog.js` is the wrong place, fix the text where it is defined. List what changed in the summary.
-- [ ] `/shipping-returns/` and `/faq/`: add a short «سفارش مستقیم چطور است؟» answer (EL-XXXX code, phone/SMS,
+- [x] (2026-10-29, owner session) FAQ «سفارش تلفنی یا پیامکی چطور است؟» added (FAQPage schema). Original: `/shipping-returns/` and `/faq/`: add a short «سفارش مستقیم چطور است؟» answer (EL-XXXX code, phone/SMS,
   how payment and sending work) using only what the site's direct-order code and pages already say, and
   link it from the product page buy-note. Skip if both pages already explain it.
-- [ ] Trust from real data only: check `data-raw/_meta.json` and one product file for the Basalam booth's
+- [x] (2026-10-29, owner session) Booth rating line (`storeRating()`, from storeReviews) under the hero CTA and next to the Basalam button. Original: Trust from real data only: check `data-raw/_meta.json` and one product file for the Basalam booth's
   real rating, review count or sales count. If present, show one short line near the Basalam button on the
   product page («امتیاز غرفه در باسلام: …», read from data at build time). If no such data exists, tick the
   item with "no data" and change nothing. Never write a number that is not in the data; no fake review schema.
@@ -106,6 +106,10 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   existing page and that guides do not link out-of-stock products. Fix what is broken.
 
 ## Rules learned
+- Size claims: never hard-code «تا 6XL» / «تا 3XL». Write `{MAX}` or `{MAX:pants}`; `layout()` and `llms()` fill them
+  from in-stock sizes at build time. Card and filter sizes use `liveSizes(p)` (sold-out sizes are hidden).
+- Night mode: `--ink`/`--cream` swap at night. For text on always-dark boxes use `--on-dk`, for dark fills use
+  `--dk1`. Check new UI with `[data-theme=shab]` before shipping.
 - Mobile layout (2026-10-29, owner request "too busy on phones"): under 900px the header shows only menu, logo and
   search; no topbar; home = short hero → swipeable category row → trust strip → best sellers; product page =
   numbered steps (colour, size) → ONE dark Basalam button → ghost «سفارش تلفنی / پیامکی» → small icon row.
