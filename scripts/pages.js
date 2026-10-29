@@ -625,6 +625,11 @@ function sizeGuide(ctx) {
     ["اگر هنوز از انتخاب سایزم مطمئن نباشم، چطور راهنمایی بگیرم؟", "عکس و اندازه‌هایتان را در اینستاگرام المارت بفرستید تا برای انتخاب سایز کمکتان کنیم. برای دیدن مدل‌های بزرگ‌تر، صفحه لباس سایز بزرگ مردانه را ببینید."],
   ];
   const rows = SIZE_ROWS;
+  const chartLine = (cats) => {
+    const hit = ctx.products.filter((p) => p.inStock && cats.includes(p.cat) && measures(p)).slice(0, 2);
+    if (!hit.length) return "";
+    return `<p>جدول دقیق هر مدل در صفحه همان محصول، زیر انتخاب سایز آمده است: ${hit.map((p) => `<a href="${pUrl(ctx, p)}">${esc(p.title)}</a>`).join(" · ")}</p>`;
+  };
   return layout(ctx, {
     path: "/size-guide/",
     title: "سایزیاب و جدول سایز لباس مردانه (L تا 6XL)",
@@ -637,6 +642,7 @@ function sizeGuide(ctx) {
 <h2>جدول سایز تیشرت و بلوز مردانه</h2>
 <table><thead><tr><th>سایز</th><th>قد (سانتی‌متر)</th><th>وزن (کیلوگرم)</th><th>عرض سینه</th><th>قد لباس</th></tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td${i === 0 ? ' style="direction:ltr;font-weight:800"' : ""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>
 <div class="note">عرض سینه و قد لباس تقریبی و بر حسب سانتی‌متر است و بین مدل‌های باکسی، اورسایز و جذب کمی تفاوت دارد. تیشرت‌های باکسی را در سایز همیشگی خود سفارش دهید.</div>
+${chartLine(["tshirt", "polo", "shirt", "sweat"])}
 <h2>جدول سایز شلوار اسلش و شلوارک</h2>
 <table><thead><tr><th>سایز</th><th>وزن تقریبی</th><th>قد شلوار</th></tr></thead><tbody>
 <tr><td style="direction:ltr;font-weight:800">L – XL</td><td>۶۵ تا ۸۵</td><td>۱۰۰</td></tr>
@@ -644,6 +650,7 @@ function sizeGuide(ctx) {
 <tr><td style="direction:ltr;font-weight:800">3XL</td><td>۹۰ تا ۱۰۵</td><td>۱۱۰</td></tr>
 <tr><td style="direction:ltr;font-weight:800">4XL</td><td>۱۰۵ تا ۱۲۰</td><td>۱۱۰</td></tr>
 <tr><td style="direction:ltr;font-weight:800">5XL – 6XL</td><td>۱۲۰ به بالا</td><td>۱۱۰</td></tr></tbody></table>
+${chartLine(["pants", "shorts"])}
 <h2>اندازه‌گیری درست در خانه</h2>
 <ul><li><b>عرض سینه:</b> یک تیشرت که اندازه‌تان است را صاف روی زمین بگذارید و زیر بغل تا زیر بغل را اندازه بگیرید.</li><li><b>قد لباس:</b> از بالاترین نقطه شانه تا پایین لبه لباس.</li><li><b>قد شلوار:</b> از کمر تا پایین دمپا در کنار پا.</li></ul>
 <p>هنوز مطمئن نیستید؟ عکس و اندازه‌هایتان را در <a href="${STORE.igDm}" target="_blank" rel="noopener">اینستاگرام المارت</a> بفرستید؛ کمکتان می‌کنیم.</p>
