@@ -107,5 +107,79 @@ ${real.length ? `<section class="sec-sm"><div class="wrap prose"><h2>انداز�
     });
   }
 
-  return { sizePages, sizePage, bigCats, bigCat, BIG_CATS };
+  // /size/shoes/ «سایز کفش ۴۲ چند سانت است؟» — foot lengths from the seller's chart of an in-stock shoe
+  const shoeChart = (ctx) => {
+    for (const p of ctx.products.filter((x) => x.inStock && x.cat === "shoes").sort(rank)) {
+      const m = measures(p);
+      if (m && m.cols.includes("طول پا")) return { p, rows: m.rows.filter(([, v]) => v["طول پا"]) };
+    }
+    return null;
+  };
+  function shoePage(ctx) {
+    const { BASE, CATEGORIES } = ctx;
+    const ch = shoeChart(ctx);
+    const shoes = ctx.products.filter((x) => x.inStock && x.cat === "shoes").sort(rank);
+    const path = "/size/shoes/";
+    const first = ch.rows[0][0], last = ch.rows[ch.rows.length - 1][0];
+    const items = [["/", "خانه"], ["/size-guide/", "سایزیاب و جدول سایز"], [path, "سایز کفش مردانه"]];
+    const qa = [
+      ...ch.rows.map(([z, v]) => [`سایز ${fa0(z)} کفش چند سانت است؟`, `در جدول کفش‌های المارت، سایز ${fa0(z)} برای طول پای حدود ${fa0(v["طول پا"])} سانتی‌متر است.`]),
+      ["طول پا را چطور اندازه بگیرم؟", "کاغذ را روی زمین بگذارید، با جوراب همیشگی پاشنه را به دیوار بچسبانید، جلوی بلندترین انگشت را علامت بزنید و فاصله تا دیوار را اندازه بگیرید. اگر دو پا فرق دارند، پای بزرگ‌تر را ملاک بگیرید."],
+      ["اگر طول پایم بین دو سایز بود چه کنم؟", "اندازه‌گیری در خانه چند میلی‌متر خطا دارد؛ اگر نزدیک مرز دو سایز هستید، سایز بزرگ‌تر را ببینید یا قبل از سفارش با ما تماس بگیرید."],
+    ];
+    return layout(ctx, {
+      path,
+      title: `سایز کفش ${fa0(ch.rows[1] ? ch.rows[1][0] : first)} چند سانت است؟ جدول سایز کفش مردانه ${first} تا ${last}`,
+      desc: `جدول سایز کفش مردانه ${fa0(first)} تا ${fa0(last)} بر اساس طول پا: ${ch.rows.map(([z, v]) => `${fa0(z)} = ${fa0(v["طول پا"])}`).join("، ")} سانتی‌متر. روش اندازه‌گیری پا در خانه.`,
+      schema: [crumbSchema(ctx, items), faqSchema(qa), itemList(ctx, shoes)],
+      body: `${crumbs(ctx, items)}
+<header class="wrap phead"><h1>جدول سایز کفش مردانه (طول پا به سانتی‌متر)</h1><p>سایز کفش را با طول پا انتخاب کنید، نه با شماره‌ای که همیشه می‌پوشید. این جدول از اندازه‌های <a href="${BASE}/p/${ch.p.id}/">${ch.p.title}</a> است.</p></header>
+<section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:720px">
+<table><thead><tr><th>سایز</th><th>طول پا (سانتی‌متر)</th></tr></thead><tbody>${ch.rows.map(([z, v]) => `<tr><td style="font-weight:800">${fa0(z)}</td><td>${fa0(v["طول پا"])}</td></tr>`).join("")}</tbody></table>
+<h2>اندازه‌گیری پا در خانه</h2>
+<ol><li>یک کاغذ روی زمین بگذارید و با جورابی که معمولاً می‌پوشید، پاشنه را کامل به دیوار بچسبانید.</li><li>جلوی بلندترین انگشت را علامت بزنید.</li><li>فاصله دیوار تا علامت را با متر یا خط‌کش اندازه بگیرید و با جدول مقایسه کنید.</li><li>اگر دو پا فرق دارند، پای بزرگ‌تر ملاک است.</li></ol>
+<div class="note">اندازه‌گیری دستی چند میلی‌متر خطا دارد. اگر نزدیک مرز دو سایز هستید، قبل از سفارش با <a href="tel:${STORE.phones[0]}">${fa0(STORE.phones[0])}</a> تماس بگیرید.</div>
+<h2>سوالات سایز کفش</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
+<p>بیشتر بخوانید: <a href="${BASE}/guide/mens-shoe-size-guide/">راهنمای انتخاب کفش مردانه</a> · <a href="${BASE}/c/${CATEGORIES.shoes.slug}/">همه کفش‌ها</a></p>
+</div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود الان</span><h2>کفش اسپرت مردانه</h2></div></div><div class="grid">${shoes.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>`,
+    });
+  }
+
+  // /wholesale/ «خرید عمده پوشاک مردانه از بازار تبریز» — the booth sells «عمده و خرده» (seller's own Basalam text);
+  // no wholesale prices or minimums are published, so the page only says how to ask for them.
+  function wholesale(ctx) {
+    const { BASE, CATEGORIES, products: P } = ctx;
+    const live = P.filter((p) => p.inStock);
+    const cats = Object.keys(CATEGORIES).map((k) => [k, live.filter((p) => p.cat === k)]).filter(([, l]) => l.length);
+    const path = "/wholesale/";
+    const items = [["/", "خانه"], [path, "خرید عمده"]];
+    const tel = STORE.phones.map((x) => `<a href="tel:${x}" class="num">${fa0(x)}</a>`).join(" یا ");
+    const qa = [
+      ["آیا المارت فروش عمده دارد؟", `بله. ${STORE.full} در ${STORE.bazaar} هم عمده و هم تکی می‌فروشد. قیمت عمده را تلفنی یا با پیام اعلام می‌کنیم.`],
+      ["قیمت عمده را چطور بپرسم؟", `مدل، رنگ، سایز و تعداد را به شماره ${STORE.phones.map(fa0).join(" یا ")} پیامک کنید یا در روبیکا و اینستاگرام المارت بفرستید.`],
+      ["خرید عمده به شهرستان ارسال می‌شود؟", "بله. سفارش‌ها با پست به سراسر ایران و در تبریز با پیک ارسال می‌شوند."],
+      ["چه سایزهایی برای عمده دارید؟", `الان از ${cats.length} دسته محصول داریم و بزرگ‌ترین سایز موجود {MAX} است. موجودی هر مدل در صفحه همان محصول به‌روز است.`],
+    ];
+    return layout(ctx, {
+      path,
+      title: "خرید عمده پوشاک مردانه از بازار تبریز | تیشرت، شلوار اسلش، هودی",
+      desc: `پخش عمده پوشاک مردانه از ${STORE.bazaar}: ${fa(live.length)} مدل تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ تا {MAX}. قیمت عمده با تماس یا پیام، ارسال به سراسر ایران.`,
+      schema: [crumbSchema(ctx, items), faqSchema(qa)],
+      body: `${crumbs(ctx, items)}
+<header class="wrap phead"><h1>خرید عمده پوشاک مردانه از بازار تبریز</h1><p>المارت ${STORE.full} در ${STORE.bazaar} است و به مغازه‌ها، فروشندگان آنلاین و خریداران تعداد بالا هم می‌فروشد. قیمت عمده هر مدل را بپرسید: ${tel}.</p></header>
+<section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:760px">
+<h2>چطور سفارش عمده بدهم؟</h2>
+<ol><li>مدل‌ها را از فهرست زیر یا <a href="${BASE}/shop/">فروشگاه</a> انتخاب کنید.</li><li>کد کالا (در صفحه هر محصول)، رنگ، سایز و تعداد را بنویسید.</li><li>به ${tel} پیامک بدهید یا در <a href="${STORE.rubikaOrder}" target="_blank" rel="noopener">روبیکا</a> و <a href="${STORE.igDm}" target="_blank" rel="noopener">اینستاگرام</a> بفرستید تا قیمت عمده و هزینه ارسال را اعلام کنیم.</li></ol>
+<p>آدرس حجره: ${STORE.address}. ارسال به سراسر ایران با پست و در تبریز با پیک.</p>
+<h2>مدل‌های موجود برای عمده</h2>
+<table><thead><tr><th>دسته</th><th>مدل موجود</th><th>قیمت تکی</th></tr></thead><tbody>${cats.map(([k, l]) => { const pr = l.map((p) => p.price); return `<tr><td><a href="${BASE}/c/${CATEGORIES[k].slug}/">${CATEGORIES[k].name}</a></td><td>${fa(l.length)}</td><td>${Math.min(...pr) === Math.max(...pr) ? fa(pr[0]) : `${fa(Math.min(...pr))} تا ${fa(Math.max(...pr))}`} تومان</td></tr>`; }).join("")}</tbody></table>
+<p>قیمت‌های جدول قیمت تکی است؛ قیمت عمده جداگانه اعلام می‌شود.</p>
+<h2>سوالات خرید عمده</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
+</div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پرفروش‌ها</span><h2>مدل‌های پرفروش</h2></div><a class="link" href="${BASE}/shop/">همه مدل‌ها</a></div><div class="grid">${live.slice().sort(rank).slice(0, 8).map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>`,
+    });
+  }
+
+  return { sizePages, sizePage, bigCats, bigCat, BIG_CATS, shoeChart, shoePage, wholesale };
 };

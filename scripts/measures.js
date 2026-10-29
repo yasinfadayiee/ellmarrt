@@ -5,8 +5,7 @@
 const LABELS = [
   ["عرض سینه", /^عرض\s*سینه$/], ["عرض شانه", /^((عرض\s*)?سر\s*شانه|عرض\s*شانه|سرشانه)$/], ["قد آستین", /^(قد\s*)?آستین$/],
   ["قد", /^قد(\s*(لباس|کار|تیشرت|بلوز|شلوار))?$/], ["دور کمر", /^((دور\s*)?کمر(\s*کشی)?|کمر)$/], ["فاق", /^فاق$/],
-  ["عرض ران", /^عرض\s*ران$/], ["عرض دمپا", /^عرض\s*دمپا$/], ["طول پا", /^طول\s*پا$/],
-];
+  ["عرض ران", /^عرض\s*ران$/], ["عرض دمپا", /^عرض\s*دمپا$/], ["طول پا", /^طول\s*پا$/],];
 const FA = "؀-ۿ";
 const norm = (s) => String(s).toUpperCase().replace(/\s+/g, "").replace(/^XXXL$/, "3XL").replace(/^XXL$/, "2XL");
 const digits = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
@@ -32,6 +31,15 @@ function parse(raw, want) {
       if (hit && !vals[hit[0]]) vals[hit[0]] = m[3] ? `${m[2]} تا ${m[3]}` : m[2];
     }
     if (Object.keys(vals).length && !rows.has(hits[i].size)) rows.set(hits[i].size, vals);
+  }
+  // «عرض ران به ترتیب: 50، 52، 54، 56» — one label, values in size order; only when the count matches
+  const seq = new RegExp(`([${FA}][${FA}\\s]{1,14}?)\\s*به ترتیب\\s*[:：]?\\s*((?:\\d{2,3}(?:\\.\\d+)?\\s*[،,]\\s*)+\\d{2,3}(?:\\.\\d+)?)`, "g");
+  const sizes = [...new Set(want.values())];
+  for (let m; (m = seq.exec(text));) {
+    const hit = LABELS.find(([, rx]) => rx.test(m[1].trim().split(/\s+/).slice(-2).join(" ")));
+    const nums = m[2].split(/[،,]/).map((x) => x.trim());
+    if (!hit || nums.length !== sizes.length) continue;
+    sizes.forEach((z, k) => { const v = rows.get(z) || {}; if (!v[hit[0]]) v[hit[0]] = nums[k]; rows.set(z, v); });
   }
   return rows;
 }
