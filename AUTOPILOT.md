@@ -91,12 +91,12 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   real rating, review count or sales count. If present, show one short line near the Basalam button on the
   product page («امتیاز غرفه در باسلام: …», read from data at build time). If no such data exists, tick the
   item with "no data" and change nothing. Never write a number that is not in the data; no fake review schema.
-- [ ] Duplicate guides: `hoodie-sweatshirt` and `sweatshirt-buying-guide` (`guides` in `scripts/pages.js`) both
+- [x] (2026-10-29, owner session) sweatshirt-buying-guide rewritten as a practical page (zip, hood, cuffs, layering size; real products linked); hoodie-sweatshirt keeps fabric + care; no shared clauses, one link each way. Original: Duplicate guides: `hoodie-sweatshirt` and `sweatshirt-buying-guide` (`guides` in `scripts/pages.js`) both
   cover fabric, layering size and care for the same `sweat` products. Keep `hoodie-sweatshirt` as the
   comparison («هودی، سویشرت یا دورس؟») and make `sweatshirt-buying-guide` a short practical page (zip, cuff,
   neck, choosing size for layering) with no shared sentences; each links to the other once. Keep both slugs.
   Done = no paragraph says the same thing on both pages, build passes.
-- [ ] Internal links to products (Google: "crawled – not indexed"): each guide page (`guide()`) gets a
+- [x] (2026-10-29, owner session) guide() related row sorted by best seller and topped up from PAIRS, every guide shows 4 in-stock products. Original: Internal links to products (Google: "crawled – not indexed"): each guide page (`guide()`) gets a
   «محصولات مرتبط» row with up to 4 in-stock product cards from the guide's `cats`, using the existing
   `card()` helper. Skip if the guide template already shows products. Done = every guide links ≥3 products.
 - [ ] Product schema check: in the product page JSON-LD make sure `offers` has price, priceCurrency (IRR
