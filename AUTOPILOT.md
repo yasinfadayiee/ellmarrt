@@ -51,7 +51,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   pants-length Q also exists on `/big-size/`. Replace Q3 with a new, real question (e.g. which size for
   شلوار کمرکش vs a snug fit, using facts already on the site) and reword the pants-length answer so the two
   pages do not share sentences. Keep FAQPage schema matching the visible text.
-- [ ] Fix (review): `/guide/boys-pants-guide/` (last entry of `guides` in `scripts/pages.js`) hard-codes stock in
+- [x] (2026-10-29) Fix (review): `/guide/boys-pants-guide/` (last entry of `guides` in `scripts/pages.js`) hard-codes stock in
   prose: «در سایزهای ۸۰، ۸۵، ۹۰ و ۹۵ موجود است»، «در سایز ۸۰ و ۹۰ داریم»، «فعلاً سایز ۷۵ و ۹۵ آن موجود است»،
   «رنگ موجودش طوسی است». The Basalam sync changes stock several times a day, so these go false. Remove the
   per-size/colour stock words (keep the model descriptions and links); if the guide template does not already
