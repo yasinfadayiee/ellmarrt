@@ -147,6 +147,8 @@
       $$("[data-size]").forEach((b) => { b.setAttribute("aria-pressed", b.dataset.size === sel.size); b.disabled = !avail(sel.color, b.dataset.size); });
       $("#sel-color") && ($("#sel-color").textContent = sel.color || "انتخاب کنید");
       $("#sel-size") && ($("#sel-size").textContent = sel.size || "انتخاب کنید");
+      $("#sel-color")?.closest(".opt").classList.toggle("ok", !!sel.color);
+      $("#sel-size")?.closest(".opt").classList.toggle("ok", !!sel.size);
       const st = $("#stock");
       const match = V.filter((v) => (!sel.color || v.color === sel.color) && (!sel.size || v.size === sel.size));
       const n = match.reduce((a, v) => a + (v.stock || 0), 0);
@@ -158,13 +160,21 @@
     $$("[data-size]").forEach((b) => b.addEventListener("click", () => { sel.size = sel.size === b.dataset.size ? null : b.dataset.size; paint(); }));
     const tc0 = thumbs[0]?.dataset.tc;
     if (tc0 && $$("[data-color]").some((b) => b.dataset.color === tc0) && avail(tc0, null)) sel.color = tc0;
+    // one size left for the chosen colour: pick it, so the buyer has one step less
+    const only = $$("[data-size]").filter((b) => avail(sel.color, b.dataset.size));
+    if (only.length === 1) sel.size = only[0].dataset.size;
     paint();
+    // phones: the long description starts folded so the buy box and reviews come sooner
+    if (matchMedia("(max-width:900px)").matches) $(".pbox details[open]")?.removeAttribute("open");
     const buy = (e) => {
       const needSize = $$("[data-size]").length > 0, needColor = $$("[data-color]").length > 1;
       if ((needSize && !sel.size) || (needColor && !sel.color)) {
         e.preventDefault();
-        toast(needSize && !sel.size ? "اول سایز را انتخاب کنید" : "اول رنگ را انتخاب کنید");
-        $(".opt")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        const miss = needColor && !sel.color ? "#sel-color" : "#sel-size";
+        toast(miss === "#sel-size" ? "اول سایز را انتخاب کنید" : "اول رنگ را انتخاب کنید");
+        const box = $(miss)?.closest(".opt");
+        box?.scrollIntoView({ behavior: "smooth", block: "center" });
+        box?.classList.remove("need"); void box?.offsetWidth; box?.classList.add("need");
         return;
       }
       store.set("elm-last-choice", { id: P.id, ...sel });
@@ -246,17 +256,18 @@
     $$("[data-direct-order]").forEach((b) => b.addEventListener("click", openDirectOrder));
   }
   /* night mode toggle — choice is remembered on this device */
-  const tBtn = $("#theme-toggle");
-  if (tBtn) {
+  // header button on desktop, a row in the menu on phones
+  const tBtns = $$("[data-theme-toggle]");
+  if (tBtns.length) {
     const isNight = () => document.documentElement.getAttribute("data-theme") === "shab";
-    const mark = () => { tBtn.setAttribute("aria-pressed", isNight()); tBtn.setAttribute("aria-label", isNight() ? "حالت روز" : "حالت شب"); };
+    const mark = () => tBtns.forEach((b) => { b.setAttribute("aria-pressed", isNight()); b.setAttribute("aria-label", isNight() ? "حالت روز" : "حالت شب"); const s = $("span", b); if (s) s.textContent = isNight() ? "حالت روز" : "حالت شب"; });
     mark();
-    tBtn.addEventListener("click", () => {
+    tBtns.forEach((b) => b.addEventListener("click", () => {
       const night = !isNight();
       night ? document.documentElement.setAttribute("data-theme", "shab") : document.documentElement.removeAttribute("data-theme");
       try { night ? localStorage.setItem("elm-theme", "shab") : localStorage.removeItem("elm-theme"); } catch {}
       mark(); toast(night ? "حالت شب فعال شد" : "حالت روز فعال شد");
-    });
+    }));
   }
   /* copy promo code */
   document.addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (!b) return; navigator.clipboard?.writeText(b.dataset.copy).then(() => toast("کد تخفیف کپی شد")).catch(() => toast(b.dataset.copy)); });

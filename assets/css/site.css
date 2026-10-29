@@ -721,3 +721,77 @@ body{background-color:var(--paper)}
 .hojreh img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:var(--sand);box-shadow:var(--shadow-lg)}
 .hojreh figcaption{text-align:center;color:var(--muted);font-size:15px;margin-top:14px}
 @media (min-width:900px){.hojreh img{aspect-ratio:16/10}}
+
+/* ===== phones: calmer screens, one clear path to buy ===== */
+.nav-theme{display:none}
+.opt-t{display:inline-flex;align-items:center;gap:8px}
+.step{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--sand);color:var(--ink);font-style:normal;font-size:12px;font-weight:800}
+.opt.ok .step{background:var(--ok);color:#fff}
+.opt.need .opts{animation:need .5s}
+@keyframes need{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.buy-more{display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:700;color:var(--ink-3)}
+.buy-more a{display:inline-flex;align-items:center;gap:6px;padding:10px 12px;border-radius:999px}
+.buy-more a svg,.buy-more button svg{width:19px;height:19px}
+.buy-more .fav,.buy-more #share{position:static;width:44px;height:44px;border-radius:50%;background:none;display:grid;place-items:center}
+.buy-more a:hover,.buy-more button:hover{background:var(--sand)}
+#share svg{fill:none;stroke:currentColor}
+@media (max-width:980px){
+  .nav-theme{display:flex;align-items:center;gap:10px;margin-top:10px;padding:14px 16px;border-radius:14px;font-size:16px;font-weight:600;color:var(--ink-3);border-top:1px solid var(--line)}
+  .nav-theme svg{width:20px;height:20px}
+  .nav-theme svg:nth-of-type(2){display:none}
+  [data-theme=shab] .nav-theme svg:nth-of-type(1){display:none}
+  [data-theme=shab] .nav-theme svg:nth-of-type(2){display:block}
+}
+@media (max-width:900px){
+  /* one bottom bar is enough: favourites/contact live there, so the header keeps only menu, logo and search */
+  .d-only{display:none!important}
+  .topbar{display:none}
+  .hdr-in{height:60px}
+  /* home: short hero, then categories as one swipeable row, then products */
+  .hero .arches,.hero .hero-stats,.hero .eyebrow,.arch-band{display:none}
+  .hero-in{padding-block:26px 30px}
+  .hero h1{font-size:30px;margin-bottom:10px}
+  .hero h1 br{display:none}
+  .hero-lead{font-size:14.5px;margin-bottom:18px;line-height:1.9}
+  .hero-cta .btn{flex:1;height:48px;padding:0 16px;font-size:15px}
+  .home-cats{padding-block:18px 6px!important}
+  .home-cats .sec-head{margin-bottom:12px}
+  .home-cats .sec-head h2{font-size:20px}
+  .home-cats .kicker{display:none}
+  .cats{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut);scrollbar-width:none}
+  .cats::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 104px;aspect-ratio:4/5;border-radius:16px;scroll-snap-align:start}
+  .cat-go{display:none}
+  .cat-t{inset-inline:10px;bottom:8px}
+  .cat-t b{font-size:14px}
+  .cat-t span{font-size:11px}
+  .home-trust{padding-block:10px 4px}
+  .trust{display:flex;overflow-x:auto;scrollbar-width:none;border-radius:14px;box-shadow:none}
+  .trust::-webkit-scrollbar{display:none}
+  .trust div{flex:0 0 auto;flex-direction:row;align-items:center;padding:10px 14px;gap:8px}
+  .trust svg{width:22px;height:22px}
+  .trust b{font-size:13px;white-space:nowrap}
+  .trust span{display:none}
+  .sec{padding-block:40px}
+  .sec-head{margin-bottom:18px}
+  .sec-head h2{font-size:22px}
+  .sec-head p{font-size:14px}
+  .story .feat{display:none}
+  /* product page: photo, name and price fit the first screen */
+  .crumbs{display:none}
+  .pdp{padding-top:10px;gap:14px}
+  .gal-main{aspect-ratio:auto;height:min(50vh,420px)}
+  .gal-hint{display:none}
+  .thumbs button{width:52px}
+  .pinfo h1{font-size:20px;line-height:1.6;margin-bottom:6px}
+  .pmeta{font-size:13px;gap:10px;margin-bottom:8px}
+  .pprice{padding:10px 0;margin-bottom:14px}
+  .pprice b{font-size:26px}
+  .opts button{height:44px}
+  .buy{margin:18px 0 10px}
+  .perks{grid-template-columns:repeat(3,auto);justify-content:center;gap:14px;margin-top:4px}
+  .perks div{background:none;padding:0;font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:4px}
+  .perks svg{width:16px;height:16px;margin:0}
+  .mbar .mbar-call{flex:0 0 48px;padding:0}
+  .mbar .btn-ink{flex:1}
+}

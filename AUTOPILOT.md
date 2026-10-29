@@ -62,7 +62,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   hoodie Q («هودی و دورس… تا 3XL موجود است»). Check each against the sizes of IN-STOCK products in `data-raw/`
   (read-only). Reword to what we make/offer by product type without the word «موجود», and correct any max
   size that is wrong. Keep FAQPage schema equal to the visible text. List changes in the summary.
-- [ ] Direct-order clarity on mobile: read the «سفارش مستقیم» modal/JS (`assets/js/`) and the product
+- [x] (2026-10-29, owner session) Direct-order clarity on mobile — already true: the form needs size/colour and shows the EL code. Original item: read the «سفارش مستقیم» modal/JS (`assets/js/`) and the product
   template. If the buyer can open the order form without the size/colour being asked or shown, make the
   form show the product's real available sizes (from data) as required choices, and show the EL-XXXX code
   plus "what happens next" (who calls/sends SMS, how payment works — only what the code/site already says).
@@ -72,8 +72,7 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   category `sweat` (هودی، دورس، بلوز), plus winter pants if their title says so, with a link to the sweat
   category page. Sort like `category()`. Done = section in the first half of the home page, only in-stock
   items, build passes. If the home page already has such a section, only move it up.
-- [ ] Size help at the moment of choice: on the product page, next to the size chips, add one small link
-  «سایزم را نمی‌دانم» to `/size-guide/` (and to the contact the site already uses for size help). If the
+- [ ] Size help at the moment of choice: the «سایزم را نمی‌دانم» link next to the size chips is done (2026-10-29). If the
   product's own description in `data-raw/` has measurements («دور کمر»، «قد»), make sure they are visible near
   the size chips once (move, do not copy — the page must not show them twice). Done = 2 product pages in
   `docs/p/` checked, build passes. (Competing Basalam listings show waist range per size.)
@@ -107,6 +106,10 @@ Portfolio rule (2026-10-26): if the site brings no orders by 2026-12-15 it goes 
   existing page and that guides do not link out-of-stock products. Fix what is broken.
 
 ## Rules learned
+- Mobile layout (2026-10-29, owner request "too busy on phones"): under 900px the header shows only menu, logo and
+  search; no topbar; home = short hero → swipeable category row → trust strip → best sellers; product page =
+  numbered steps (colour, size) → ONE dark Basalam button → ghost «سفارش تلفنی / پیامکی» → small icon row.
+  Do not add new buttons, banners or fixed bars on phones; keep the home section order.
 - Before adding a block, check what the page already shows: do not repeat the same facts, notes or FAQ
   answers on one page or copy sentences between pages (happened 3 times in Oct 2026: product spec block,
   size-guide FAQ, big-size FAQ).
