@@ -342,7 +342,7 @@
   "id": 64346408,
   "name": "دورس حولهای پسرانه طرح ترند سال ",
   "price": 15950000,
-  "stock": 4,
+  "stock": 3,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -372,7 +372,7 @@
   "id": 64343889,
   "name": "دورس نیم زییپ پشت چاپ مردانه",
   "price": 19520000,
-  "stock": 12,
+  "stock": 11,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -624,7 +624,7 @@
   "price": 12200000,
   "stock": 10,
   "sales_count": 4,
-  "sales_count_week": 1,
+  "sales_count_week": 0,
   "rating": {
    "average": 0,
    "count": 0,
