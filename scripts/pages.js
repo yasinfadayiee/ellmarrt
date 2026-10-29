@@ -80,7 +80,7 @@ function sizeMax(ctx) {
   }
   return maxSizes.get(ctx);
 }
-const fillSizes = (ctx, html) => html.replace(/\{MAX(?::(\w+))?\}/g, (_, k) => sizeMax(ctx)[k || ""]);
+const fillSizes = (ctx, html) => html.replace(/\{MAX(?::(\w+))?\}/g, (_, k) => sizeMax(ctx)[k || ""]).split("{YEARS}").join(fa(STORE.years));
 
 /* ---------------- layout ---------------- */
 function layout(ctx, o) {
@@ -356,7 +356,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
 <div class="look-track">${[60209573,53765502,60467399,54126455,46296076,58897534,47475290,60192679].map((id,i)=>{const p=byId(id);return p?`<a class="look-card" href="${pUrl(ctx,p)}"><img src="${BASE}/assets/p/${id}-960.webp" srcset="${BASE}/assets/p/${id}-480.webp 480w, ${BASE}/assets/p/${id}-960.webp 960w" sizes="(max-width:600px) 240px, 28vw" alt="${esc(p.title)}" loading="lazy" width="960" height="1200" decoding="async"><span class="look-no num">${String(i+1).padStart(2,"0")}</span><span class="look-cap"><b>${esc(p.title)}</b><span class="num">${fa(p.price)} تومان</span></span></a>`:""}).join("")}</div></section>
 <div class="stitch-div" aria-hidden="true"></div>
 <section class="sec"><div class="wrap story">
-  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy" decoding="async"></div><div class="badge-yr"><b class="num">۶۰ سال</b>از پدر به پسر</div></div>
+  <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy" decoding="async"></div><div class="badge-yr"><b class="num">{YEARS} سال</b>از پدر به پسر</div></div>
   <div class="rv">
     <span class="kicker">داستان المارت</span>
     <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : "یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد."}</h2>
@@ -477,6 +477,7 @@ function category(ctx, c) {
 <section id="shop" data-cat="${key}">${filters(ctx, key)}<div class="wrap"><h2 class="sr">محصولات</h2><div class="grid" id="shop-grid">${list.map((p, i) => card(ctx, p, i === 0)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
+${sz.bigCats(ctx).includes(c.key || Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap"><p class="note-sm">سایز 3XL به بالا می‌خواهید؟ <a class="link" href="${ctx.BASE}/big-size/${c.slug}/">${sz.BIG_CATS[Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)].h1}</a></p></div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -561,7 +562,7 @@ ${(() => {
   const keys = new Set(p.copy.facts.map(([k]) => k));
   const rows = [...p.copy.facts, ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند", "سایر توضیحات"].includes(k) && !keys.has(k))];
   return `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیش از خرید</span><h2>مشخصات و نگهداری</h2></div></div>
-<div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
+<div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a>${(() => { const z = liveSizes(p).filter((x) => sz.sizePages.includes(x)).pop(); return z ? ` · <a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z} چند کیلو است؟</a>` : ""; })()} · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
 })()}
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
@@ -604,10 +605,14 @@ function bigSize(ctx) {
 <header class="phead banner"><div class="bt"><span class="kicker" style="color:var(--gold-2)">کالکشن ویژه</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا {MAX} را اینجا ببینید.</p></div><img class="banner-img" src="${BASE}/assets/p/${mainBase(list[0])}-480.webp" alt="لباس سایز بزرگ مردانه المارت" width="480" height="600" loading="lazy" decoding="async"></header>
 <section class="sec-sm" style="padding-top:12px"><div class="wrap"><div class="grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="fit rv"><div><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا 6XL پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">بر اساس نوع لباس</span><h2>سایز بزرگ هر دسته</h2></div></div><p class="note-sm">${sz.bigCats(ctx).map((k) => `<a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join(" · ")}</p><p class="note-sm">هر سایز چند کیلو است؟ ${["3XL", "4XL", "5XL", "6XL"].map((z) => `<a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z}</a>`).join(" · ")}</p></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">تا 3XL</span><h2>مدل‌های دیگر با سایز 3XL</h2></div></div><div class="grid">${xl3.slice(0, 8).map((p) => card(ctx, p)).join("")}</div></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>`,
   });
 }
+
+// size, height cm, weight kg, chest width, top length — also used by /size/<s>/ pages
+const SIZE_ROWS = [["L", "۱۶۵–۱۷۵", "۶۶–۷۵", "۵۰", "۷۲"], ["XL", "۱۷۰–۱۸۰", "۷۵–۸۵", "۵۳", "۷۴"], ["2XL", "۱۷۵–۱۸۵", "۸۵–۹۵", "۵۶", "۷۶"], ["3XL", "۱۷۵–۱۸۸", "۹۵–۱۰۵", "۵۹", "۷۸"], ["4XL", "۱۷۵–۱۹۰", "۱۰۵–۱۱۸", "۶۲", "۸۰"], ["5XL", "۱۷۵–۱۹۲", "۱۱۸–۱۳۲", "۶۵", "۸۲"], ["6XL", "۱۸۰–۱۹۵", "۱۳۲+", "۶۸", "۸۴"]];
 
 function sizeGuide(ctx) {
   const items = [["/", "خانه"], ["/size-guide/", "سایزیاب و جدول سایز"]];
@@ -618,7 +623,7 @@ function sizeGuide(ctx) {
     ["قد شلوار در سایزهای بزرگ چقدر است؟", "در جدول شلوار همین صفحه، قد از ۱۰۰ سانتی‌متر در L و XL شروع می‌شود، در 2XL به ۱۰۵ می‌رسد و از 3XL تا 6XL روی ۱۱۰ می‌ماند. اندازه دقیق هر مدل در صفحه محصول آمده است."],
     ["اگر هنوز از انتخاب سایزم مطمئن نباشم، چطور راهنمایی بگیرم؟", "عکس و اندازه‌هایتان را در اینستاگرام المارت بفرستید تا برای انتخاب سایز کمکتان کنیم. برای دیدن مدل‌های بزرگ‌تر، صفحه لباس سایز بزرگ مردانه را ببینید."],
   ];
-  const rows = [["L", "۱۶۵–۱۷۵", "۶۶–۷۵", "۵۰", "۷۲"], ["XL", "۱۷۰–۱۸۰", "۷۵–۸۵", "۵۳", "۷۴"], ["2XL", "۱۷۵–۱۸۵", "۸۵–۹۵", "۵۶", "۷۶"], ["3XL", "۱۷۵–۱۸۸", "۹۵–۱۰۵", "۵۹", "۷۸"], ["4XL", "۱۷۵–۱۹۰", "۱۰۵–۱۱۸", "۶۲", "۸۰"], ["5XL", "۱۷۵–۱۹۲", "۱۱۸–۱۳۲", "۶۵", "۸۲"], ["6XL", "۱۸۰–۱۹۵", "۱۳۲+", "۶۸", "۸۴"]];
+  const rows = SIZE_ROWS;
   return layout(ctx, {
     path: "/size-guide/",
     title: "سایزیاب و جدول سایز لباس مردانه (L تا 6XL)",
@@ -643,6 +648,8 @@ function sizeGuide(ctx) {
 <p>هنوز مطمئن نیستید؟ عکس و اندازه‌هایتان را در <a href="${STORE.igDm}" target="_blank" rel="noopener">اینستاگرام المارت</a> بفرستید؛ کمکتان می‌کنیم.</p>
 <h2>سوالات متداول سایز</h2>
 <div class="faq">${qa.map(([q, a], i) => `<details><summary>${q}</summary><p>${i === 4 ? a.replace("اینستاگرام المارت", `<a href="${STORE.igDm}" target="_blank" rel="noopener">اینستاگرام المارت</a>`).replace("لباس سایز بزرگ مردانه", `<a href="${ctx.BASE}/big-size/">لباس سایز بزرگ مردانه</a>`) : a}</p></details>`).join("")}</div>
+<h2>هر سایز چند کیلو است؟</h2>
+<p>${sz.sizePages.map((z) => `<a href="${ctx.BASE}/size/${z.toLowerCase()}/">سایز ${z} چند کیلو است؟</a>`).join(" · ")}</p>
 <p>ادامه مسیر: <a href="${ctx.BASE}/big-size/">لباس سایز بزرگ مردانه</a> · <a href="${ctx.BASE}/c/${ctx.CATEGORIES.pants.slug}/">شلوار مردانه</a> · <a href="${ctx.BASE}/c/${ctx.CATEGORIES.tshirt.slug}/">تیشرت مردانه</a> · <a href="${ctx.BASE}/guide/">راهنماهای خرید</a></p>
 </div></section>`,
   });
@@ -652,7 +659,7 @@ function about(ctx) {
   const items = [["/", "خانه"], ["/about/", "داستان ما"]];
   return layout(ctx, {
     path: "/about/",
-    title: "داستان المارت؛ ۶۰ سال در بازار سرپوشیده تبریز",
+    title: `داستان المارت؛ ${fa(STORE.years)} سال در بازار سرپوشیده تبریز`,
     desc: `المارت (ELLMARRT) تولیدی و پخش پوشاک مردانه در بازار بزرگ تبریز است؛ کاری خانوادگی که ${fa(STORE.years)} سال پیش آغاز شد و حالا آنلاین به سراسر ایران می‌فروشد.`,
     image: `${ctx.SITE_URL}/assets/og/hojreh.jpg`,
     preload: `${ctx.BASE}/assets/p/60209573-960.webp`,
@@ -1001,5 +1008,6 @@ ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.l
 `);
 }
 
+const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
-module.exports = { ...info, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
+module.exports = { ...info, ...sz, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };

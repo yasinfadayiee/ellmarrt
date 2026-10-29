@@ -67,6 +67,8 @@ for (const p of products) {
 }
 emit("/big-size/", pages.bigSize(ctx), { priority: 0.85 });
 emit("/size-guide/", pages.sizeGuide(ctx), { priority: 0.7 });
+for (const s of pages.sizePages) emit(`/size/${s.toLowerCase()}/`, pages.sizePage(ctx, s), { priority: 0.75 });
+for (const k of pages.bigCats(ctx)) emit(`/big-size/${CATEGORIES[k].slug}/`, pages.bigCat(ctx, k), { priority: 0.8 });
 emit("/about/", pages.about(ctx), { priority: 0.6 });
 emit("/tabriz-bazaar/", pages.tabrizBazaar(ctx), { priority: 0.7 });
 emit("/faq/", pages.faq(ctx), { priority: 0.6 });
