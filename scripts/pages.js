@@ -292,7 +292,7 @@ function home(ctx) {
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="wrap hero-in">
     <div>
-      <span class="eyebrow">${esc(hero("eyebrow", `از دل ${STORE.bazaar} — شش دهه تجربه`))}</span>
+      <span class="eyebrow">${esc(hero("eyebrow", `از دل ${STORE.bazaar} — ${fa(STORE.years)} سال تجربه`))}</span>
       <h1>${esc(hero("line1", "شیک بپوش،"))} <br>${esc(hero("pre", "مثل"))} <em>${esc(hero("em", "بازاری‌ها"))}<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 12 Q150 2 298 12"/></svg></em> ${esc(hero("post", "بخر."))}</h1>
       <p class="hero-lead">${hero("lead", "") ? esc(hero("lead", "")) : `${fa(STORE.years)} سال تجربه در انتخاب پارچه و دوخت؛ حالا مستقیم برای شما. تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا <b class="num">{MAX}</b> با قیمت منصفانه و ارسال به سراسر ایران.`}</p>
       <div class="hero-cta"><a class="btn btn-gold" href="${BASE}/shop/">${esc(hero("cta1", "دیدن کالکشن"))} ${I.arrow}</a><a class="btn btn-ghost" href="${BASE}/size-guide/">${esc(hero("cta2", "سایزم چیه؟"))}</a></div>
@@ -360,11 +360,11 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
   <div class="story-media rv"><div class="arch"><img src="${BASE}/assets/img/hojreh-arch.webp" alt="غرفه المارت در بازار سرپوشیده تبریز" width="720" height="900" loading="lazy" decoding="async"></div><div class="badge-yr"><b class="num">{YEARS} سال</b>از پدر به پسر</div></div>
   <div class="rv">
     <span class="kicker">داستان المارت</span>
-    <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : "یک حجره در بازار سرپوشیده،<br>شصت سال اعتماد."}</h2>
+    <h2>${SITE.story && SITE.story.title ? esc(SITE.story.title) : `یک حجره در بازار سرپوشیده،<br>${fa(STORE.years)} سال اعتماد.`}</h2>
     <p>${SITE.story && SITE.story.text ? esc(SITE.story.text) : `غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعال است؛ کاری که از پدرمان به ارث رسید. ما هر پارچه را با دست لمس می‌کنیم، هر دوخت را قبل از ارسال بررسی می‌کنیم و همان قیمت منصفانه بازار را به خانه شما می‌آوریم.`}</p>
     <div class="feat">
       <div><i>${I.thread}</i><p style="margin:0"><b>پارچه انتخابی</b><span>نخ پنبه، کتان کشی، اسپان و دورس اعلا</span></p></div>
-      <div><i>${I.arch}</i><p style="margin:0"><b>اصالت بازار تبریز</b><span>بیش از نیم قرن سابقه در پخش پوشاک</span></p></div>
+      <div><i>${I.arch}</i><p style="margin:0"><b>اصالت بازار تبریز</b><span>${fa(STORE.years)} سال سابقه در بازار پوشاک تبریز</span></p></div>
       <div><i>${I.ruler}</i><p style="margin:0"><b>تخصص سایز بزرگ</b><span>تن‌خور خوب برای هیکل‌های درشت</span></p></div>
       <div><i>${I.box}</i><p style="margin:0"><b>بسته‌بندی ایمن</b><span>ارسال سریع از روز اول کاری</span></p></div>
     </div>
@@ -578,7 +578,12 @@ ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"
     path: `/p/${p.id}/`,
     // «خرید …» matches how people search; only when it still fits the SERP width with « | المارت»
     title: p.inStock && !/^خرید/.test(p.title) && p.title.length <= 56 ? `خرید ${p.title}` : p.title,
-    desc: (`${p.copy.lead} قیمت ${fa(p.price)} تومان، ارسال به سراسر ایران.`).slice(0, 165),
+    desc: (() => {
+      const z = liveSizes(p), nc = p.colorInStock.length;
+      const extra = `${z.length ? `سایز ${z[0]}${z.length > 1 ? ` تا ${z[z.length - 1]}` : ""}` : ""}${nc > 1 ? ` در ${fa(nc)} رنگ` : ""}`;
+      const d = `${p.copy.lead} قیمت ${fa(p.price)} تومان، ارسال به سراسر ایران.`;
+      return (d.length < 110 && extra ? `${p.copy.lead} ${extra}؛ قیمت ${fa(p.price)} تومان، ارسال به سراسر ایران از بازار تبریز.` : d).slice(0, 165);
+    })(),
     ogType: "product",
     image: `${SITE_URL}/assets/og/${p.id}.jpg`,
     preload: hero,
@@ -685,7 +690,7 @@ function about(ctx) {
 <p>من همیشه دوست داشتم کسب‌وکار خودم را داشته باشم. غرفه‌ای که امروز اداره می‌کنم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعالیت می‌کند؛ این کار را از پدرم به ارث بردم و راه او را ادامه می‌دهم.</p>
 <p>روزهای اول سخت بود؛ مشتری کم و فروش پایین. اما هر روز یاد گرفتیم و بهتر شدیم. امروز همان حجره کوچک جایی است که مشتری‌ها با لبخند می‌آیند — و حالا با سایت المارت، همان اعتماد بازار را به سراسر ایران می‌بریم.</p>
 <h2>چیزهایی که برایمان مهم است</h2>
-<ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه چند نسل انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
+<ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه ${fa(STORE.years)} سال بازار انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
 <p><a class="btn btn-ink" href="${ctx.BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} @${STORE.igHandle}</a> <a class="btn btn-ghost" href="${ctx.BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a></p>
 </div></div></section>
 <section class="sec-sm"><div class="wrap"><figure class="hojreh"><img src="${ctx.BASE}/assets/img/hojreh-1280.webp" srcset="${ctx.BASE}/assets/img/hojreh-640.webp 640w, ${ctx.BASE}/assets/img/hojreh-1280.webp 1280w" sizes="(max-width:1240px) 94vw, 1200px" alt="غرفه المارت در بازار سرپوشیده تبریز؛ هودی، سویشرت، شلوار و کفش مردانه" width="1280" height="960" loading="lazy" decoding="async"><figcaption>غرفه المارت در بازار سرپوشیده تبریز. همین‌جا هر کالا را قبل از ارسال با دست بررسی می‌کنیم.</figcaption></figure></div></section>`,
@@ -708,7 +713,7 @@ function tabrizBazaar(ctx) {
 <p>المارت کاری خانوادگی است؛ غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعالیت دارد. این کار را از پدرمان به ارث برده‌ایم و راه او را ادامه می‌دهیم.</p>
 <h2>چرا از بازار تبریز بخریم</h2>
 <ul>
-<li><b>انتخاب با تجربه چند نسل:</b> جنس بازاری با قیمت منصفانه.</li>
+<li><b>انتخاب با تجربه بازار:</b> جنس بازاری با قیمت منصفانه.</li>
 <li><b>عکس واقعی و اندازه دقیق:</b> هر کالا را پیش از ارسال بررسی می‌کنیم.</li>
 <li><b>ارسال از روز اول کاری:</b> سفارش‌ها با بسته‌بندی ایمن به سراسر ایران فرستاده می‌شوند.</li>
 <li><b>سایز بزرگ واقعی:</b> لباس برای آقایانی که پیدا کردن سایز مناسب برایشان آسان نیست.</li>

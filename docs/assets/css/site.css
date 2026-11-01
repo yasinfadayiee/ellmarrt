@@ -875,3 +875,6 @@ body{background-color:var(--paper)}
 .buy .srating{justify-content:center}
 .card-sizes i{font-style:normal;font-size:11px;color:var(--muted);align-self:center}
 @media (max-width:900px){.hero .srating{margin-top:14px;font-size:12.5px}}
+
+/* phones: an opaque header, so scrolling text never shows through the logo (the 88% mix above overrode the earlier mobile rule) */
+@media (max-width:980px){.hdr{background:var(--paper)}[data-theme=shab] .hdr{background:#121014}}
