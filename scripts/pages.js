@@ -324,7 +324,7 @@ ${winter.length ? `<section class="sec-sm home-winter"><div class="wrap">
   <div class="grid rail">${winter.map((p) => card(ctx, p)).join("")}</div>
 </div></section>
 
-` : ""}${(() => { const pg = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 12); return pg.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head rv"><div><span class="kicker">رنگ دلخواه</span><h2>خرید بر اساس رنگ</h2></div></div><p class="note-sm">${pg.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p></div></section>
+` : ""}${(() => { const pg = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 12); return pg.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head rv"><div><span class="kicker">رنگ دلخواه</span><h2>خرید بر اساس رنگ</h2></div></div><p class="note-sm">${pg.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>${price.priceLinks(ctx, null)}</div></section>
 ` : ""; })()}<section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">پرفروش‌های غرفه</span><h2>انتخاب مشتری‌های همیشگی</h2><p>مدل‌هایی که بیشترین سفارش را در باسلام داشته‌اند.</p></div><a class="link" href="${BASE}/shop/?sort=best">همه پرفروش‌ها</a></div>
   <div class="grid">${best.map((p) => card(ctx, p)).join("")}</div>
@@ -479,7 +479,7 @@ function category(ctx, c) {
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${sz.bigCats(ctx).includes(c.key || Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap"><p class="note-sm">سایز 3XL به بالا می‌خواهید؟ <a class="link" href="${ctx.BASE}/big-size/${c.slug}/">${sz.BIG_CATS[Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)].h1}</a></p></div></section>` : ""}
-${col.colorLinks(ctx, key) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap">${col.colorLinks(ctx, key)}</div></section>` : ""}
+${col.colorLinks(ctx, key) + price.priceLinks(ctx, key) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap">${col.colorLinks(ctx, key)}${price.priceLinks(ctx, key)}</div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -1037,4 +1037,6 @@ const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, it
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
 const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
 
-module.exports = { ...info, ...sz, ...col, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
+const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });
+
+module.exports = { ...info, ...sz, ...col, ...price, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };

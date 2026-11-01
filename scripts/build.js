@@ -66,6 +66,7 @@ for (const p of products) {
   });
 }
 for (const pg of pages.colorPages(ctx)) emit(pages.colorPath(ctx, pg.cat, pg.g), pages.colorPage(ctx, pg), { priority: 0.75, images: pages.colorImages(ctx, pg) });
+for (const pg of pages.pricePages(ctx)) emit(pages.pricePath(ctx, pg), pages.pricePage(ctx, pg), { priority: 0.7, images: pages.priceImages(ctx, pg) });
 emit("/big-size/", pages.bigSize(ctx), { priority: 0.85 });
 emit("/size-guide/", pages.sizeGuide(ctx), { priority: 0.7 });
 for (const s of pages.sizePages) emit(`/size/${s.toLowerCase()}/`, pages.sizePage(ctx, s), { priority: 0.75 });
