@@ -528,6 +528,12 @@ function product(ctx, p) {
   };
   const data = { id: p.id, hero: true, variants: p.variants.map(({ color, size, stock }) => ({ color, size, stock })) };
   const priceBlock = `<div class="pprice"><b class="num">${fa(p.price)}</b><small>تومان</small><span id="stock" class="stock${p.inStock ? (low ? " low" : "") : " no"}">${p.inStock ? (low ? `فقط ${fa(p.stock)} عدد باقی‌مانده` : "موجود در انبار") : "ناموجود"}</span></div>`;
+  const pz = liveSizes(p), pcol = p.colors.filter((k, i) => p.colorInStock.includes(i));
+  const pfaq = p.inStock ? [
+    ...(pz.length ? [[`${short(p)} در چه سایزهایی موجود است؟`, `الان سایز ${pz.join("، ")} موجود است. اگر قد و وزنتان را می‌دانید، سایزیاب المارت سایز مناسب را پیشنهاد می‌دهد؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.`]] : []),
+    ...(pcol.length ? [[`${short(p)} چه رنگ‌هایی دارد؟`, pcol.length > 1 ? `رنگ‌های موجود: ${pcol.join("، ")}. با زدن روی هر رنگ در بالای صفحه، عکس همان رنگ را می‌بینید.` : `رنگ موجود این مدل ${pcol[0]} است.`]] : []),
+    [`${short(p)} را چطور بخرم؟`, `سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید؛ قیمت ${fa(p.price)} تومان است و پرداخت از درگاه باسلام انجام می‌شود. اگر می‌خواهید تلفنی یا پیامکی سفارش بدهید، دکمه «سفارش تلفنی / پیامکی» کد پیگیری می‌دهد.`],
+  ].filter(([, a]) => a) : [];
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
   <div class="gal">
@@ -571,6 +577,7 @@ ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-
 ${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-ghost mbar-call" type="button" data-direct-order aria-label="سفارش تلفنی یا پیامکی">${I.phone}</button></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm" id="reviews"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
+${pfaq.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پرسش و پاسخ</span><h2>سوالات خریداران درباره این مدل</h2></div></div><div class="faq">${pfaq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div></div></section>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیشنهاد ما</span><h2>محصولات مشابه</h2></div><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a></div><div class="grid">${[...related, ...more].map((x) => card(ctx, x)).join("")}</div>${g ? `<p class="note-sm">راهنمای خرید: <a href="${BASE}/guide/${g.slug}/">${g.title}</a></p>` : ""}</div></section>
 <section class="sec-sm" id="recent" hidden><div class="wrap"><div class="sec-head"><h2>اخیراً دیده‌اید</h2></div><div class="grid"></div></div></section>
 <script type="application/json" id="pdp-data">${json(data)}</script>`;
@@ -589,7 +596,7 @@ ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"
     preload: hero,
     preloadSet: `${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w`,
     preloadSizes: "(max-width:900px) 92vw, 46vw",
-    schema: [crumbSchema(ctx, items), schema],
+    schema: [crumbSchema(ctx, items), schema, ...(pfaq.length ? [faqSchema(pfaq)] : [])],
     body,
   });
 }
