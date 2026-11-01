@@ -279,6 +279,8 @@ function home(ctx) {
   const heroIds = [60937967, 47475290, 53762676];
   // cold season (Sep–Feb, i.e. Mehr–Bahman): warm tops get their own row near the top; the daily build hides it in spring
   const cold = [8, 9, 10, 11, 0, 1].includes(new Date().getMonth());
+  // in the cold months the winter outfit guide leads the three guides on the home page
+  const homeGuides = (cold ? [...guides.filter((g) => g.slug === "winter-outfit-men"), ...guides.filter((g) => g.slug !== "winter-outfit-men")] : guides).slice(0, 3);
   const winter = cold ? P.filter((p) => p.cat === "sweat" && p.inStock).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8) : [];
   const best = [...P].filter((p) => p.inStock && !winter.includes(p)).sort((a, b) => (b.featured - a.featured) || (b.sales - a.sales)).slice(0, 8);
   const fresh = [...P].filter((p) => p.inStock && !best.includes(p) && !winter.includes(p)).sort((a, b) => b.created.localeCompare(a.created)).slice(0, 8);
@@ -375,7 +377,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
 <section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv" style="justify-content:center;text-align:center"><div><span class="kicker">سوالات پرتکرار</span><h2>قبل از خرید بدانید</h2></div></div>
   <div class="faq rv">${HOME_FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
-  <div class="gcards rv" style="margin-top:40px">${guides.slice(0, 3).map((g) => gcard(ctx, g)).join("")}</div>
+  <div class="gcards rv" style="margin-top:40px">${homeGuides.map((g) => gcard(ctx, g)).join("")}</div>
   <p style="text-align:center;margin-top:16px"><a class="link" href="${BASE}/guide/">همه راهنماهای خرید</a></p>
   <p style="text-align:center;margin-top:28px"><a class="btn btn-ghost" href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال دیگری دارید؟ در اینستاگرام بپرسید</a></p>
 </div></section>
@@ -383,7 +385,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
   <div class="sec-head"><div><span class="kicker">معرفی المارت</span><h2>پوشاک مردانه از بازار سرپوشیده تبریز</h2></div></div>
   <p>المارت ادامه راه پدری است که کارش را در بازار سرپوشیده تبریز به ما سپرد؛ غرفه ما ${fa(STORE.years)} سال سابقه فعالیت در این بازار دارد. امروز هم با همان تجربه، لباس مردانه و سایز بزرگ واقعی عرضه می‌کنیم و هر کالا را پیش از فرستادن بررسی می‌کنیم. سفارش‌ها از روز اول کاری پس از خرید به سراسر ایران ارسال می‌شوند. برای خرید می‌توانید از غرفه باسلام یا سفارش مستقیم استفاده کنید.</p>
   <p>دسته‌بندی‌ها: ${inStockCategories.map(([, c]) => `<a class="link" href="${BASE}/c/${c.slug}/">${c.name}</a>`).join(" · ")}</p>
-  <p><a class="link" href="${BASE}/tabriz-bazaar/">پوشاک مردانه بازار سرپوشیده تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${guides.slice(0, 3).map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p>
+  <p><a class="link" href="${BASE}/tabriz-bazaar/">پوشاک مردانه بازار سرپوشیده تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${homeGuides.map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p>
 </div></section>`;
   return layout(ctx, {
     path: "/",
