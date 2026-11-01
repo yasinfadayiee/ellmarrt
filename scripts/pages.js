@@ -478,6 +478,7 @@ function category(ctx, c) {
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${sz.bigCats(ctx).includes(c.key || Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap"><p class="note-sm">سایز 3XL به بالا می‌خواهید؟ <a class="link" href="${ctx.BASE}/big-size/${c.slug}/">${sz.BIG_CATS[Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)].h1}</a></p></div></section>` : ""}
+${col.colorLinks(ctx, key) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap">${col.colorLinks(ctx, key)}</div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -1021,4 +1022,6 @@ ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.l
 
 const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
-module.exports = { ...info, ...sz, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
+const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
+
+module.exports = { ...info, ...sz, ...col, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
