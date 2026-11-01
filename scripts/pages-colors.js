@@ -102,5 +102,5 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     });
   }
 
-  return { colorPages, colorPage, colorLinks, colorPath: pathOf, colorImages: (ctx, pg) => { const t = asColor(pg.list[0], pg.g); return t.mainColor != null ? [`${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp`] : []; } };
+  return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorImages: (ctx, pg) => { const t = asColor(pg.list[0], pg.g); return t.mainColor != null ? [`${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp`] : []; } };
 };
