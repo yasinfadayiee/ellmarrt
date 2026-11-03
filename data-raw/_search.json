@@ -254,23 +254,6 @@
   }
  },
  {
-  "id": 36616362,
-  "name": "شلوار اسلش مردانه بغل نوار",
-  "price": 9800000,
-  "stock": 33,
-  "sales_count": 6,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 4.8,
-   "count": 6,
-   "signals": 6
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-163/video/product/X6zxOW/01-26/Bcvsx6onuTQLXUOLPccBjMi5pqhgUZ0b2nMjOgwc8ZtQfx3R7W.mov"
-  }
- },
- {
   "id": 54235165,
   "name": "تیشرت مشکی مردانه نخ 28، راحت و خوش فرم",
   "price": 10200000,
@@ -402,7 +385,7 @@
   "id": 62560754,
   "name": "هودی بیسیک توکرک",
   "price": 22000000,
-  "stock": 32,
+  "stock": 28,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -417,9 +400,9 @@
   "id": 60937967,
   "name": "سویشرت تمام زیپ کلاهدار داخل کرکی",
   "price": 26500000,
-  "stock": 9,
+  "stock": 36,
   "sales_count": 3,
-  "sales_count_week": 3,
+  "sales_count_week": 1,
   "rating": {
    "average": 0,
    "count": 0,
@@ -622,7 +605,7 @@
   "id": 54126455,
   "name": "شلوار اسلش شش جیب دمپا کش مردانه اسپرت، خوشاستایل و کاربردی",
   "price": 12200000,
-  "stock": 10,
+  "stock": 6,
   "sales_count": 4,
   "sales_count_week": 0,
   "rating": {
@@ -826,5 +809,22 @@
   },
   "categoryTitle": "شلوار و شلوارک مردانه",
   "video": null
+ },
+ {
+  "id": 36616362,
+  "name": "شلوار اسلش مردانه بغل نوار",
+  "price": 14200000,
+  "stock": 33,
+  "sales_count": 7,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 4.8,
+   "count": 6,
+   "signals": 6
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": {
+   "PRIMARY": "https://statics.basalam.com/public-163/video/product/X6zxOW/01-26/Bcvsx6onuTQLXUOLPccBjMi5pqhgUZ0b2nMjOgwc8ZtQfx3R7W.mov"
+  }
  }
 ]

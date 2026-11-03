@@ -143,11 +143,11 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 10,
+ "inventory": 6,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-08-07T20:46:13+03:30",
- "updated_at": "2026-10-20T23:37:06+03:30",
+ "updated_at": "2026-11-03T23:15:48+03:30",
  "description": "# شلوار اسلش شش جیب دمپا کش مردانه | اسپرت، خوش‌استایل و کاربردی\n\nاگر دنبال یک شلوار اسلش شیک و متفاوت برای استفاده روزمره، پیاده‌روی یا استایل خیابانی هستی، این مدل شش جیب یکی از بهترین انتخاب‌هاست.\n\nاین شلوار از **پارچه باکیفیت و خوش‌فرم** تولید شده که علاوه بر راحتی، ایست فوق‌العاده‌ای روی تن داره. طراحی **6 جیب کاربردی** فضای کافی برای وسایل ضروری فراهم می‌کنه و **دمپا کش** باعث میشه شلوار روی کفش اسپرت ظاهر جذاب‌تری داشته باشه. کمر کشی و بنددار هم راحتی و تنظیم سایز رو برای شما فراهم می‌کنه.\n\n**مشخصات محصول:**\n\n* جنس: پارچه باکیفیت و خوش‌فرم\n* مدل: اسلش شش جیب دمپا کش\n* دمپا: کش‌دار\n* جیب: 6 جیب کاربردی\n* کمر: کشی و بنددار\n* مناسب برای: استفاده روزمره، پیاده‌روی، سفر، استایل اسپرت و خیابانی\n\n🎨 **رنگ‌بندی:** 5 رنگ جذاب\n\n✅ **سایزبندی:** XL / 2XL / 3XL\n\nمناسب آقایانی که به‌دنبال یک شلوار اسلش راحت، جادار، خوش‌استایل و باکیفیت برای استفاده روزمره هستند.\n\n📍 **آدرس:** راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -266,78 +266,6 @@
  "review_count": 0,
  "rating": 0,
  "variants": [
-  {
-   "id": 59290785,
-   "price": 12200000,
-   "primary_price": 12200000,
-   "stock": 1,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 161791,
-      "title": "یشمی xl",
-      "value": "یشمی xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 59290786,
-   "price": 12200000,
-   "primary_price": 12200000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 419294,
-      "title": "یشمی 2xl",
-      "value": "یشمی 2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 59290787,
-   "price": 12200000,
-   "primary_price": 12200000,
-   "stock": 1,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 125627,
-      "title": "یشمی3xl",
-      "value": "یشمی3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
   {
    "id": 59290794,
    "price": 12200000,
@@ -475,6 +403,78 @@
       "id": 61423,
       "title": "مشکی 3xl",
       "value": "مشکی 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 59290785,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 161791,
+      "title": "یشمی xl",
+      "value": "یشمی xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 59290786,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 419294,
+      "title": "یشمی 2xl",
+      "value": "یشمی 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 59290787,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 125627,
+      "title": "یشمی3xl",
+      "value": "یشمی3xl",
       "order": null
      }
     }

@@ -1,7 +1,7 @@
 {
  "id": 36616362,
  "title": "شلوار اسلش مردانه بغل نوار",
- "price": 9800000,
+ "price": 14200000,
  "photo": {
   "id": 301615343,
   "original": "https://statics.basalam.com/public-163/users/X6zxOW/01-26/KLlHdSg7TiazVfApk297v3dCFwP8pmeucCFUKPQ80XbgIB3lTa.jpg",
@@ -147,12 +147,12 @@
  "net_weight": 300,
  "net_weight_decimal": 300,
  "created_at": "2026-01-26T20:21:44+03:30",
- "updated_at": "2026-08-20T00:55:14+03:30",
+ "updated_at": "2026-11-03T23:18:24+03:30",
  "description": "شلوار اسلش مردانه بغل نوار 👖\n✔️ جنس کتان باکیفیت\n✔️ دوخت دقیق و خوش‌فرم\n✔️ دارای جیب\n✔️ قد 110\n✔️ سایزبندی: XXL | XXXL | XXXXL\nمناسب استفاده روزمره، محل کار، بیرون و استایل اسپرت 👌\n📦 برای راحتی شما، امکان ارسال دو سایز وجود دارد\nهر کدام بهتر بود، همان را نگه دارید 🌱\n🚚 ارسال به سراسر کشور\n💳 تبریز: پرداخت درب منزل\n💬 اگر برای انتخاب سایز یا ست‌کردن سوال دارید،\nبا خیال راحت پیام بدید، خوشحال می‌شم مشاوره‌تون بدم و کمکتون کنم 🌟",
  "is_saleable": true,
  "is_showable": true,
  "is_available": true,
- "primary_price": 9800000,
+ "primary_price": 14200000,
  "shipping_area": null,
  "packaged_weight": 350,
  "preparation_day": 0,
@@ -221,7 +221,7 @@
       "description": null
      },
      "title": "رنگ",
-     "value": "مشکی",
+     "value": "سرمه",
      "selected_values": null,
      "required": false
     },
@@ -255,8 +255,8 @@
  "variants": [
   {
    "id": 32295180,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14200000,
+   "primary_price": 14200000,
    "stock": 5,
    "order": null,
    "properties": [
@@ -279,8 +279,8 @@
   },
   {
    "id": 32295181,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14200000,
+   "primary_price": 14200000,
    "stock": 17,
    "order": null,
    "properties": [
@@ -303,8 +303,8 @@
   },
   {
    "id": 32295182,
-   "price": 9800000,
-   "primary_price": 9800000,
+   "price": 14200000,
+   "primary_price": 14200000,
    "stock": 11,
    "order": null,
    "properties": [
@@ -355,7 +355,7 @@
  "discount": null,
  "packaging_dimensions": null,
  "is_wholesale": false,
- "is_service_variation": null,
+ "is_service_variation": false,
  "is_service_request_enabled": null,
  "attributes": [
   {
@@ -379,14 +379,14 @@
    "value": "کتان  یا همان بنگال"
   },
   {
-   "id": 48411346,
-   "key": "رنگ",
-   "value": "مشکی"
-  },
-  {
    "id": 48411347,
    "key": "سایز",
    "value": "2xl   3xl 4xl"
+  },
+  {
+   "id": 69655845,
+   "key": "رنگ",
+   "value": "سرمه"
   }
  ],
  "barcode": null,
