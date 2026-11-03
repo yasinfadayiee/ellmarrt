@@ -648,7 +648,7 @@ function sizeGuide(ctx) {
   };
   return layout(ctx, {
     path: "/size-guide/",
-    title: "سایزیاب و جدول سایز لباس مردانه (L تا 6XL)",
+    title: "سایز لباس مردانه بر اساس قد و وزن | سایزیاب و جدول سایز L تا {MAX}",
     desc: "جدول سایز تیشرت، شلوار و هودی مردانه از L تا 6XL بر اساس قد و وزن؛ با سایزیاب آنلاین المارت سایز دقیق خود را در چند ثانیه پیدا کنید.",
     schema: [crumbSchema(ctx, items), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
