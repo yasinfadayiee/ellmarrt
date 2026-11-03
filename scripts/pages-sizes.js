@@ -200,11 +200,11 @@ ${(has.length ? has : shoes).length ? `<section class="sec-sm"><div class="wrap"
     ];
     return layout(ctx, {
       path,
-      title: "خرید عمده پوشاک مردانه از بازار تبریز | تیشرت، شلوار اسلش، هودی",
+      title: "تولیدی و پخش عمده پوشاک مردانه تبریز | تیشرت، شلوار اسلش، هودی از بازار تبریز",
       desc: `پخش عمده پوشاک مردانه از ${STORE.bazaar}: ${fa(live.length)} مدل تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ تا {MAX}. قیمت عمده با تماس یا پیام، ارسال به سراسر ایران.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>خرید عمده پوشاک مردانه از بازار تبریز</h1><p>المارت ${STORE.full} در ${STORE.bazaar} است و به مغازه‌ها، فروشندگان آنلاین و خریداران تعداد بالا هم می‌فروشد. قیمت عمده هر مدل را بپرسید: ${tel}.</p></header>
+<header class="wrap phead"><h1>تولیدی و پخش عمده پوشاک مردانه در تبریز</h1><p>المارت ${STORE.full} در ${STORE.bazaar} است و به مغازه‌ها، فروشندگان آنلاین و خریداران تعداد بالا هم می‌فروشد. قیمت عمده هر مدل را بپرسید: ${tel}.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:760px">
 <h2>چطور سفارش عمده بدهم؟</h2>
 <ol><li>مدل‌ها را از فهرست زیر یا <a href="${BASE}/shop/">فروشگاه</a> انتخاب کنید.</li><li>کد کالا (در صفحه هر محصول)، رنگ، سایز و تعداد را بنویسید.</li><li>به ${tel} پیامک بدهید یا در <a href="${STORE.rubikaOrder}" target="_blank" rel="noopener">روبیکا</a> و <a href="${STORE.igDm}" target="_blank" rel="noopener">اینستاگرام</a> بفرستید تا قیمت عمده و هزینه ارسال را اعلام کنیم.</li></ol>
