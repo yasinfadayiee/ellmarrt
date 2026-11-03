@@ -71,6 +71,7 @@ for (const pg of pages.pricePages(ctx)) emit(pages.pricePath(ctx, pg), pages.pri
 emit("/big-size/", pages.bigSize(ctx), { priority: 0.85 });
 emit("/size-guide/", pages.sizeGuide(ctx), { priority: 0.7 });
 for (const s of pages.sizePages) emit(`/size/${s.toLowerCase()}/`, pages.sizePage(ctx, s), { priority: 0.75 });
+for (const k of pages.garmentKinds(ctx)) emit(`/size/${k}/`, pages.garmentPage(ctx, k), { priority: 0.75 });
 if (pages.shoeChart(ctx)) emit("/size/shoes/", pages.shoePage(ctx), { priority: 0.7 });
 for (const z of pages.shoeSizes(ctx)) emit(`/size/shoes/${z}/`, pages.shoeSizePage(ctx, z), { priority: 0.65 });
 emit("/wholesale/", pages.wholesale(ctx), { priority: 0.7 });
