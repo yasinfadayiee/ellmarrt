@@ -326,7 +326,7 @@ ${winter.length ? `<section class="sec-sm home-winter"><div class="wrap">
   <div class="grid rail">${winter.map((p) => card(ctx, p)).join("")}</div>
 </div></section>
 
-` : ""}${(() => { const pg = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 12); return pg.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head rv"><div><span class="kicker">رنگ دلخواه</span><h2>خرید بر اساس رنگ</h2></div></div><p class="note-sm">${pg.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>${price.priceLinks(ctx, null)}</div></section>
+` : ""}${(() => { const pg = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 12); return pg.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head rv"><div><span class="kicker">رنگ دلخواه</span><h2>خرید بر اساس رنگ</h2></div></div><p class="note-sm">${pg.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>${sty.styleLinks(ctx, null)}${price.priceLinks(ctx, null)}</div></section>
 ` : ""; })()}<section class="sec bg-cream"><div class="wrap">
   <div class="sec-head rv"><div><span class="kicker">پرفروش‌های غرفه</span><h2>انتخاب مشتری‌های همیشگی</h2><p>مدل‌هایی که بیشترین سفارش را در باسلام داشته‌اند.</p></div><a class="link" href="${BASE}/shop/?sort=best">همه پرفروش‌ها</a></div>
   <div class="grid">${best.map((p) => card(ctx, p)).join("")}</div>
@@ -385,7 +385,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
   <div class="sec-head"><div><span class="kicker">معرفی المارت</span><h2>پوشاک مردانه از بازار سرپوشیده تبریز</h2></div></div>
   <p>المارت ادامه راه پدری است که کارش را در بازار سرپوشیده تبریز به ما سپرد؛ غرفه ما ${fa(STORE.years)} سال سابقه فعالیت در این بازار دارد. امروز هم با همان تجربه، لباس مردانه و سایز بزرگ واقعی عرضه می‌کنیم و هر کالا را پیش از فرستادن بررسی می‌کنیم. سفارش‌ها از روز اول کاری پس از خرید به سراسر ایران ارسال می‌شوند. برای خرید می‌توانید از غرفه باسلام یا سفارش مستقیم استفاده کنید.</p>
   <p>دسته‌بندی‌ها: ${inStockCategories.map(([, c]) => `<a class="link" href="${BASE}/c/${c.slug}/">${c.name}</a>`).join(" · ")}</p>
-  <p><a class="link" href="${BASE}/tabriz-bazaar/">پوشاک مردانه بازار سرپوشیده تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${homeGuides.map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p>
+  <p><a class="link" href="${BASE}/tabriz-bazaar/">فروشگاه لباس مردانه در تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${homeGuides.map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p>
 </div></section>`;
   return layout(ctx, {
     path: "/",
@@ -481,7 +481,7 @@ function category(ctx, c) {
 <section class="sec-sm"><div class="wrap prose">${copy.long.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div></section>
 ${guides.some((g) => g.cats.includes(key)) ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><h2>پیش از خرید بخوانید</h2></div><div class="gcards">${guides.filter((g) => g.cats.includes(key)).map((g) => gcard(ctx, g)).join("")}</div></div></section>` : ""}
 ${sz.bigCats(ctx).includes(c.key || Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap"><p class="note-sm">سایز 3XL به بالا می‌خواهید؟ <a class="link" href="${ctx.BASE}/big-size/${c.slug}/">${sz.BIG_CATS[Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c)].h1}</a></p></div></section>` : ""}
-${col.colorLinks(ctx, key) + price.priceLinks(ctx, key) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap">${col.colorLinks(ctx, key)}${price.priceLinks(ctx, key)}</div></section>` : ""}
+${sty.styleLinks(ctx, key) + col.colorLinks(ctx, key) + price.priceLinks(ctx, key) ? `<section class="sec-sm" style="padding-bottom:0"><div class="wrap">${sty.styleLinks(ctx, key)}${col.colorLinks(ctx, key)}${price.priceLinks(ctx, key)}</div></section>` : ""}
 ${qa.length ? `<section class="sec-sm"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}`,
   });
 }
@@ -572,7 +572,7 @@ ${(() => {
   const keys = new Set(p.copy.facts.map(([k]) => k));
   const rows = [...p.copy.facts, ...p.attrs.filter(([k]) => !["سایز", "رنگ", "برند", "سایر توضیحات"].includes(k) && !keys.has(k))];
   return `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پیش از خرید</span><h2>مشخصات و نگهداری</h2></div></div>
-<div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a>${(() => { if (p.cat === "shoes" && sz.shoeChart(ctx)) return ` · <a class="link" href="${BASE}/size/shoes/">جدول سایز کفش به سانتی‌متر</a>`; const z = liveSizes(p).filter((x) => sz.sizePages.includes(x)).pop(); return z ? ` · <a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z} چند کیلو است؟</a>` : ""; })()} · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${col.colorPages(ctx).filter((x) => x.cat === p.cat && x.list.includes(p) && p.colors.some((k, i) => p.colorInStock.includes(i) && k.replace(/ (روشن|تیره)$/, "") === x.g)).map((x) => ` · <a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${x.g === "" ? "" : col.colorTitle(x.cat, x.g)}</a>`).join("")}${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
+<div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a>${(() => { if (p.cat === "shoes" && sz.shoeChart(ctx)) return ` · <a class="link" href="${BASE}/size/shoes/">جدول سایز کفش به سانتی‌متر</a>`; const z = liveSizes(p).filter((x) => sz.sizePages.includes(x)).pop(); return z ? ` · <a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z} چند کیلو است؟</a>` : ""; })()} · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${col.colorPages(ctx).filter((x) => x.cat === p.cat && x.list.includes(p) && p.colors.some((k, i) => p.colorInStock.includes(i) && k.replace(/ (روشن|تیره)$/, "") === x.g)).map((x) => ` · <a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${x.g === "" ? "" : col.colorTitle(x.cat, x.g)}</a>`).join("")}${sty.stylesOf(ctx, p).map((x) => ` · <a class="link" href="${BASE}${sty.stylePath(ctx, x)}">${x.h1}</a>`).join("")}${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
 })()}
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
@@ -710,15 +710,15 @@ function tabrizBazaar(ctx) {
   const items = [["/", "خانه"], ["/tabriz-bazaar/", "بازار سرپوشیده تبریز"]];
   const inStock = ctx.products.filter((p) => p.inStock);
   const categories = Object.entries(ctx.CATEGORIES).filter(([key]) => inStock.some((p) => p.cat === key));
-  const prods = inStock.slice(0, 4);
+  const prods = [...inStock].sort((a, b) => (b.sales || 0) - (a.sales || 0)).slice(0, 8);
   return layout(ctx, {
     path: "/tabriz-bazaar/",
-    title: `پوشاک مردانه بازار سرپوشیده تبریز | ${STORE.name}`,
-    desc: `پوشاک مردانه ${STORE.name} از بازار سرپوشیده تبریز؛ نشانی و مسیریابی غرفه، دسته‌بندی لباس‌ها و سایز بزرگ واقعی، با ارسال به سراسر ایران از روز اول کاری.`,
+    title: `فروشگاه و تولیدی لباس مردانه در تبریز | بازار سرپوشیده | ${STORE.name}`,
+    desc: `فروشگاه و تولیدی لباس مردانه ${STORE.name} در بازار سرپوشیده تبریز: تیشرت، شلوار اسلش، هودی و سایز بزرگ؛ نشانی و تلفن غرفه، خرید حضوری، پیک در تبریز و ارسال به سراسر ایران.`,
     schema: [crumbSchema(ctx, items), orgSchema(ctx)],
     body: `${crumbs(ctx, items)}
 <section class="sec-sm"><div class="wrap prose">
-<h1>پوشاک مردانه از دل بازار سرپوشیده تبریز</h1>
+<h1>فروشگاه لباس مردانه در تبریز؛ از دل بازار سرپوشیده</h1>
 <p>المارت کاری خانوادگی است؛ غرفه‌ای که امروز اداره می‌کنیم ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز فعالیت دارد. این کار را از پدرمان به ارث برده‌ایم و راه او را ادامه می‌دهیم.</p>
 <h2>چرا از بازار تبریز بخریم</h2>
 <ul>
@@ -727,6 +727,8 @@ function tabrizBazaar(ctx) {
 <li><b>ارسال از روز اول کاری:</b> سفارش‌ها با بسته‌بندی ایمن به سراسر ایران فرستاده می‌شوند.</li>
 <li><b>سایز بزرگ واقعی:</b> لباس برای آقایانی که پیدا کردن سایز مناسب برایشان آسان نیست.</li>
 </ul>
+<h2>خرید حضوری و پیک در تبریز</h2>
+<p>اگر در تبریز هستید می‌توانید به غرفه بیایید، جنس را از نزدیک ببینید و سایز را امتحان کنید. برای سفارش داخل شهر تبریز پیک موتوری هم داریم؛ مدل و سایز را تلفنی یا پیامکی بگویید تا هماهنگ شود.</p>
 <h2>نشانی غرفه المارت در بازار تبریز</h2>
 <p>${esc(STORE.address)}</p>
 <p><a class="btn btn-ink" href="https://neshan.org/maps/search/${encodeURIComponent("بازار سرپوشیده تبریز")}" target="_blank" rel="noopener">مسیریابی</a></p>
@@ -1067,5 +1069,6 @@ const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, S
 const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
 
 const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });
+const sty = require("./pages-styles")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
 
-module.exports = { ...info, ...sz, ...col, ...price, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
+module.exports = { ...info, ...sz, ...col, ...price, ...sty, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
