@@ -45,7 +45,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     ];
     return layout(ctx, {
       path,
-      title: `سایز ${s} چند کیلو است؟ جدول وزن و قد سایز ${s} مردانه`,
+      title: ["2XL", "3XL"].includes(s) ? `سایز ${s} (${alias[0]}) چند کیلو است؟ ${alias[0]} چه سایزی است مردانه` : `سایز ${s} چند کیلو است؟ جدول وزن و قد سایز ${s} مردانه`,
       desc: `سایز ${s} مردانه برای وزن حدود ${range(w)} کیلو و قد ${range(h)} سانتی‌متر است.${ch ? ` عرض سینه ${s} در مدل‌های ما ${ch[0] === ch[1] ? fa0(ch[0]) : `${fa0(ch[0])} تا ${fa0(ch[1])}`} سانت.` : ""}${list.length ? ` ${fa(list.length)} مدل موجود در سایز ${s}.` : ""}`,
       schema: [crumbSchema(ctx, items), faqSchema(qa), ...(list.length ? [itemList(ctx, list)] : [])],
       body: `${crumbs(ctx, items)}
