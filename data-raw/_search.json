@@ -322,6 +322,81 @@
   }
  },
  {
+  "id": 65852930,
+  "name": "ست غواصی اسپرت مردانه نیم زیپ بگ دو نواری",
+  "price": 55000000,
+  "stock": 6,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "لباس ورزشی مردانه و پسرانه",
+  "video": null
+ },
+ {
+  "id": 65851800,
+  "name": "هودی سه نخ باکسی بیسیک نایک",
+  "price": 41000000,
+  "stock": 45,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "سویشرت ، هودی و ژاکت مردانه",
+  "video": null
+ },
+ {
+  "id": 65850316,
+  "name": "پیژامه تترون چهار خانه مردانه تولید اختصاصی المارت",
+  "price": 6500000,
+  "stock": 120,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
+  "id": 65848769,
+  "name": "شلوار اسلش کتان کشی مردانه گلدوزی پشت زیپ ",
+  "price": 15500000,
+  "stock": 27,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
+  "id": 65848172,
+  "name": "شلوار اسلش نایک کتان کشی",
+  "price": 15500000,
+  "stock": 8,
+  "sales_count": 0,
+  "sales_count_week": 0,
+  "rating": {
+   "average": 0,
+   "count": 0,
+   "signals": 0
+  },
+  "categoryTitle": "شلوار و شلوارک مردانه",
+  "video": null
+ },
+ {
   "id": 64346408,
   "name": "دورس حولهای پسرانه طرح ترند سال ",
   "price": 15950000,
