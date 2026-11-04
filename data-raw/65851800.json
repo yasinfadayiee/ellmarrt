@@ -1,7 +1,7 @@
 {
  "id": 65851800,
  "title": "هودی سه نخ باکسی بیسیک نایک",
- "price": 41000000,
+ "price": 26650000,
  "photo": {
   "id": 471575809,
   "original": "https://statics.basalam.com/public-274/users/X6zxOW/11-04/9195d6b1-4ab7-4f94-94c3-610c85bb7a12.jpg",
@@ -177,7 +177,7 @@
  "net_weight": 800,
  "net_weight_decimal": 800,
  "created_at": "2026-11-04T01:06:07+03:30",
- "updated_at": "2026-11-04T04:11:17+03:30",
+ "updated_at": "2026-11-04T12:14:16+03:30",
  "description": "\n\nجنس کار دورس سه‌نخ داخل کرکیه و برای روزهای سرد سال مناسبه. قواره باکسی با سرشانه افتاده داره و تن‌خورش آزاده. دو نوار نایک روی آستین‌ها هم ظاهر اسپرت و جذابی بهش داده.\n\nمدل یونیسکسه و مناسب خانم‌ها و آقایونه.\n\nرنگ‌بندی: مشکی، سفید، کرمی، طوسی و یشمی\n\nاندازه‌ها:\n\nسایز L:\nعرض سینه 58 سانتی‌متر\nقد لباس 74 سانتی‌متر\nقد آستین 60 سانتی‌متر\nعرض سرشانه 57 سانتی‌متر\n\nسایز XL:\nعرض سینه 61 سانتی‌متر\nقد لباس 73 سانتی‌متر\nقد آستین 60 سانتی‌متر\nعرض سرشانه 64 سانتی‌متر\n\nسایز XXL:\nعرض سینه 68 سانتی‌متر\nقد لباس 74 سانتی‌متر\nقد آستین 61 سانتی‌متر\nعرض سرشانه 64 سانتی‌متر\n\nنکته مهم درباره انتخاب سایز:\n\nدر مدل باکسی، ملاک اصلی انتخاب سایز عرض سینه و عرض سرشانه است.\n\nسرشانه این مدل از نوع دراپ شولدر (سرشانه افتاده) است؛ یعنی خط سرشانه پایین‌تر از حالت معمول قرار می‌گیرد و به سمت بازو امتداد پیدا می‌کند. به همین دلیل سرشانه لباس نسبت به مدل‌های معمولی پهن‌تر است.\n\nبرای انتخاب دقیق‌تر، اندازه‌های لباس خودت رو با مشخصات بالا مقایسه کن.",
  "is_saleable": true,
  "is_showable": true,
@@ -324,7 +324,7 @@
  "variants": [
   {
    "id": 88577926,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -344,11 +344,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577927,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -368,11 +372,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577928,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -392,11 +400,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577929,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -416,11 +428,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577930,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -440,11 +456,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577931,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -464,11 +484,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577932,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -488,11 +512,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577933,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -512,11 +540,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577934,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -536,11 +568,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577935,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -560,11 +596,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577936,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -584,11 +624,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577937,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -608,11 +652,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577938,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -632,11 +680,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577939,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -656,11 +708,15 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   },
   {
    "id": 88577940,
-   "price": 41000000,
+   "price": 26650000,
    "primary_price": 41000000,
    "stock": 3,
    "order": null,
@@ -680,7 +736,11 @@
     }
    ],
    "sku": null,
-   "discount": null
+   "discount": {
+    "discount_percent": 35,
+    "rollback_at": "2027-02-02T23:59:00+03:30",
+    "created_at": "2026-11-04T12:14:16+03:30"
+   }
   }
  ],
  "variants_selected_index": 0,

@@ -324,7 +324,7 @@
  {
   "id": 65852930,
   "name": "ست غواصی اسپرت مردانه نیم زیپ بگ دو نواری",
-  "price": 55000000,
+  "price": 35750000,
   "stock": 6,
   "sales_count": 0,
   "sales_count_week": 0,
@@ -339,7 +339,7 @@
  {
   "id": 65851800,
   "name": "هودی سه نخ باکسی بیسیک نایک",
-  "price": 41000000,
+  "price": 26650000,
   "stock": 45,
   "sales_count": 0,
   "sales_count_week": 0,
@@ -412,21 +412,6 @@
   "video": null
  },
  {
-  "id": 64345318,
-  "name": "بلوز سلانیک مردانه شیرزاد (اصل) کیفیت تضمینی ",
-  "price": 27200000,
-  "stock": 3,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "بلوز و پیراهن مردانه",
-  "video": null
- },
- {
   "id": 64343889,
   "name": "دورس نیم زییپ پشت چاپ مردانه",
   "price": 19520000,
@@ -477,7 +462,7 @@
   "price": 26500000,
   "stock": 36,
   "sales_count": 3,
-  "sales_count_week": 1,
+  "sales_count_week": 0,
   "rating": {
    "average": 0,
    "count": 0,
