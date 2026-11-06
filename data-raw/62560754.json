@@ -84,11 +84,11 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 28,
+ "inventory": 19,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-10-15T20:56:20+03:30",
- "updated_at": "2026-11-03T23:13:13+03:30",
+ "updated_at": "2026-11-06T19:47:29+03:30",
  "description": "\n\n🔥 هودی بیسیک توکرک | گرم و خوش‌استایل 🔥\n\nبچه‌هاا 😍 اگه دنبال یه هودی گرم و راحت برای روزای سردین، این مدل رو از دست ندین! 🖤👌🏻\n\nیه مدل ساده و شیک که با کلی استایل می‌تونین ستش کنین؛ هم برای دخترا مناسبه، هم پسرا 😎🍂\n\n✨ **مشخصات محصول:**\n\n✔️ جنس دورس لاکرادار حوله‌ای توکرک\n✔️ داخل گرم و نرم، مناسب روزای سرد\n✔️ مدل بیسیک و ساده، بدون طرح\n✔️ کلاه بنددار و کاربردی\n✔️ پارچه نرم، کشسان و ضدحساسیت\n✔️ تن‌خور راحت و اسپرت\n✔️ مناسب استایل پاییزی و زمستونی\n✔️ مدل یونیسکس؛ مناسب دخترونه و پسرونه\n\n📏 **سایزبندی:** XL | XXL | XXXL\n\n💰 **قیمت: 1,950**\n\n📩 برای قیمت عمده بهمون پیام بدین 💌\n\n📍 **فروشگاه المارت**\nراسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -211,7 +211,7 @@
    "id": 82454784,
    "price": 22000000,
    "primary_price": 22000000,
-   "stock": 2,
+   "stock": 1,
    "order": null,
    "properties": [
     {
@@ -256,10 +256,10 @@
    "discount": null
   },
   {
-   "id": 82454788,
+   "id": 82454789,
    "price": 22000000,
    "primary_price": 22000000,
-   "stock": 2,
+   "stock": 1,
    "order": null,
    "properties": [
     {
@@ -269,9 +269,9 @@
       "type": "text"
      },
      "value": {
-      "id": 47676,
-      "title": "سفید xxl",
-      "value": "سفید xxl",
+      "id": 130673,
+      "title": "سفید xxxl",
+      "value": "سفید xxxl",
       "order": null
      }
     }
@@ -320,30 +320,6 @@
       "id": 722566,
       "title": "آبی تیره xxxl",
       "value": "آبی تیره xxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 82454793,
-   "price": 22000000,
-   "primary_price": 22000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 50719,
-      "title": "آبی روشن xl",
-      "value": "آبی روشن xl",
       "order": null
      }
     }
@@ -472,58 +448,10 @@
    "discount": null
   },
   {
-   "id": 82454799,
-   "price": 22000000,
-   "primary_price": 22000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 125625,
-      "title": "یشمیxl",
-      "value": "یشمیxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 82454800,
-   "price": 22000000,
-   "primary_price": 22000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 931051,
-      "title": "یشمیxxl",
-      "value": "یشمیxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 82454801,
    "price": 22000000,
    "primary_price": 22000000,
-   "stock": 2,
+   "stock": 1,
    "order": null,
    "properties": [
     {
@@ -592,7 +520,7 @@
    "discount": null
   },
   {
-   "id": 82454789,
+   "id": 82454788,
    "price": 22000000,
    "primary_price": 22000000,
    "stock": 0,
@@ -605,9 +533,9 @@
       "type": "text"
      },
      "value": {
-      "id": 130673,
-      "title": "سفید xxxl",
-      "value": "سفید xxxl",
+      "id": 47676,
+      "title": "سفید xxl",
+      "value": "سفید xxl",
       "order": null
      }
     }
@@ -632,6 +560,78 @@
       "id": 722565,
       "title": "آبی تیره xxl",
       "value": "آبی تیره xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454793,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 50719,
+      "title": "آبی روشن xl",
+      "value": "آبی روشن xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454799,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 125625,
+      "title": "یشمیxl",
+      "value": "یشمیxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 82454800,
+   "price": 22000000,
+   "primary_price": 22000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 931051,
+      "title": "یشمیxxl",
+      "value": "یشمیxxl",
       "order": null
      }
     }

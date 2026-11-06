@@ -118,11 +118,11 @@
    "slug": "هودی-مردانه"
   }
  ],
- "inventory": 24,
+ "inventory": 21,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-09-24T23:56:44+03:30",
- "updated_at": "2026-10-10T22:03:03+03:30",
+ "updated_at": "2026-11-06T19:45:51+03:30",
  "description": "🔥 دورس دو نخ لاکرا چاپی | تمام پنبه، نرم و خوش‌تن‌خور 🔥\n\n✨ یک مدل شیک و راحت برای استایل‌های روزمره و اسپرت\n\nاین دورس از **100٪ پنبه** تولید شده و بافتی نرم و راحت داره که به‌خوبی روی تن می‌ایسته. چاپ باکیفیت و طراحی جذاب این کار، اون رو به انتخابی مناسب برای استایل روزمره تبدیل کرده.\n\n**مشخصات محصول:**\n✔️ جنس: 100٪ پنبه\n✔️ مدل: دورس دو نخ لاکرا چاپی\n✔️ حالت پارچه: نرم، راحت و خوش‌تن‌خور\n✔️ چاپ: باکیفیت و بادوام\n✔️ مناسب برای: استفاده روزمره و استایل اسپرت\n🎨 موجود در 6 رنگ جذاب\n\n📏 **سایزبندی:** XL | 2XL | 3XL\n\n📦 فروش عمده و خرده\n🚚 ارسال به سراسر کشور\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -519,54 +519,6 @@
    "discount": null
   },
   {
-   "id": 74798958,
-   "price": 19500000,
-   "primary_price": 19500000,
-   "stock": 1,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 611240,
-      "title": "پسته ای xxl",
-      "value": "پسته ای xxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 74798959,
-   "price": 19500000,
-   "primary_price": 19500000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1578803,
-      "title": "پسته ایxxxl",
-      "value": "پسته ایxxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 74798948,
    "price": 19500000,
    "primary_price": 19500000,
@@ -679,6 +631,54 @@
       "id": 611239,
       "title": "پسته ایxl",
       "value": "پسته ایxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 74798958,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 611240,
+      "title": "پسته ای xxl",
+      "value": "پسته ای xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 74798959,
+   "price": 19500000,
+   "primary_price": 19500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1578803,
+      "title": "پسته ایxxxl",
+      "value": "پسته ایxxxl",
       "order": null
      }
     }
