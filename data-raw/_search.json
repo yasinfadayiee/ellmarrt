@@ -62,21 +62,6 @@
   "video": null
  },
  {
-  "id": 46296076,
-  "name": "تیشرت مردانه سنگشور باکسی نخ 32",
-  "price": 12500000,
-  "stock": 4,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "تیشرت و پولوشرت مردانه",
-  "video": null
- },
- {
   "id": 46295449,
   "name": "تیشرت مردانه طرح متفاوت راه راه برجسته مدل سال",
   "price": 13080000,
@@ -461,29 +446,14 @@
   "name": "سویشرت تمام زیپ کلاهدار داخل کرکی",
   "price": 26500000,
   "stock": 203,
-  "sales_count": 3,
-  "sales_count_week": 0,
+  "sales_count": 5,
+  "sales_count_week": 2,
   "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
+   "average": 1,
+   "count": 1,
+   "signals": 1
   },
   "categoryTitle": "سویشرت ، هودی و ژاکت مردانه",
-  "video": null
- },
- {
-  "id": 60929591,
-  "name": "شلوارک اسپرت کنفی NIKE",
-  "price": 7500000,
-  "stock": 10,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
   "video": null
  },
  {
@@ -869,22 +839,5 @@
   },
   "categoryTitle": "شلوار و شلوارک مردانه",
   "video": null
- },
- {
-  "id": 36616362,
-  "name": "شلوار اسلش مردانه بغل نوار",
-  "price": 14200000,
-  "stock": 33,
-  "sales_count": 7,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 4.8,
-   "count": 6,
-   "signals": 6
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": {
-   "PRIMARY": "https://statics.basalam.com/public-163/video/product/X6zxOW/01-26/Bcvsx6onuTQLXUOLPccBjMi5pqhgUZ0b2nMjOgwc8ZtQfx3R7W.mov"
-  }
  }
 ]
