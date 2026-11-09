@@ -10,11 +10,20 @@ const OUT = path.join(ROOT, "docs");
 const SITE_URL = (process.env.SITE_URL || "https://ellmarrt.ir").replace(/\/$/, "");
 const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
 // cache-busting version = hash of css+js, so identical builds produce identical HTML
-const VERSION = require("crypto").createHash("md5").update(fs.readFileSync(path.join(ROOT, "assets/css/site.css")) + fs.readFileSync(path.join(ROOT, "assets/js/site.js"))).digest("hex").slice(0, 8);
+const VERSION = require("crypto").createHash("md5").update((fs.readFileSync(path.join(ROOT, "assets/css/site.css"), "utf8") + fs.readFileSync(path.join(ROOT, "assets/js/site.js"), "utf8")).replace(/\r\n/g, "\n")).digest("hex").slice(0, 8);
 
 const { products, all, allReviews, CATEGORIES, storeReviews } = load();
 const meta = fs.existsSync(path.join(ROOT, "data-raw/_meta.json")) ? JSON.parse(fs.readFileSync(path.join(ROOT, "data-raw/_meta.json"), "utf8")) : {};
 const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews };
+
+// paths published by the previous build: stock-driven pages (colour, style, shoe size…) that Google already knows stay
+// alive when stock drops, and anything that still disappears gets a redirect stub instead of a 404
+ctx.prev = new Set();
+try {
+  const old = fs.readFileSync(path.join(OUT, "sitemap.xml"), "utf8");
+  for (const m of old.matchAll(/<loc>([^<]+)<\/loc>/g)) ctx.prev.add(m[1].replace(SITE_URL, "") || "/");
+} catch {}
+try { for (const l of fs.readFileSync(path.join(OUT, "retired.txt"), "utf8").split("\n")) if (l.startsWith("/")) ctx.prev.add(l.trim()); } catch {}
 
 // clean output (keep CNAME if any)
 const cname = fs.existsSync(path.join(OUT, "CNAME")) ? fs.readFileSync(path.join(OUT, "CNAME")) : null;
@@ -89,6 +98,22 @@ emit("/shipping-returns/", pages.shipping(ctx), { priority: 0.5 });
 for (const g of pages.guides) emit(`/guide/${g.slug}/`, pages.guide(ctx, g), { priority: 0.7 });
 emit("/guide/", pages.guideIndex(ctx), { priority: 0.6 });
 write("404.html", pages.notFound(ctx));
+
+// pages that were in the last sitemap but are gone now (stock ran out, product removed): redirect to the closest
+// parent page that exists, so links and rankings are not thrown away. Not listed in the new sitemap.
+const live = new Set(urls.map((u) => u.loc.replace(SITE_URL, "") || "/"));
+const retired = [];
+for (const p of ctx.prev) {
+  if (live.has(p) || !p.startsWith("/") || p.includes("?")) continue;
+  let to = p.replace(/[^/]+\/$/, "");
+  while (to.length > 1 && !live.has(to)) to = to.replace(/[^/]+\/$/, "");
+  if (p.startsWith("/p/")) to = "/shop/";
+  const url = SITE_URL + to;
+  write(p.replace(/^\//, "") + "index.html", `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>المارت</title><link rel="canonical" href="${url}"><meta name="robots" content="noindex,follow"><meta http-equiv="refresh" content="0; url=${url}"></head><body><a href="${url}">ادامه</a></body></html>`);
+  retired.push(p);
+}
+write("retired.txt", retired.sort().join("\n") + "\n");
+if (retired.length) console.log(`redirect stubs for ${retired.length} retired pages`);
 
 // sitemap with image extension
 const xmlEsc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");

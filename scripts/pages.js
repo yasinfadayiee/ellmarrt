@@ -458,6 +458,13 @@ function ctrDesc(base) {
     : [`${base} خرید از باسلام یا سفارش مستقیم؛ ارسال به سراسر ایران.`, `${base} خرید از باسلام یا سفارش مستقیم.`, `${base} ارسال به سراسر ایران.`];
   return options.find((d) => d.length <= DESC_MAX) || base;
 }
+// Google product taxonomy (Search Console flagged the Persian category name as "Invalid value in field category")
+const GOOGLE_CAT = {
+  tshirt: "Apparel & Accessories > Clothing > Shirts & Tops", polo: "Apparel & Accessories > Clothing > Shirts & Tops",
+  shirt: "Apparel & Accessories > Clothing > Shirts & Tops", sweat: "Apparel & Accessories > Clothing > Shirts & Tops",
+  pants: "Apparel & Accessories > Clothing > Pants", shorts: "Apparel & Accessories > Clothing > Shorts",
+  shoes: "Apparel & Accessories > Shoes", kids: "Apparel & Accessories > Clothing",
+};
 function category(ctx, c) {
   const { products: P } = ctx;
   const key = Object.keys(ctx.CATEGORIES).find((k) => ctx.CATEGORIES[k] === c);
@@ -513,7 +520,7 @@ function product(ctx, p) {
   const offerAvail = p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
   const schema = {
     "@context": "https://schema.org", "@type": "Product", "@id": `${SITE_URL}/p/${p.id}/#product`,
-    name: p.title, sku: String(p.id), mpn: String(p.id), category: c.name,
+    name: p.title, sku: String(p.id), mpn: String(p.id), category: GOOGLE_CAT[p.cat] || "Apparel & Accessories > Clothing",
     brand: { "@type": "Brand", name: STORE.latin },
     image: [...new Set([`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.map((g) => `${SITE_URL}/assets/p/${g.file}`)])].slice(0, 5),
     description: p.copy.plain.slice(0, 4900),
@@ -1194,7 +1201,7 @@ ${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.l
 
 const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
-const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
+const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS });
 
 const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });
 const gar = require("./pages-garments")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, SIZE_ROWS, fa, fa0 });

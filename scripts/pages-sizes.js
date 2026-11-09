@@ -109,7 +109,8 @@ ${real.length ? `<section class="sec-sm"><div class="wrap prose"><h2>انداز�
 
   // /size/shoes/ «سایز کفش ۴۲ چند سانت است؟» — foot lengths from the seller's chart of an in-stock shoe
   const shoeChart = (ctx) => {
-    for (const p of ctx.products.filter((x) => x.inStock && x.cat === "shoes").sort(rank)) {
+    // in-stock shoes first; a sold-out shoe's chart keeps the page (top search page) alive when stock runs out
+    for (const p of ctx.products.filter((x) => x.cat === "shoes").sort((a, b) => b.inStock - a.inStock || rank(a, b))) {
       const m = measures(p);
       if (m && m.cols.includes("طول پا")) return { p, rows: m.rows.filter(([, v]) => v["طول پا"]) };
     }

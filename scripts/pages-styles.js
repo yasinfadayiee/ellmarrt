@@ -33,6 +33,9 @@ const STYLES = [
     "بلوز آستین‌بلند پنبه برای پاییز و روزهای خنک است؛ تنها یا زیر کاپشن و سویشرت پوشیده می‌شود. اگر می‌خواهید زیر لباس دیگری بپوشید، سایز همیشگی‌تان را بردارید تا جمع نشود."],
 ];
 
+// other names people search for the same style (Search Console: «پولوشرت یقه دار»، «پلوشرت یقه دار»)
+const ALT = { collar: "پولوشرت" };
+
 module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE }) => {
   const rank = (a, b) => (b.sales || 0) - (a.sales || 0) || a.price - b.price;
   const hay = (p) => `${p.title} ${p.keyword || ""} ${p.basalamTitle || ""}`.replace(/‌/g, " ");
@@ -40,7 +43,13 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
 
   const stylePages = (ctx) => STYLES.filter((s) => ctx.CATEGORIES[s[0]])
     .map((s) => ({ cat: s[0], slug: s[1], h1: s[2], note: s[4], list: listOf(ctx, s) }))
-    .filter((x) => x.list.length >= MIN);
+    .map((x) => {
+      if (x.list.length >= MIN || !ctx.prev || !ctx.prev.has(`/c/${ctx.CATEGORIES[x.cat].slug}/${x.slug}/`)) return x;
+      // already in Google: keep the page with sold-out models of the same style
+      const s = STYLES.find((y) => y[0] === x.cat && y[1] === x.slug);
+      return { ...x, list: [...x.list, ...ctx.products.filter((p) => !p.inStock && p.cat === x.cat && s[3].test(hay(p))).sort(rank)].slice(0, 8) };
+    })
+    .filter((x) => x.list.length >= MIN || (x.list.length && ctx.prev && ctx.prev.has(`/c/${ctx.CATEGORIES[x.cat].slug}/${x.slug}/`)));
   const pathOf = (ctx, pg) => `/c/${ctx.CATEGORIES[pg.cat].slug}/${pg.slug}/`;
   const link = (ctx, pg) => `<a class="link" href="${ctx.BASE}${pathOf(ctx, pg)}">${pg.h1}</a>`;
 
@@ -60,7 +69,9 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name], [path, h1]];
     const prices = list.map((p) => p.price);
     const min = Math.min(...prices), max = Math.max(...prices);
-    const sizes = [...new Set(list.flatMap((p) => liveSizes(p)))];
+    const ORD = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
+    const sizes = [...new Set(list.filter((p) => p.inStock).flatMap((p) => liveSizes(p)))].sort((a, b) => (ORD.indexOf(a) + 1 || 99 + parseFloat(a)) - (ORD.indexOf(b) + 1 || 99 + parseFloat(b)));
+    const nIn = list.filter((p) => p.inStock).length;
     const sizeTxt = sizes.length > 1 ? `از ${sizes[0]} تا ${sizes[sizes.length - 1]}` : sizes[0] || "";
     const first = list[0];
     const others = stylePages(ctx).filter((x) => x.cat === cat && x.slug !== pg.slug);
@@ -71,8 +82,8 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     ];
     return layout(ctx, {
       path,
-      title: `خرید ${h1} | ${fa(list.length)} مدل از ${fa(min)} تومان | المارت`,
-      desc: `${fa(list.length)} مدل ${h1}${sizeTxt ? ` در سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال به سراسر ایران و خرید امن از باسلام.`,
+      title: `خرید ${h1}${ALT[pg.slug] ? ` (${ALT[pg.slug]})` : ""} | ${fa(nIn || list.length)} مدل از ${fa(min)} تومان | المارت`,
+      desc: `${fa(nIn || list.length)} مدل ${h1}${ALT[pg.slug] ? ` یا ${ALT[pg.slug]}` : ""}${sizeTxt ? ` در سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال به سراسر ایران و خرید امن از باسلام.`,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}

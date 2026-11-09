@@ -27,7 +27,7 @@ const NOUN = {
   tshirt: ["تیشرت", "مردانه"],
   polo: ["پولوشرت", "مردانه"],
   shirt: ["پیراهن", "مردانه"],
-  sweat: ["هودی و دورس", "مردانه"],
+  sweat: ["دورس و هودی", "مردانه"], // «دورس سفید/مشکی/طوسی» is searched more than «هودی …» (Search Console, Nov 2026)
   pants: ["شلوار", "مردانه"],
   shorts: ["شلوارک", "مردانه"],
   shoes: ["کفش اسپرت", "مردانه"],
@@ -35,8 +35,12 @@ const NOUN = {
 };
 
 const group = (c) => c.replace(/ (روشن|تیره)$/, "");
+// other words people use for the same colour (Search Console queries: «دورس خاکستری»، «هودی سیاه»)
+const ALT = { "طوسی": "خاکستری", "مشکی": "سیاه", "قهوه‌ای": "شکلاتی", "سرمه‌ای": "سورمه‌ای", "هوایی": "آبی روشن" };
+const SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
+const bySize = (a, b) => (SIZE_ORDER.indexOf(a) + 1 || 99 + parseFloat(a)) - (SIZE_ORDER.indexOf(b) + 1 || 99 + parseFloat(b));
 
-module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE }) => {
+module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS }) => {
   const rank = (a, b) => (b.sales || 0) - (a.sales || 0) || a.price - b.price;
   // the product with the colour switched to g, so its card shows that colour's studio shot
   const asColor = (p, g) => {
@@ -45,6 +49,10 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
   };
   const listOf = (ctx, cat, g) => ctx.products
     .filter((p) => p.inStock && p.cat === cat && p.colors.some((c, k) => group(c) === g && p.colorInStock.includes(k)))
+    .sort(rank);
+  // sold-out models that come in colour g (used only to keep a page Google already knows)
+  const soldOf = (ctx, cat, g) => ctx.products
+    .filter((p) => !p.inStock && p.cat === cat && p.colors.some((c) => group(c) === g))
     .sort(rank);
 
   // every page that exists right now: [{ cat, g, slug, list }]
@@ -55,6 +63,11 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       for (const g of Object.keys(COLORS)) {
         const list = listOf(ctx, cat, g);
         if (list.length >= MIN) out.push({ cat, g, slug: COLORS[g][0], list });
+        else if (ctx.prev && ctx.prev.has(`/c/${ctx.CATEGORIES[cat].slug}/${COLORS[g][0]}/`)) {
+          // page is already in Google: keep it while at least one model (in stock or not) has the colour
+          const keep = [...list, ...soldOf(ctx, cat, g)].slice(0, 8);
+          if (keep.length) out.push({ cat, g, slug: COLORS[g][0], list: keep });
+        }
       }
     }
     return out;
@@ -77,24 +90,29 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name], [path, h1]];
     const prices = list.map((p) => p.price);
     const min = Math.min(...prices), max = Math.max(...prices);
-    const sizes = [...new Set(list.flatMap((p) => liveSizes(p)))];
+    const live = list.filter((p) => p.inStock);
+    const sizes = [...new Set(live.flatMap((p) => liveSizes(p)))].sort(bySize);
     const first = list[0], top = asColor(first, g);
+    const alt = ALT[g] ? ` (${ALT[g]})` : "";
+    const nIn = live.length;
     const base = top.mainColor != null ? `${top.id}-k${top.mainColor}` : `${top.id}`;
     const noun = NOUN[cat][0];
     const sizeTxt = sizes.length > 1 ? `از ${sizes[0]} تا ${sizes[sizes.length - 1]}` : sizes[0] || "";
+    const L = SIZE_ROWS && SIZE_ROWS.find((r) => r[0] === sizes[0]);
     const qa = [
-      [`${h1} چه سایزهایی دارد؟`, `${fa(list.length)} مدل ${noun} ${g} الان موجود است${sizes.length ? ` و سایزهای ${sizes.join("، ")} را دارد` : ""}. سایز دقیق هر مدل در صفحه همان محصول زیر انتخاب سایز آمده است و موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.`],
+      [`${h1} چه سایزهایی دارد؟`, nIn ? `${fa(nIn)} مدل ${noun} ${g} الان موجود است${sizes.length ? ` و سایزهای ${sizes.join("، ")} را دارد` : ""}. سایز دقیق هر مدل در صفحه همان محصول زیر انتخاب سایز آمده است و موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.` : `مدل‌های ${noun} ${g} الان تمام شده‌اند؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود و سایز هر مدل در صفحه همان محصول آمده است.`],
+      ...(cat === "sweat" && L ? [[`${noun} ${g} برای پسر نوجوان هم مناسب است؟`, `کوچک‌ترین سایز این مدل‌ها ${L[0]} است که در جدول المارت برای قد ${L[1]} سانتی‌متر و وزن ${L[2]} کیلوگرم است. پسر نوجوانی که در این محدوده است می‌تواند ${L[0]} را بپوشد؛ برای کوچک‌ترها بخش لباس پسرانه المارت را ببینید.`]] : []),
       [`قیمت ${h1} چقدر است؟`, `${noun} ${g} الان از ${fa(min)} تا ${fa(max)} تومان است. خرید از غرفه رسمی المارت در باسلام انجام می‌شود.`],
       [`${noun} ${g} را از کجا بخرم؟`, `المارت ${fa(STORE.years)} سال سابقه در ${STORE.bazaar} دارد. مدل مورد نظر را باز کنید، سایز و رنگ ${g} را انتخاب کنید و از باسلام یا با «سفارش مستقیم» خرید کنید.`],
     ];
     return layout(ctx, {
       path,
-      title: `خرید ${h1} | ${fa(list.length)} مدل از ${fa(min)} تومان`,
-      desc: `${fa(list.length)} مدل ${noun} ${g} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، موجود و آماده ارسال از بازار تبریز. قیمت از ${fa(min)} تومان و خرید امن از باسلام.`,
+      title: nIn >= MIN ? `خرید ${h1}${alt} | ${fa(nIn)} مدل از ${fa(min)} تومان` : `${h1}${alt} | قیمت و مدل‌ها`,
+      desc: nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، موجود و آماده ارسال از بازار تبریز. قیمت از ${fa(min)} تومان، عکس واقعی همین رنگ و خرید امن از باسلام.` : `مدل‌های ${noun} ${g}${alt} ${NOUN[cat][1]} المارت از بازار تبریز با عکس واقعی همین رنگ؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>${h1}</h1><p>${fa(list.length)} مدل ${noun} ${g} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان. پرفروش‌ترین‌ها اول آمده‌اند و عکس هر مدل همان رنگ ${g} را نشان می‌دهد.</p></header>
+<header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان. پرفروش‌ترین‌ها اول آمده‌اند و` : `مدل‌های ${noun} ${g}${alt} المارت فعلاً تمام شده‌اند و با شارژ دوباره همین‌جا موجود می‌شوند؛`} عکس هر مدل همان رنگ ${g} را نشان می‌دهد.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, asColor(p, g), k < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>درباره رنگ ${g}</h2><p>${COLORS[g][1]}</p><p>همه مدل‌های بالا اصلی و از ${ctx.CATEGORIES[cat].name} مجموعه المارت هستند. اگر درباره سایز مطمئن نیستید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
