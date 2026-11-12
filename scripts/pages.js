@@ -263,11 +263,11 @@ const sizer = (title = "سایزیاب هوشمند المارت") => `<div clas
 <div class="sizer-out" aria-live="polite"></div></div>`;
 
 const HOME_FAQ_DEFAULT = [
-  ["خرید از المارت چطور انجام می‌شود؟", "هر محصول در غرفه رسمی المارت در باسلام ثبت شده است. سایز و رنگ را در سایت انتخاب کنید و با دکمه «خرید امن از باسلام» سفارش را با درگاه و ضمانت باسلام تکمیل کنید."],
+  ["خرید از المارت چطور انجام می‌شود؟", "مدل مورد نظر را در سایت انتخاب کنید و روی «خرید امن از باسلام» بزنید. در صفحه باسلام سایز و رنگ را دوباره انتخاب و قیمت و موجودی نهایی را بررسی کنید؛ سفارش و پرداخت در باسلام انجام می‌شود."],
   ["ارسال چقدر طول می‌کشد؟", "سفارش‌ها از روز اول کاری بعد از ثبت، با پست پیشتاز یا سفارشی به سراسر ایران ارسال می‌شوند. برای تبریز ارسال با پیک موتوری هم امکان‌پذیر است."],
   ["سایز مناسب خودم را چطور پیدا کنم؟", "از سایزیاب المارت استفاده کنید: قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید. همچنین در صفحه هر محصول اندازه‌های واقعی آن آمده است و می‌توانید قبل از خرید در اینستاگرام از ما بپرسید."],
   ["آیا لباس سایز بزرگ دارید؟", "بله. بخش بزرگی از محصولات المارت در سایزهای بزرگ دوخته می‌شوند؛ تیشرت تا {MAX:tshirt} و شلوار تا {MAX:pants}. صفحه «سایز بزرگ» همه این محصولات را یک‌جا نشان می‌دهد."],
-  ["عکس محصولات واقعی است؟", "عکس‌های اصلی با نورپردازی استودیویی بازسازی شده‌اند و جنس، رنگ و دوخت هر لباس دقیقاً همان کالای ارسالی است. عکس‌های واقعی گرفته‌شده در غرفه هم در گالری هر محصول قرار دارند."],
+  ["عکس محصولات واقعی است؟", "بعضی تصاویر اصلی بازسازی استودیویی هستند. عکس‌های واقعی غرفه را نیز در صفحه محصول ببینید؛ رنگ ممکن است بسته به نور و نمایشگر متفاوت دیده شود."],
 ];
 
 const HOME_FAQ = (SITE.faq || []).filter((x) => x && x[0] && x[1]).length ? SITE.faq.filter((x) => x && x[0] && x[1]) : HOME_FAQ_DEFAULT;
@@ -530,18 +530,18 @@ function product(ctx, p) {
     audience: { "@type": "PeopleAudience", suggestedGender: p.cat === "kids" ? "unisex" : "male" },
     ...(p.price > 0 ? { offers: {
       "@type": "Offer", url: `${SITE_URL}/p/${p.id}/`, priceCurrency: "IRR", price: p.price * 10,
-      priceValidUntil: `${new Date().getFullYear()}-12-31`, availability: offerAvail,
+      availability: offerAvail,
       itemCondition: "https://schema.org/NewCondition", seller: { "@type": "Organization", "@id": `${SITE_URL}/#store`, name: STORE.name, url: `${SITE_URL}/` },
     } } : {}),
     ...(p.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating.avg, reviewCount: p.rating.count, bestRating: 5 } } : {}),
   };
-  const data = { id: p.id, hero: true, variants: p.variants.map(({ color, size, stock }) => ({ color, size, stock })) };
-  const priceBlock = `<div class="pprice"><b class="num">${fa(p.price)}</b><small>تومان</small><span id="stock" class="stock${p.inStock ? (low ? " low" : "") : " no"}">${p.inStock ? (low ? `فقط ${fa(p.stock)} عدد باقی‌مانده` : "موجود در انبار") : "ناموجود"}</span></div>`;
+  const data = { id: p.id, hero: true, variants: p.variants.map(({ color, size, stock, price }) => ({ color, size, stock, price })) };
+  const priceBlock = `<div class="pprice" aria-live="polite"><span id="price-from"${new Set(p.variants.filter((v) => v.stock > 0).map((v) => v.price)).size > 1 ? "" : " hidden"}>از</span><b class="num" id="product-price">${fa(p.price)}</b><small>تومان</small><span id="stock" class="stock${p.inStock ? (low ? " low" : "") : " no"}">${p.inStock ? (low ? `فقط ${fa(p.stock)} عدد باقی‌مانده` : "موجود در انبار") : "ناموجود"}</span></div>`;
   const pz = liveSizes(p), pcol = p.colors.filter((k, i) => p.colorInStock.includes(i));
   const pfaq = p.inStock ? [
     ...(pz.length ? [[`${short(p)} در چه سایزهایی موجود است؟`, `الان سایز ${pz.join("، ")} موجود است. اگر قد و وزنتان را می‌دانید، سایزیاب المارت سایز مناسب را پیشنهاد می‌دهد؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.`]] : []),
     ...(pcol.length ? [[`${short(p)} چه رنگ‌هایی دارد؟`, pcol.length > 1 ? `رنگ‌های موجود: ${pcol.join("، ")}. با زدن روی هر رنگ در بالای صفحه، عکس همان رنگ را می‌بینید.` : `رنگ موجود این مدل ${pcol[0]} است.`]] : []),
-    [`${short(p)} را چطور بخرم؟`, `سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید؛ قیمت ${fa(p.price)} تومان است و پرداخت از درگاه باسلام انجام می‌شود. اگر می‌خواهید تلفنی یا پیامکی سفارش بدهید، دکمه «سفارش تلفنی / پیامکی» کد پیگیری می‌دهد.`],
+    [`${short(p)} را چطور بخرم؟`, `سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید. در باسلام دوباره سایز و رنگ را انتخاب و قیمت و موجودی نهایی را بررسی کنید. برای سفارش تلفنی یا پیامکی هم می‌توانید از دکمه مربوط استفاده کنید.`],
   ].filter(([, a]) => a) : [];
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
@@ -560,7 +560,7 @@ function product(ctx, p) {
     <div class="buy">
       ${p.inStock ? `<a class="btn btn-ink btn-block buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">${I.bag} خرید امن از غرفه المارت در باسلام</a>` : `<div class="oos"><b>این مدل فعلاً ناموجود است</b><span>موجودی هر ۶ ساعت از باسلام به‌روز می‌شود. برای خبر شدن از شارژ مجدد پیام بدهید.</span></div><a class="btn btn-ink btn-block" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">خبرم کن وقتی موجود شد</a>`}
       ${p.inStock ? "" : "<!--"}<button class="btn btn-ghost btn-block" id="direct-order" data-direct-order>${I.phone} یا سفارش تلفنی / پیامکی</button>${p.inStock ? "" : "-->"}
-      <p class="buy-note">پرداخت از درگاه امن باسلام با ضمانت بازگشت وجه؛ ارسال از روز اول کاری.</p>
+      <p class="buy-note">در صفحه باسلام، سایز و رنگ را دوباره انتخاب کنید و قیمت و موجودی نهایی را بررسی کنید. پرداخت از طریق باسلام انجام می‌شود.</p>
       ${p.inStock ? storeRating(ctx, "#reviews") : ""}
       <div class="buy-more">
         <a href="${STORE.igDm}" target="_blank" rel="noopener">${I.ig} سوال قبل از خرید</a>
@@ -583,7 +583,7 @@ ${(() => {
 })()}
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
 <div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
-${p.inStock ? `<div class="mbar"><b class="num">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-ghost mbar-call" type="button" data-direct-order aria-label="سفارش تلفنی یا پیامکی">${I.phone}</button></div>` : ""}
+${p.inStock ? `<div class="mbar"><b class="num" id="mobile-price">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-ghost mbar-call" type="button" data-direct-order aria-label="سفارش تلفنی یا پیامکی">${I.phone}</button></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm" id="reviews"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
 ${pfaq.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پرسش و پاسخ</span><h2>سوالات خریداران درباره این مدل</h2></div></div><div class="faq">${pfaq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}</div></div></section>` : ""}
@@ -749,12 +749,12 @@ ${prods.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head
 }
 
 const FAQ_FULL = [
-  ["چطور سفارش بدهم؟", "در صفحه هر محصول سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید. سفارش و پرداخت در باسلام انجام می‌شود."],
+  ["چطور سفارش بدهم؟", "در صفحه محصول سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید. در باسلام دوباره سایز و رنگ را انتخاب و قیمت و موجودی نهایی را بررسی کنید. سفارش و پرداخت در باسلام انجام می‌شود."],
   ["سفارش تلفنی یا پیامکی چطور است؟", "اگر نمی‌خواهید از باسلام بخرید، در صفحه محصول سایز و رنگ را انتخاب کنید و «سفارش تلفنی / پیامکی» را بزنید. یک کد پیگیری مثل EL-4K2Q می‌گیرید و متن سفارش آماده می‌شود؛ آن را پیامک کنید، با شماره‌های المارت تماس بگیرید یا در روبیکا پیام بدهید و کد را بگویید. پرداخت و ارسال همان‌جا با شما هماهنگ می‌شود."],
   ["چرا پرداخت در باسلام انجام می‌شود؟", "باسلام بازار آنلاین معتبر ایرانی است؛ پرداخت شما تا زمان دریافت کالا نزد باسلام امن می‌ماند و از ضمانت بازگشت وجه باسلام بهره‌مند می‌شوید."],
   ["هزینه و زمان ارسال چقدر است؟", "ارسال از روز اول کاری بعد از سفارش با پست پیشتاز یا سفارشی انجام می‌شود و هزینه دقیق هنگام ثبت سفارش در باسلام محاسبه می‌شود. در تبریز پیک موتوری هم داریم."],
   ["اگر سایز اندازه نبود چه کنم؟", "قبل از خرید از سایزیاب و جدول سایز استفاده کنید. اگر مشکلی پیش آمد، از طریق پیام باسلام یا اینستاگرام با ما در تماس باشید تا مطابق قوانین باسلام راهنمایی‌تان کنیم."],
-  ["آیا رنگ‌ها با عکس یکی است؟", "عکس‌های اصلی با نور استودیو گرفته شده‌اند و رنگ و جنس کالا دقیقاً همان است. ممکن است بسته به نمایشگر، تفاوت جزئی در رنگ دیده شود. عکس‌های غرفه هم در گالری محصول هست."],
+  ["آیا رنگ‌ها با عکس یکی است؟", "بعضی تصاویر اصلی بازسازی استودیویی هستند و رنگ ممکن است با توجه به نور و نمایشگر متفاوت دیده شود. عکس‌های واقعی غرفه را نیز در صفحه محصول ببینید."],
   ["خرید عمده دارید؟", "بله؛ المارت پخش پوشاک مردانه است. برای خرید عمده و همکاری در اینستاگرام پیام بدهید."],
 ];
 

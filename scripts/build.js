@@ -117,10 +117,9 @@ if (retired.length) console.log(`redirect stubs for ${retired.length} retired pa
 
 // sitemap with image extension
 const xmlEsc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-const today = (meta.syncedAt || new Date().toISOString()).slice(0, 10); // changes only when content changes
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><lastmod>${today}</lastmod><priority>${u.priority}</priority>${u.images.map((i) => `<image:image><image:loc>${xmlEsc(i)}</image:loc></image:image>`).join("")}</url>`).join("\n")}
+${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><priority>${u.priority}</priority>${u.images.map((i) => `<image:image><image:loc>${xmlEsc(i)}</image:loc></image:image>`).join("")}</url>`).join("\n")}
 </urlset>
 `);
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
