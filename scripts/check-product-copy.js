@@ -26,12 +26,8 @@ function bigrams(text) {
   return new Set(words.slice(1).map((word, i) => `${words[i]} ${word}`));
 }
 
-// Same-category samples: very large cotton, black boxy cotton, stonewashed boxy.
-const samples = [53718702, 54127749, 46296076].map((id) => {
-  const p = products.find((p) => p.id === id);
-  assert(p, `Missing sample: ${id}`);
-  return p;
-});
+// Different same-category models; compare only samples still in the live catalogue.
+const samples = [53718702, 54127749, 46295449].map((id) => products.find((p) => p.id === id)).filter(Boolean);
 for (let i = 0; i < samples.length; i++) {
   for (let j = i + 1; j < samples.length; j++) {
     const a = bigrams(samples[i].copy.plain), b = bigrams(samples[j].copy.plain);

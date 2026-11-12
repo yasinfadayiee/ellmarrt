@@ -88,9 +88,9 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const h1 = h1Of(cat, g);
     const path = pathOf(ctx, cat, g);
     const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name], [path, h1]];
-    const prices = list.map((p) => p.price);
-    const min = Math.min(...prices), max = Math.max(...prices);
     const live = list.filter((p) => p.inStock);
+    const prices = (live.length ? live : list).map((p) => p.price);
+    const min = Math.min(...prices), max = Math.max(...prices);
     const sizes = [...new Set(live.flatMap((p) => liveSizes(p)))].sort(bySize);
     const first = list[0], top = asColor(first, g);
     const alt = ALT[g] ? ` (${ALT[g]})` : "";
@@ -102,17 +102,17 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const qa = [
       [`${h1} چه سایزهایی دارد؟`, nIn ? `${fa(nIn)} مدل ${noun} ${g} الان موجود است${sizes.length ? ` و سایزهای ${sizes.join("، ")} را دارد` : ""}. سایز دقیق هر مدل در صفحه همان محصول زیر انتخاب سایز آمده است و موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.` : `مدل‌های ${noun} ${g} الان تمام شده‌اند؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود و سایز هر مدل در صفحه همان محصول آمده است.`],
       ...(cat === "sweat" && L ? [[`${noun} ${g} برای پسر نوجوان هم مناسب است؟`, `کوچک‌ترین سایز این مدل‌ها ${L[0]} است که در جدول المارت برای قد ${L[1]} سانتی‌متر و وزن ${L[2]} کیلوگرم است. پسر نوجوانی که در این محدوده است می‌تواند ${L[0]} را بپوشد؛ برای کوچک‌ترها بخش لباس پسرانه المارت را ببینید.`]] : []),
-      [`قیمت ${h1} چقدر است؟`, `${noun} ${g} الان از ${fa(min)} تا ${fa(max)} تومان است. خرید از غرفه رسمی المارت در باسلام انجام می‌شود.`],
+      [`قیمت ${h1} چقدر است؟`, nIn ? `قیمت مدل‌های موجود ${noun} ${g} از ${fa(min)} تا ${fa(max)} تومان است. قیمت نهایی را در باسلام بررسی کنید.` : `این مدل‌ها فعلاً ناموجودند. قیمت و موجودی نهایی را در صفحه محصول بررسی کنید.`],
       [`${noun} ${g} را از کجا بخرم؟`, `المارت ${fa(STORE.years)} سال سابقه در ${STORE.bazaar} دارد. مدل مورد نظر را باز کنید، سایز و رنگ ${g} را انتخاب کنید و از باسلام یا با «سفارش مستقیم» خرید کنید.`],
     ];
     return layout(ctx, {
       path,
       title: nIn >= MIN ? `خرید ${h1}${alt} | ${fa(nIn)} مدل از ${fa(min)} تومان` : `${h1}${alt} | قیمت و مدل‌ها`,
-      desc: nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، موجود و آماده ارسال از بازار تبریز. قیمت از ${fa(min)} تومان، عکس واقعی همین رنگ و خرید امن از باسلام.` : `مدل‌های ${noun} ${g}${alt} ${NOUN[cat][1]} المارت از بازار تبریز با عکس واقعی همین رنگ؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`,
+      desc: nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، از بازار تبریز. مشاهده مدل‌ها، قیمت و خرید از باسلام.` : `مدل‌های ${noun} ${g}${alt} ${NOUN[cat][1]} المارت از بازار تبریز؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان. پرفروش‌ترین‌ها اول آمده‌اند و` : `مدل‌های ${noun} ${g}${alt} المارت فعلاً تمام شده‌اند و با شارژ دوباره همین‌جا موجود می‌شوند؛`} عکس هر مدل همان رنگ ${g} را نشان می‌دهد.</p></header>
+<header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}. پرفروش‌ترین‌ها اول آمده‌اند.` : `مدل‌های ${noun} ${g}${alt} المارت فعلاً تمام شده‌اند و با شارژ دوباره همین‌جا موجود می‌شوند.`} رنگ و موجودی هر مدل را در صفحه محصول بررسی کنید.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, asColor(p, g), k < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>درباره رنگ ${g}</h2><p>${COLORS[g][1]}</p><p>همه مدل‌های بالا اصلی و از ${ctx.CATEGORIES[cat].name} مجموعه المارت هستند. اگر درباره سایز مطمئن نیستید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>

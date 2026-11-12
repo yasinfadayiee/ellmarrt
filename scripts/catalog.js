@@ -73,11 +73,14 @@ const MATERIAL = {
 const cleanMaterial = (id, v) => MATERIAL[id] || v.replace(/\s+/g, " ").replace(/^جنس( کار)?\s+/, "").split(/[؛.]/)[0].replace(/\s+(هست|است)$/, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
 
 // products added on Basalam after the curated list was written
-const CAT_BY_TITLE = [[/کفش/, "shoes"], [/پسرانه|دخترانه|بچگانه/, "kids"], [/شلوارک/, "shorts"], [/شلوار/, "pants"], [/سویشرت|هودی|ژاکت|دورس|بلوز/, "sweat"], [/پیراهن/, "shirt"], [/پولو|یقه/, "polo"], [/تیشرت|تی شرت/, "tshirt"]];
+const CAT_BY_TITLE = [[/کفش/, "shoes"], [/پسرانه|دخترانه|بچگانه/, "kids"], [/شلوارک/, "shorts"], [/شلوار|پیژامه/, "pants"], [/سویشرت|هودی|ژاکت|دورس|بلوز|ست .*مردانه/, "sweat"], [/پیراهن/, "shirt"], [/پولو|یقه/, "polo"], [/تیشرت|تی شرت/, "tshirt"]];
 function autoCurate(d, s) {
   const title = clean(d.title).replace(/\s+/g, " ");
-  const hay = title + " " + (s.categoryTitle || "");
-  const cat = (CAT_BY_TITLE.find(([re]) => re.test(hay)) || [0, "tshirt"])[1];
+  // The seller's broad category can conflict with the garment's own title.
+  // Only fall back to that category when the title provides no match.
+  const match = CAT_BY_TITLE.find(([re]) => re.test(title.replace(/‌/g, " ")))
+    || CAT_BY_TITLE.find(([re]) => re.test(s.categoryTitle || ""));
+  const cat = (match || [0, "tshirt"])[1];
   return [title, cat, title];
 }
 

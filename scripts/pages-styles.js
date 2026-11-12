@@ -67,7 +67,8 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const c = CATEGORIES[cat];
     const path = pathOf(ctx, pg);
     const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name], [path, h1]];
-    const prices = list.map((p) => p.price);
+    const live = list.filter((p) => p.inStock);
+    const prices = (live.length ? live : list).map((p) => p.price);
     const min = Math.min(...prices), max = Math.max(...prices);
     const ORD = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
     const sizes = [...new Set(list.filter((p) => p.inStock).flatMap((p) => liveSizes(p)))].sort((a, b) => (ORD.indexOf(a) + 1 || 99 + parseFloat(a)) - (ORD.indexOf(b) + 1 || 99 + parseFloat(b)));
@@ -76,14 +77,14 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const first = list[0];
     const others = stylePages(ctx).filter((x) => x.cat === cat && x.slug !== pg.slug);
     const qa = [
-      [`قیمت ${h1} چقدر است؟`, `${h1} در المارت از ${fa(min)} تا ${fa(max)} تومان است و ${fa(list.length)} مدل از آن را می‌توانید همین حالا سفارش دهید. قیمت‌ها هر چند ساعت از غرفه باسلام به‌روز می‌شود.`],
+      [`قیمت ${h1} چقدر است؟`, nIn ? `${fa(nIn)} مدل موجود از ${fa(min)} تا ${fa(max)} تومان است. قیمت نهایی را در باسلام بررسی کنید.` : `این مدل‌ها فعلاً ناموجودند. موجودی به‌روز را در صفحه محصول بررسی کنید.`],
       [`${h1} چه سایزهایی دارد؟`, sizes.length ? `سایزهای ${sizes.join("، ")}. جدول اندازه هر مدل در صفحه همان محصول، زیر انتخاب سایز آمده است.` : `سایز هر مدل در صفحه همان محصول آمده است.`],
       [`${h1} را از کجا بخرم؟`, `المارت ${fa(STORE.years)} سال سابقه در ${STORE.bazaar} دارد. مدل را باز کنید، رنگ و سایز را انتخاب کنید و از غرفه رسمی المارت در باسلام یا با «سفارش مستقیم» (تلفن و پیامک) خرید کنید.`],
     ];
     return layout(ctx, {
       path,
-      title: `خرید ${h1}${ALT[pg.slug] ? ` (${ALT[pg.slug]})` : ""} | ${fa(nIn || list.length)} مدل از ${fa(min)} تومان | المارت`,
-      desc: `${fa(nIn || list.length)} مدل ${h1}${ALT[pg.slug] ? ` یا ${ALT[pg.slug]}` : ""}${sizeTxt ? ` در سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال به سراسر ایران و خرید امن از باسلام.`,
+      title: nIn ? `خرید ${h1}${ALT[pg.slug] ? ` (${ALT[pg.slug]})` : ""} | قیمت و سایزها` : `${h1} | مدل‌ها و موجودی`,
+      desc: nIn ? `${fa(nIn)} مدل ${h1}${ALT[pg.slug] ? ` یا ${ALT[pg.slug]}` : ""}${sizeTxt ? `، سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال به سراسر ایران و خرید از باسلام.` : `مدل‌های ${h1} المارت فعلاً ناموجودند. جزئیات مدل‌ها و موجودی به‌روز را بررسی کنید.`,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}

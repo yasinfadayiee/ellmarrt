@@ -50,6 +50,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       schema: [crumbSchema(ctx, items), faqSchema(qa), ...(list.length ? [itemList(ctx, list)] : [])],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>سایز ${s} مردانه چند کیلو است؟</h1><p>سایز <b>${s}</b>${alias.length ? ` (${alias.join("، ")})` : ""} در جدول المارت برای وزن <b>${range(w)} کیلوگرم</b> و قد <b>${range(h)} سانتی‌متر</b> است. عرض سینه تیشرت در این سایز حدود ${chest} و قد لباس حدود ${len} سانتی‌متر است.</p></header>
+${list.length ? `<div class="wrap"><p class="note-sm">برای خرید در سایز ${s}: ${Object.entries(ctx.CATEGORIES).filter(([k]) => list.some((p) => p.cat === k)).map(([k, c]) => `<a class="link" href="${BASE}/c/${c.slug}/?size=${encodeURIComponent(s)}&amp;stock=1">${c.name}</a>`).join(" · ")}</p><a class="btn btn-ink" href="#size-products">دیدن ${fa(list.length)} مدل موجود در سایز ${s}</a></div>` : ""}
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose">
 <table><thead><tr><th>سایز</th><th>وزن (کیلوگرم)</th><th>قد (سانتی‌متر)</th><th>عرض سینه تیشرت</th><th>قد شلوار</th></tr></thead><tbody>${[prev, s, next].filter(Boolean).map((z) => { const r = SIZE_ROWS[ORDER.indexOf(z)]; return `<tr${z === s ? ' style="background:var(--gold-soft)"' : ""}><td style="direction:ltr;font-weight:800">${z === s ? z : `<a href="${BASE}/size/${slug(z)}/">${z}</a>`}</td><td>${r[2]}</td><td>${r[1]}</td><td>${r[3]}</td><td>${PANTS[z][1]}</td></tr>`; }).join("")}</tbody></table>
 ${real.length ? `<h2>اندازه واقعی سایز ${s} در مدل‌های المارت</h2><p>این اعداد را فروشنده برای هر مدل نوشته است (سانتی‌متر، لباس صاف روی میز).${ch && ch[0] !== ch[1] ? ` عرض سینه ${s} از ${fa0(ch[0])} تا ${fa0(ch[1])} سانتی‌متر فرق می‌کند؛ برای همین فقط به اسم سایز اکتفا نکنید.` : ""}</p>${tops.length ? `<h3>تیشرت، هودی و بلوز</h3>${realTable(ctx, tops, pickCols(tops))}` : ""}${lows.length ? `<h3>شلوار و شلوارک</h3>${realTable(ctx, lows, ["قد", "دور کمر", "فاق", "عرض ران"].filter((k) => lows.some((r) => r.v[k])))}` : ""}` : ""}
@@ -57,7 +58,7 @@ ${real.length ? `<h2>اندازه واقعی سایز ${s} در مدل‌های 
 <p>${prev ? `اگر وزنتان نزدیک ${range(SIZE_ROWS[i - 1][2])} است، <a href="${BASE}/size/${slug(prev)}/">سایز ${prev}</a> را ببینید` : ""}${prev && next ? "؛ " : ""}${next ? `اگر لباس آزاد دوست دارید یا هودی را روی لباس دیگر می‌پوشید، <a href="${BASE}/size/${slug(next)}/">سایز ${next}</a> مناسب‌تر است` : ""}. برای جواب دقیق، قد و وزنتان را در سایزیاب زیر وارد کنید.</p>
 </div></section>
 <section class="sec-sm"><div class="wrap" style="max-width:640px">${sizer()}</div></section>
-${list.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود الان</span><h2>${fa(list.length)} مدل در سایز ${s}</h2></div><a class="link" href="${BASE}/shop/?size=${encodeURIComponent(s)}">همه در فروشگاه</a></div><div class="grid">${list.slice(0, 12).map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>` : ""}
+${list.length ? `<section class="sec-sm" id="size-products"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود الان</span><h2>${fa(list.length)} مدل در سایز ${s}</h2></div><a class="link" href="${BASE}/shop/?size=${encodeURIComponent(s)}&amp;stock=1">همه در فروشگاه</a></div><div class="grid">${list.slice(0, 12).map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>` : ""}
 <section class="sec-sm bg-cream"><div class="wrap faq"><h2>سوالات سایز ${s}</h2>${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
 <section class="sec-sm"><div class="wrap"><p class="note-sm">سایزهای دیگر: ${sizePages.filter((z) => z !== s).map((z) => `<a class="link" href="${BASE}/size/${slug(z)}/">${z}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">جدول کامل سایز</a>${BIG.includes(s) ? ` · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>` : ""}</p></div></section>`,
     });
@@ -124,14 +125,14 @@ ${real.length ? `<section class="sec-sm"><div class="wrap prose"><h2>انداز�
     const first = ch.rows[0][0], last = ch.rows[ch.rows.length - 1][0];
     const items = [["/", "خانه"], ["/size-guide/", "سایزیاب و جدول سایز"], [path, "سایز کفش مردانه"]];
     const qa = [
-      ...ch.rows.map(([z, v]) => [`سایز ${fa0(z)} کفش چند سانت است؟`, `در جدول کفش‌های المارت، سایز ${fa0(z)} برای طول پای حدود ${fa0(v["طول پا"])} سانتی‌متر است.`]),
+      ...ch.rows.map(([z, v]) => [`سایز ${fa0(z)} کفش چند سانت است؟`, `در جدول مدل ${ch.p.title}، سایز ${fa0(z)} برای طول پای حدود ${fa0(v["طول پا"])} سانتی‌متر است. اندازه‌ها ممکن است بین مدل‌ها متفاوت باشند.`]),
       ["طول پا را چطور اندازه بگیرم؟", "کاغذ را روی زمین بگذارید، با جوراب همیشگی پاشنه را به دیوار بچسبانید، جلوی بلندترین انگشت را علامت بزنید و فاصله تا دیوار را اندازه بگیرید. اگر دو پا فرق دارند، پای بزرگ‌تر را ملاک بگیرید."],
       ["اگر طول پایم بین دو سایز بود چه کنم؟", "اندازه‌گیری در خانه چند میلی‌متر خطا دارد؛ اگر نزدیک مرز دو سایز هستید، سایز بزرگ‌تر را ببینید یا قبل از سفارش با ما تماس بگیرید."],
     ];
     return layout(ctx, {
       path,
-      title: `سایز کفش ${fa0(ch.rows[1] ? ch.rows[1][0] : first)} چند سانت است؟ جدول سایز کفش مردانه ${first} تا ${last}`,
-      desc: `جدول سایز کفش مردانه ${fa0(first)} تا ${fa0(last)} بر اساس طول پا: ${ch.rows.map(([z, v]) => `${fa0(z)} = ${fa0(v["طول پا"])}`).join("، ")} سانتی‌متر. روش اندازه‌گیری پا در خانه.`,
+      title: `جدول سایز کفش مردانه ${fa0(first)} تا ${fa0(last)} به سانتی‌متر`,
+      desc: `جدول سایز ${fa0(first)} تا ${fa0(last)} بر اساس اندازه یک مدل کفش المارت و راهنمای اندازه‌گیری طول پا. اندازه‌ها را با جدول مدل مورد نظر مقایسه کنید.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa), itemList(ctx, shoes)],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>جدول سایز کفش مردانه (طول پا به سانتی‌متر)</h1><p>سایز کفش را با طول پا انتخاب کنید، نه با شماره‌ای که همیشه می‌پوشید. این جدول از اندازه‌های <a href="${BASE}/p/${ch.p.id}/">${ch.p.title}</a> است.</p></header>
@@ -161,22 +162,22 @@ ${real.length ? `<section class="sec-sm"><div class="wrap prose"><h2>انداز�
     const path = `/size/shoes/${z}/`;
     const items = [["/", "خانه"], ["/size-guide/", "سایزیاب و جدول سایز"], ["/size/shoes/", "سایز کفش مردانه"], [path, `سایز ${fa0(z)} کفش`]];
     const qa = [
-      [`سایز ${fa0(z)} کفش چند سانت است؟`, `در جدول کفش‌های المارت، سایز ${fa0(z)} برای طول پای حدود ${fa0(cm)} سانتی‌متر (${fa0(mm)} میلی‌متر) است.`],
+      [`سایز ${fa0(z)} کفش چند سانت است؟`, `در جدول مدل ${ch.p.title}، سایز ${fa0(z)} برای طول پای حدود ${fa0(cm)} سانتی‌متر (${fa0(mm)} میلی‌متر) است. اندازه‌ها در مدل‌های دیگر ممکن است فرق کنند.`],
       ...(next ? [[`فرق سایز ${fa0(z)} و ${fa0(next[0])} کفش چقدر است؟`, `طول پا در سایز ${fa0(z)} حدود ${fa0(cm)} و در سایز ${fa0(next[0])} حدود ${fa0(next[1]["طول پا"])} سانتی‌متر است؛ یعنی حدود ${fa0(Math.round((parseFloat(next[1]["طول پا"]) - parseFloat(cm)) * 10))} میلی‌متر فرق.`]] : []),
-      [`پای من ${fa0(cm)} سانت است؛ چه سایزی بخرم؟`, `سایز ${fa0(z)}. اگر پایتان پهن است یا با جوراب ضخیم کفش می‌پوشید${next ? `، سایز ${fa0(next[0])} را هم در نظر بگیرید` : ""}.`],
+      [`پای من ${fa0(cm)} سانت است؛ چه سایزی بخرم؟`, `در جدول این مدل، سایز ${fa0(z)} به این طول پا نزدیک است. جدول مدل مورد نظر خود را بررسی کنید و اگر مطمئن نیستید پیش از سفارش با ما تماس بگیرید.`],
       [`سایز ${fa0(z)} کفش در المارت موجود است؟`, has.length ? `بله؛ الان ${fa(has.length)} مدل کفش اسپرت در سایز ${fa0(z)} موجود است و فهرستش پایین همین صفحه آمده است. موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.` : `الان مدلی در سایز ${fa0(z)} موجود نیست؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.`],
     ];
     return layout(ctx, {
       path,
       title: `سایز ${fa0(z)} کفش چند سانت است؟ طول پا برای سایز ${fa0(z)}`,
-      desc: `سایز ${fa0(z)} کفش مردانه برای طول پای حدود ${fa0(cm)} سانتی‌متر است.${prev ? ` سایز ${fa0(prev[0])} = ${fa0(prev[1]["طول پا"])}` : ""}${next ? `، سایز ${fa0(next[0])} = ${fa0(next[1]["طول پا"])} سانت` : ""}. روش اندازه گرفتن پا و کفش‌های موجود در این سایز.`,
+      desc: `در جدول یک مدل کفش المارت، سایز ${fa0(z)} برای طول پای حدود ${fa0(cm)} سانتی‌متر است. روش اندازه‌گیری پا و بررسی سایز مدل مورد نظر.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa), ...(has.length ? [itemList(ctx, has)] : [])],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>سایز ${fa0(z)} کفش چند سانت است؟</h1><p>سایز <b>${fa0(z)}</b> برای طول پای حدود <b class="num">${fa0(cm)}</b> سانتی‌متر است. عدد از جدول اندازه <a href="${BASE}/p/${ch.p.id}/">${ch.p.title.split(" | ")[0]}</a> است.</p></header>
+<header class="wrap phead"><h1>سایز ${fa0(z)} کفش چند سانت است؟</h1><p>در جدول اندازه <a href="${BASE}/p/${ch.p.id}/">${ch.p.title.split(" | ")[0]}</a>، سایز <b>${fa0(z)}</b> برای طول پای حدود <b class="num">${fa0(cm)}</b> سانتی‌متر است. اندازه‌ها در مدل‌های دیگر ممکن است متفاوت باشند.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:720px">
 <table><thead><tr><th>سایز</th><th>طول پا (سانتی‌متر)</th></tr></thead><tbody>${[prev, ch.rows[i], next].filter(Boolean).map(([x, v]) => `<tr${x === z ? ' style="background:var(--gold-soft)"' : ""}><td style="font-weight:800">${x === z ? fa0(x) : `<a href="${BASE}/size/shoes/${x}/">${fa0(x)}</a>`}</td><td>${fa0(v["طول پا"])}</td></tr>`).join("")}</tbody></table>
 <h2>چطور بفهمم سایز ${fa0(z)} برایم درست است؟</h2>
-<p>پاشنه را به دیوار بچسبانید، جلوی بلندترین انگشت را روی کاغذ علامت بزنید و فاصله را بسنجید. اگر عدد شما حدود ${fa0(cm)} سانتی‌متر شد، سایز ${fa0(z)} مناسب است${prev ? `؛ اگر به ${fa0(prev[1]["طول پا"])} نزدیک‌تر بود، <a href="${BASE}/size/shoes/${prev[0]}/">سایز ${fa0(prev[0])}</a>` : ""}${next ? ` و اگر به ${fa0(next[1]["طول پا"])} نزدیک‌تر بود، <a href="${BASE}/size/shoes/${next[0]}/">سایز ${fa0(next[0])}</a> را ببینید` : ""}.</p>
+<p>پاشنه را به دیوار بچسبانید، جلوی بلندترین انگشت را روی کاغذ علامت بزنید و فاصله را بسنجید. در جدول این مدل، طول پای حدود ${fa0(cm)} سانتی‌متر با سایز ${fa0(z)} مطابقت دارد. اندازه‌ها ممکن است بین مدل‌ها فرق کنند؛ جدول همان مدل را بررسی کنید و اگر مطمئن نیستید با ما تماس بگیرید.</p>
 <h2>سوالات سایز ${fa0(z)}</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
 <p>سایزهای دیگر: ${ch.rows.filter(([x]) => x !== z).map(([x]) => `<a href="${BASE}/size/shoes/${x}/">سایز ${fa0(x)}</a>`).join(" · ")} · <a href="${BASE}/size/shoes/">جدول کامل سایز کفش</a> · <a href="${BASE}/guide/mens-shoe-size-guide/">راهنمای انتخاب کفش مردانه</a></p>
 </div></section>

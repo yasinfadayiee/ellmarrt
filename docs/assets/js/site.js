@@ -158,6 +158,13 @@
       const st = $("#stock");
       const match = V.filter((v) => (!sel.color || v.color === sel.color) && (!sel.size || v.size === sel.size));
       const n = match.reduce((a, v) => a + (v.stock || 0), 0);
+      const prices = [...new Set(match.filter((v) => v.stock > 0 && v.price > 0).map((v) => v.price))];
+      if (prices.length) {
+        const price = Math.min(...prices), from = prices.length > 1;
+        $("#product-price").textContent = fa(price);
+        $("#price-from").hidden = !from;
+        if ($("#mobile-price")) $("#mobile-price").textContent = `${from ? "از " : ""}${fa(price)} تومان`;
+      }
       if (st && (sel.color || sel.size)) { st.className = "stock" + (n === 0 ? " no" : n <= 2 ? " low" : ""); st.textContent = n === 0 ? "ناموجود" : n <= 2 ? `فقط ${fa(n)} عدد باقی‌مانده` : "موجود در انبار"; }
     };
     const showColor = (c) => { const i = thumbs.findIndex((t) => t.dataset.tc === (c || "")); if (i >= 0 && i !== cur) show(i); };
@@ -226,7 +233,7 @@
       if (fit === "loose" && i < 8) i++;
       if (fit === "slim" && i > 0) i--;
       const s = SZ[i];
-      out.innerHTML = `<b>${s}</b><span>سایز پیشنهادی برای قد ${fa(H)} و وزن ${fa(W)} کیلو. ${i >= 5 ? "برای سایزهای بزرگ، " : ""}<a class="link" href="${BASE}/shop/?size=${encodeURIComponent(s)}">محصولات موجود در سایز ${s}</a></span>`;
+      out.innerHTML = `<b>${s}</b><span>سایز پیشنهادی برای قد ${fa(H)} و وزن ${fa(W)} کیلو. ${i >= 5 ? "برای سایزهای بزرگ، " : ""}<a class="link" href="${BASE}/shop/?size=${encodeURIComponent(s)}&stock=1">محصولات موجود در سایز ${s}</a></span>`;
       store.set("elm-size", { H, W, fit, s });
     }
     [h, w].forEach((el) => el.addEventListener("input", calc));
