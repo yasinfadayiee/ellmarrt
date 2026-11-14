@@ -449,9 +449,9 @@
   "sales_count": 5,
   "sales_count_week": 2,
   "rating": {
-   "average": 5,
-   "count": 1,
-   "signals": 1
+   "average": 3.5,
+   "count": 2,
+   "signals": 2
   },
   "categoryTitle": "سویشرت ، هودی و ژاکت مردانه",
   "video": null
@@ -460,8 +460,8 @@
   "id": 60467399,
   "name": "پولوشرت کبریتی یقه سفید ترند ",
   "price": 18560000,
-  "stock": 36,
-  "sales_count": 1,
+  "stock": 35,
+  "sales_count": 2,
   "sales_count_week": 0,
   "rating": {
    "average": 5,
