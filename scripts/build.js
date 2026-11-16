@@ -18,7 +18,8 @@ const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews };
 
 // paths published by the previous build: stock-driven pages (colour, style, shoe size…) that Google already knows stay
 // alive when stock drops, and anything that still disappears gets a redirect stub instead of a 404
-ctx.prev = new Set();
+// Search Console reported this historical colour URL as 404; retain it even if it predates the sitemap archive.
+ctx.prev = new Set(["/c/sweatshirt/burgundy/"]);
 try {
   const old = fs.readFileSync(path.join(OUT, "sitemap.xml"), "utf8");
   for (const m of old.matchAll(/<loc>([^<]+)<\/loc>/g)) ctx.prev.add(m[1].replace(SITE_URL, "") || "/");
