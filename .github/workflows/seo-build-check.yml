@@ -17,3 +17,4 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: node scripts/build.js
       - run: test -s docs/index.html && test -s docs/sitemap.xml && test -s docs/robots.txt
+      - run: test -s docs/c/sweatshirt/burgundy/index.html
