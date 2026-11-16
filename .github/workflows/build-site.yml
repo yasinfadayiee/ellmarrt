@@ -9,6 +9,11 @@ on:
       - "data/overrides.json"
       - "data/orders.json"
       - "uploads/**"
+      - "scripts/**"
+      - "data/curated.js"
+      - "data/color-names.js"
+      - "assets/css/**"
+      - "assets/js/**"
   workflow_dispatch: {}
 
 permissions:
