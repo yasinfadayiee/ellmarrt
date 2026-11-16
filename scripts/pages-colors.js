@@ -89,7 +89,10 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const path = pathOf(ctx, cat, g);
     const items = [["/", "خانه"], ["/shop/", "فروشگاه"], [`/c/${c.slug}/`, c.name], [path, h1]];
     const live = list.filter((p) => p.inStock);
-    const prices = (live.length ? live : list).map((p) => p.price);
+    const prices = live.length ? live.flatMap((p) => {
+      const matching = p.variants.filter((v) => v.stock > 0 && v.color && group(v.color) === g && Number.isFinite(v.price) && v.price > 0);
+      return matching.length ? matching.map((v) => v.price) : [p.price];
+    }) : list.map((p) => p.price);
     const min = Math.min(...prices), max = Math.max(...prices);
     // Only sizes available in the selected colour belong on this colour landing page.
     const sizes = [...new Set(live.flatMap((p) => p.variants.filter((v) => v.stock > 0 && v.color && group(v.color) === g && v.size).map((v) => v.size)))].sort(bySize);
@@ -101,6 +104,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const sizeTxt = sizes.length > 1 ? `از ${sizes[0]} تا ${sizes[sizes.length - 1]}` : sizes[0] || "";
     const L = SIZE_ROWS && SIZE_ROWS.find((r) => r[0] === sizes[0]);
     const qa = [
+      ...(cat === "pants" ? [[`برای خرید شلوار ${g} به چه اندازه‌هایی توجه کنم؟`, "دور کمر، قد شلوار و میزان آزادی ران را با یک شلوار خوش‌اندازه خود مقایسه کنید. رنگ مشترک به معنی قواره یکسان نیست؛ مدل بگ، اسلش و راسته را با توجه به فرم پاچه و اندازه‌های همان محصول انتخاب کنید."]] : []),
       [`${h1} چه سایزهایی دارد؟`, nIn ? `${fa(nIn)} مدل ${noun} ${g} الان موجود است${sizes.length ? ` و سایزهای ${sizes.join("، ")} را دارد` : ""}. اندازه و سایزهای هر مدل را در صفحه همان محصول بررسی کنید. موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود.` : `مدل‌های ${noun} ${g} الان تمام شده‌اند؛ موجودی هر چند ساعت از غرفه باسلام به‌روز می‌شود و سایز هر مدل در صفحه همان محصول آمده است.`],
       ...(cat === "sweat" && L ? [[`${noun} ${g} برای پسر نوجوان هم مناسب است؟`, `کوچک‌ترین سایز این مدل‌ها ${L[0]} است که در جدول المارت برای قد ${L[1]} سانتی‌متر و وزن ${L[2]} کیلوگرم است. این راهنما تقریبی است؛ اندازه‌های خود را با جدول هر مدل مقایسه کنید. برای کوچک‌ترها بخش لباس پسرانه المارت را ببینید.`]] : []),
       [`قیمت ${h1} چقدر است؟`, nIn ? `قیمت مدل‌های موجود ${noun} ${g} از ${fa(min)} تا ${fa(max)} تومان است. قیمت نهایی را در باسلام بررسی کنید.` : `این مدل‌ها فعلاً ناموجودند. قیمت و موجودی نهایی را در صفحه محصول بررسی کنید.`],
@@ -115,7 +119,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}. پرفروش‌ترین‌ها اول آمده‌اند.` : `مدل‌های ${noun} ${g}${alt} المارت فعلاً تمام شده‌اند.`} رنگ و موجودی هر مدل را در صفحه محصول بررسی کنید.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, asColor(p, g), k < 2)).join("")}</div></div></section>
-<section class="sec-sm"><div class="wrap prose"><h2>درباره رنگ ${g}</h2><p>${COLORS[g][1]}</p><p>همه مدل‌های بالا اصلی و از ${ctx.CATEGORIES[cat].name} مجموعه المارت هستند. اگر درباره سایز مطمئن نیستید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
+<section class="sec-sm"><div class="wrap prose"><h2>درباره رنگ ${g}</h2><p>${COLORS[g][1]}</p><p>مدل‌های بالا از ${ctx.CATEGORIES[cat].name} مجموعه المارت هستند. اگر درباره سایز مطمئن نیستید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
 <section class="sec-sm"><div class="wrap">${colorLinks(ctx, cat)}<p class="note-sm"><a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a> · <a class="link" href="${BASE}/shop/">فروشگاه</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب</a></p></div></section>`,
     });
