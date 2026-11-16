@@ -1,0 +1,19 @@
+name: Validate site build
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: node scripts/build.js
+      - run: test -s docs/index.html && test -s docs/sitemap.xml && test -s docs/robots.txt
