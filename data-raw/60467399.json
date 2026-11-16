@@ -128,11 +128,11 @@
    "slug": "تیشرت-یقه-دار-مردانه"
   }
  ],
- "inventory": 35,
+ "inventory": 29,
  "net_weight": 600,
  "net_weight_decimal": 600,
  "created_at": "2026-09-27T23:00:07+03:30",
- "updated_at": "2026-10-20T22:07:02+03:30",
+ "updated_at": "2026-11-16T15:06:11+03:30",
  "description": "\nترند جدید المارت 😍\n\nاگه دنبال یه پولو شرت شیک و متفاوت برا\nی استایل روزمره هستید، این مدل می‌تونه انتخاب خیلی خوبی باشه.\n\nپولو شرت آستین بلند با جنس مراکشی کبریتی؛ بافت پارچه ظاهر خاص و شیکی به کار داده و در عین حال تن‌خور راحت و خوش‌فرمی داره. \nمدل آستین بلندش باعث میشه هم برای استفاده روزمره مناسب باشه و هم برای استایل‌های پاییزی و لایه‌پوشی خیلی خوب بشینه.\n\nدوخت تمیز و فرم کار طوریه که روی تن مرتب و شیک دیده میشه و به‌راحتی می‌تونید با شلوار جین، کتان یا اسلش ستش کنید.\n\n6 رنگ جذاب و کاربردی موجوده 🌈\n\nسایزبندی:\nXL | 2XL | 3XL\n\nفروش\n عمده و خرده\nارسال به سراسر کشور\n\nاگر برای خرید عمده تعداد بالا می‌خواید، پیام بدید تا قیمت همکاری رو خدمتتون اعلام کنیم.\n\nفروشگاه المارت\n",
  "is_saleable": true,
  "is_showable": true,
@@ -616,62 +616,6 @@
    }
   },
   {
-   "id": 83881027,
-   "price": 18560000,
-   "primary_price": 32000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 53,
-      "title": "سایز و رنگ",
-      "type": "text"
-     },
-     "value": {
-      "id": 162506,
-      "title": "سرمه‌ای 2xl",
-      "value": "سرمه‌ای 2xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": {
-    "discount_percent": 42,
-    "rollback_at": "2027-01-18T23:59:00+03:30",
-    "created_at": "2026-10-20T22:07:02+03:30"
-   }
-  },
-  {
-   "id": 83881028,
-   "price": 18560000,
-   "primary_price": 32000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 53,
-      "title": "سایز و رنگ",
-      "type": "text"
-     },
-     "value": {
-      "id": 601356,
-      "title": "سرمه‌ای 3xl",
-      "value": "سرمه‌ای 3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": {
-    "discount_percent": 42,
-    "rollback_at": "2027-01-18T23:59:00+03:30",
-    "created_at": "2026-10-20T22:07:02+03:30"
-   }
-  },
-  {
    "id": 83881029,
    "price": 32000000,
    "primary_price": 32000000,
@@ -724,10 +668,66 @@
    }
   },
   {
+   "id": 83881027,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 162506,
+      "title": "سرمه‌ای 2xl",
+      "value": "سرمه‌ای 2xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
+   "id": 83881028,
+   "price": 18560000,
+   "primary_price": 32000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 601356,
+      "title": "سرمه‌ای 3xl",
+      "value": "سرمه‌ای 3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": {
+    "discount_percent": 42,
+    "rollback_at": "2027-01-18T23:59:00+03:30",
+    "created_at": "2026-10-20T22:07:02+03:30"
+   }
+  },
+  {
    "id": 83881031,
    "price": 18560000,
    "primary_price": 32000000,
-   "stock": 2,
+   "stock": 0,
    "order": null,
    "properties": [
     {

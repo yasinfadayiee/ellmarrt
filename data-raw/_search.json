@@ -325,7 +325,7 @@
   "id": 65851800,
   "name": "هودی سه نخ باکسی بیسیک نایک",
   "price": 26650000,
-  "stock": 32,
+  "stock": 31,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -355,7 +355,7 @@
   "id": 65848769,
   "name": "شلوار اسلش کتان کشی مردانه گلدوزی پشت زیپ ",
   "price": 15500000,
-  "stock": 27,
+  "stock": 24,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -415,7 +415,7 @@
   "id": 63645940,
   "name": "هودی مردانه مشکی ساده",
   "price": 27000000,
-  "stock": 8,
+  "stock": 2,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -430,7 +430,7 @@
   "id": 62560754,
   "name": "هودی بیسیک توکرک",
   "price": 22000000,
-  "stock": 19,
+  "stock": 14,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -447,7 +447,7 @@
   "price": 26500000,
   "stock": 203,
   "sales_count": 5,
-  "sales_count_week": 2,
+  "sales_count_week": 0,
   "rating": {
    "average": 3.5,
    "count": 2,
@@ -460,9 +460,9 @@
   "id": 60467399,
   "name": "پولوشرت کبریتی یقه سفید ترند ",
   "price": 18560000,
-  "stock": 35,
-  "sales_count": 2,
-  "sales_count_week": 0,
+  "stock": 29,
+  "sales_count": 3,
+  "sales_count_week": 1,
   "rating": {
    "average": 5,
    "count": 1,
@@ -477,7 +477,7 @@
   "id": 60212610,
   "name": "بلوز پنبه نمره 28 طرح پلو نواری ",
   "price": 17900000,
-  "stock": 21,
+  "stock": 20,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -509,7 +509,7 @@
   "id": 60209573,
   "name": "ست دو دکمه یقه دار مردانه",
   "price": 23000000,
-  "stock": 24,
+  "stock": 16,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -556,7 +556,7 @@
   "id": 60094668,
   "name": "دورس دو نخ لاکرا چاپی",
   "price": 19500000,
-  "stock": 21,
+  "stock": 19,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {

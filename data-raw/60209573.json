@@ -144,11 +144,11 @@
    "slug": "تیشرت-یقه-دار-مردانه"
   }
  ],
- "inventory": 24,
+ "inventory": 16,
  "net_weight": 700,
  "net_weight_decimal": 700,
  "created_at": "2026-09-25T18:27:01+03:30",
- "updated_at": "2026-10-24T22:56:49+03:30",
+ "updated_at": "2026-11-16T15:08:25+03:30",
  "description": "🍂 ست دو دکمه یقه‌دار مردانه | شیک و پاییزی 🍂\n\n✨ یه ست شیک و متفاوت برای استایل پاییز که هم برای استفاده روزمره مناسبه و هم می‌تونه یه استایل نیمه‌رسمی جذاب بسازه.\n\nجنس این ست از **پارچه کبریتی با بافت خاص**ه و طراحی یقه‌دار با دو دکمه، ظاهر شیک و متفاوتی به کار داده. تن‌خور خوش‌فرم و رنگ‌بندی کاربردی هم باعث شده به‌راحتی با آیتم‌های مختلف ست بشه.\n\n**مشخصات محصول:**\n✔️ جنس: کبریتی با بافت خاص\n✔️ مدل: ست دو دکمه یقه‌دار مردانه\n✔️ طراحی: یقه‌دار با دو دکمه\n✔️ تن‌خور: شیک و خوش‌فرم\n✔️ مناسب برای: استایل روزمره و نیمه‌رسمی\n🎨 موجود در 5 رنگ جذاب و کاربردی\n\n📏 **سایزبندی:** XL | 2XL | 3XL\n\n\n📩 **برای قیمت عمده پیام دهید**\n\n🏪 **فروشگاه المارت**\n📍 راسته بازار، بازار سرپوشیده تبریز، روبروی بانک سپه\n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -281,34 +281,10 @@
  "rating": 0,
  "variants": [
   {
-   "id": 75078645,
-   "price": 23000000,
-   "primary_price": 23000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 161791,
-      "title": "یشمی xl",
-      "value": "یشمی xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 75078646,
    "price": 23000000,
    "primary_price": 23000000,
-   "stock": 2,
+   "stock": 1,
    "order": null,
    "properties": [
     {
@@ -332,7 +308,7 @@
    "id": 75078647,
    "price": 23000000,
    "primary_price": 23000000,
-   "stock": 2,
+   "stock": 1,
    "order": null,
    "properties": [
     {
@@ -473,30 +449,6 @@
    "discount": null
   },
   {
-   "id": 75078655,
-   "price": 23000000,
-   "primary_price": 23000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 468924,
-      "title": "طوسی روشنxxl",
-      "value": "طوسی روشنxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 75078656,
    "price": 23000000,
    "primary_price": 23000000,
@@ -545,30 +497,6 @@
    "discount": null
   },
   {
-   "id": 75078658,
-   "price": 23000000,
-   "primary_price": 23000000,
-   "stock": 2,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 1580643,
-      "title": "طوسی تیرهxxl",
-      "value": "طوسی تیرهxxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 75078659,
    "price": 23000000,
    "primary_price": 23000000,
@@ -585,6 +513,30 @@
       "id": 135935,
       "title": "طوسی تیرهxxxl",
       "value": "طوسی تیرهxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 75078645,
+   "price": 23000000,
+   "primary_price": 23000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 161791,
+      "title": "یشمی xl",
+      "value": "یشمی xl",
       "order": null
      }
     }
@@ -633,6 +585,54 @@
       "id": 999913,
       "title": "قهوه ایxxxl",
       "value": "قهوه ایxxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 75078655,
+   "price": 23000000,
+   "primary_price": 23000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 468924,
+      "title": "طوسی روشنxxl",
+      "value": "طوسی روشنxxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 75078658,
+   "price": 23000000,
+   "primary_price": 23000000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 1580643,
+      "title": "طوسی تیرهxxl",
+      "value": "طوسی تیرهxxl",
       "order": null
      }
     }
