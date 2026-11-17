@@ -310,7 +310,7 @@
   "id": 65852930,
   "name": "ست غواصی اسپرت مردانه نیم زیپ بگ دو نواری",
   "price": 35750000,
-  "stock": 5,
+  "stock": 6,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -603,7 +603,7 @@
   "id": 58203280,
   "name": "شلوار اسلش نیم بگو پنبهای دخترانه و پسرانه",
   "price": 12800000,
-  "stock": 4,
+  "stock": 6,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {
@@ -784,7 +784,7 @@
   "id": 42728145,
   "name": "شلوار اسلش مردانه سایزهای بزرگ 3XL 4XL 5XL",
   "price": 12200000,
-  "stock": 28,
+  "stock": 5,
   "sales_count": 2,
   "sales_count_week": 0,
   "rating": {
@@ -800,21 +800,6 @@
   "name": "شلوار اسلشه مردانه پنبه درجه یک ",
   "price": 12200000,
   "stock": 24,
-  "sales_count": 0,
-  "sales_count_week": 0,
-  "rating": {
-   "average": 0,
-   "count": 0,
-   "signals": 0
-  },
-  "categoryTitle": "شلوار و شلوارک مردانه",
-  "video": null
- },
- {
-  "id": 42719302,
-  "name": "شلوار 4 جیب مچی سایز بندی مدل سال",
-  "price": 10500000,
-  "stock": 12,
   "sales_count": 0,
   "sales_count_week": 0,
   "rating": {

@@ -151,11 +151,11 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 28,
+ "inventory": 5,
  "net_weight": 600,
  "net_weight_decimal": 600,
  "created_at": "2026-04-22T01:27:03+03:30",
- "updated_at": "2026-10-20T23:38:14+03:30",
+ "updated_at": "2026-11-17T22:54:42+03:30",
  "description": "\nشلوار اسپان مردانه مخصوص سایزهای بزرگ در سه سایز 3XL، 4XL و 5XL.\n\nقد کار شلوار در سه مدل 105، 110 و 115 سانت موجود است. لطفا قبل از سفارش قد شلوار خود را اندازه بگیرید.\n\nجنس اسپان درجه یک، نرم و خنک، مناسب بهار و تابستان. کش دور کمر پهن و بادوام، دارای جیب.\n\nرنگ‌های موجود: مشکی، طوسی، سرمه‌ای، کرم.\n\nبرای انتخاب سایز دقیق، قد کار مدنظر و موجودی رنگ، در چت پیام \n\n",
  "is_saleable": true,
  "is_showable": true,
@@ -249,34 +249,10 @@
  "rating": 5,
  "variants": [
   {
-   "id": 33382036,
-   "price": 12200000,
-   "primary_price": 12200000,
-   "stock": 10,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 2,
-      "title": "سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 659,
-      "title": "3xl",
-      "value": "3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
    "id": 33382037,
    "price": 12200000,
    "primary_price": 12200000,
-   "stock": 8,
+   "stock": 5,
    "order": null,
    "properties": [
     {
@@ -297,10 +273,34 @@
    "discount": null
   },
   {
+   "id": 33382036,
+   "price": 12200000,
+   "primary_price": 12200000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 2,
+      "title": "سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 659,
+      "title": "3xl",
+      "value": "3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
    "id": 33382038,
    "price": 12200000,
    "primary_price": 12200000,
-   "stock": 10,
+   "stock": 0,
    "order": null,
    "properties": [
     {
