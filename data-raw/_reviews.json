@@ -46,25 +46,7 @@
    "productId": 60937967,
    "product": "سویشرت تمام زیپ کلاهدار داخل کرکی",
    "name": "مریم محمدی",
-   "variant": [
-    {
-     "id": 586063550,
-     "properties": [
-      {
-       "property": {
-        "id": 53,
-        "title": "سایز و رنگ",
-        "type": ""
-       },
-       "value": {
-        "id": 1612961,
-        "title": "پایین طوسی 2xl",
-        "value": ""
-       }
-      }
-     ]
-    }
-   ],
+   "variant": [],
    "photos": []
   },
   {
