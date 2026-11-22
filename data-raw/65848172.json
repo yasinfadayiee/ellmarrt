@@ -183,11 +183,11 @@
    "slug": "شلوارک-مردانه"
   }
  ],
- "inventory": 8,
+ "inventory": 6,
  "net_weight": 800,
  "net_weight_decimal": 800,
  "created_at": "2026-11-04T00:16:32+03:30",
- "updated_at": "2026-11-04T05:32:02+03:30",
+ "updated_at": "2026-11-21T23:53:16+03:30",
  "description": "شلوار اسلش نایک کتان کشی\n\nاگه دنبال یه شلوار راحت و خوش‌فرم برای استفاده روزمره هستی، این مدل انتخاب خوبیه.\n\nجنس کتان کشی داره و به‌خاطر خاصیت کشسانی پارچه، موقع راه رفتن و فعالیت راحتی بیشتری بهت می‌ده. قواره راسته داره و با دوخت تمیز و مرتب، ظاهر شیک و اسپرتی ایجاد می‌کنه.\n\nکمر شلوار کشی و بندداره تا بتونی اندازه‌اش رو تنظیم کنی. دو تا جیب هم برای استفاده روزمره داره.\n\nسایزبندی: 2XL و 3XL\nقد شلوار: 107 و 110 سانتی‌متر\nرنگ‌بندی: 4 رنگ\n\nبرای انتخاب سایز، بهتره اندازه‌های شلوار رو با یکی از شلوارهای خودت مقایسه کنی.",
  "is_saleable": true,
  "is_showable": true,
@@ -319,54 +319,6 @@
  "review_count": 0,
  "rating": 0,
  "variants": [
-  {
-   "id": 88568158,
-   "price": 15500000,
-   "primary_price": 15500000,
-   "stock": 1,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 19696,
-      "title": "مشکی xxl",
-      "value": "مشکی xxl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
-  {
-   "id": 88568159,
-   "price": 15500000,
-   "primary_price": 15500000,
-   "stock": 1,
-   "order": null,
-   "properties": [
-    {
-     "property": {
-      "id": 59,
-      "title": "رنگ و سایز",
-      "type": "text"
-     },
-     "value": {
-      "id": 63165,
-      "title": "مشکی3xl",
-      "value": "مشکی3xl",
-      "order": null
-     }
-    }
-   ],
-   "sku": null,
-   "discount": null
-  },
   {
    "id": 88568160,
    "price": 15500000,
@@ -504,6 +456,54 @@
       "id": 125627,
       "title": "یشمی3xl",
       "value": "یشمی3xl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 88568158,
+   "price": 15500000,
+   "primary_price": 15500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 19696,
+      "title": "مشکی xxl",
+      "value": "مشکی xxl",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 88568159,
+   "price": 15500000,
+   "primary_price": 15500000,
+   "stock": 0,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 59,
+      "title": "رنگ و سایز",
+      "type": "text"
+     },
+     "value": {
+      "id": 63165,
+      "title": "مشکی3xl",
+      "value": "مشکی3xl",
       "order": null
      }
     }
