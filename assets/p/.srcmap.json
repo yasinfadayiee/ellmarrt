@@ -61,6 +61,7 @@
  "assets/og/65850316.jpg": "r3:fb61e53acbb29381281707b9383b81ff",
  "assets/og/65851800.jpg": "r3:398c1108cafe8e9f36ec28917f56320d",
  "assets/og/65852930.jpg": "r3:3711735058cac6d8b0221c7844d83334",
+ "assets/og/68137613.jpg": "r3:38b4c6510cbc35e8c2bcb0102b824af0",
  "assets/p/36616362-480.webp": "r3:ccd2fbc8ce5f9503bcb9a526fff418c0",
  "assets/p/36616362-960.webp": "r3:ccd2fbc8ce5f9503bcb9a526fff418c0",
  "assets/p/36616362-g0.webp": "r3:b893cbb651930bdcae601cd64a617c77",
@@ -645,5 +646,8 @@
  "assets/p/65852930-g2.webp": "r3:501227fbafe73d10c5ed5ae59c2e63d7",
  "assets/p/65852930-g3.webp": "r3:eb757ec080efce7127fe36b306db60da",
  "assets/p/65852930-g4.webp": "r3:66573ce67d0425432508442baa49049c",
- "assets/p/65852930-g5.webp": "r3:34127c90ec2ff20f9137d15898978108"
+ "assets/p/65852930-g5.webp": "r3:34127c90ec2ff20f9137d15898978108",
+ "assets/p/68137613-480.webp": "r3:38b4c6510cbc35e8c2bcb0102b824af0",
+ "assets/p/68137613-960.webp": "r3:38b4c6510cbc35e8c2bcb0102b824af0",
+ "assets/p/68137613-g0.webp": "r3:7a9a83a1de8f571b4c815ddfabc726e7"
 }

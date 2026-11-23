@@ -1,0 +1,662 @@
+{
+ "id": 68137613,
+ "title": "بلوز بافت یقه اسکی مردانه ریزبافت ضخیم و کشی، 5 رنگ",
+ "price": 28000000,
+ "photo": {
+  "id": 492497819,
+  "original": "https://statics.basalam.com/public-285/users/X6zxOW/11-23/5d44aac3-f4cf-43a3-8961-ab58e5b28e64.jpeg",
+  "xs": "https://statics.basalam.com/public-285/users/X6zxOW/11-23/5d44aac3-f4cf-43a3-8961-ab58e5b28e64.jpeg",
+  "sm": "https://statics.basalam.com/public-285/users/X6zxOW/11-23/5d44aac3-f4cf-43a3-8961-ab58e5b28e64.jpeg",
+  "md": "https://statics.basalam.com/public-285/users/X6zxOW/11-23/5d44aac3-f4cf-43a3-8961-ab58e5b28e64.jpeg",
+  "lg": "https://statics.basalam.com/public-285/users/X6zxOW/11-23/5d44aac3-f4cf-43a3-8961-ab58e5b28e64.jpeg"
+ },
+ "photos": [],
+ "video": null,
+ "status": {
+  "name": "در دسترس",
+  "value": 2976,
+  "description": null
+ },
+ "summary": null,
+ "category": {
+  "id": 256,
+  "title": "سویشرت ، هودی و ژاکت مردانه",
+  "placeholder": null,
+  "parent": {
+   "id": 28,
+   "title": "مردانه",
+   "placeholder": null,
+   "parent": {
+    "id": 2,
+    "title": "مد و پوشاک",
+    "placeholder": null,
+    "parent": null,
+    "unit_type_id": null
+   },
+   "unit_type_id": null
+  },
+  "unit_type_id": null
+ },
+ "category_list": [
+  {
+   "id": 1959,
+   "title": "بافت مردانه",
+   "slug": "بافت-مردانه"
+  },
+  {
+   "id": 1960,
+   "title": "پلیور مردانه",
+   "slug": "پلیور-مردانه"
+  },
+  {
+   "id": 1961,
+   "title": "ژاکت بافت مردانه",
+   "slug": "ژاکت-بافت-مردانه"
+  },
+  {
+   "id": 1962,
+   "title": "ژاکت بافتنی مردانه",
+   "slug": "ژاکت-بافتنی-مردانه"
+  },
+  {
+   "id": 1963,
+   "title": "ژاکت مردانه",
+   "slug": "ژاکت-مردانه"
+  },
+  {
+   "id": 1964,
+   "title": "سویشرت مردانه",
+   "slug": "سویشرت-مردانه"
+  },
+  {
+   "id": 1965,
+   "title": "سویشرت و شلوار مردانه",
+   "slug": "سویشرت-و-شلوار-مردانه"
+  },
+  {
+   "id": 1966,
+   "title": "هودی لش مردانه",
+   "slug": "هودی-لش-مردانه"
+  },
+  {
+   "id": 1967,
+   "title": "هودی مردانه",
+   "slug": "هودی-مردانه"
+  }
+ ],
+ "inventory": 15,
+ "net_weight": 800,
+ "net_weight_decimal": 800,
+ "created_at": "2026-11-23T23:47:52+03:30",
+ "updated_at": "2026-11-23T23:48:50+03:30",
+ "description": "اگه دنبال یه بلوز بافت مردونه شیک، گرم و خوش‌فرم برای فصل‌های سرد هستید، این مدل می‌تونه انتخاب خوبی براتون باشه.\n\nاین بلوز بافت ریز، متراکم و سفتی داره و در عین حال از کشسانی خوبی برخورداره. به همین دلیل روی تن خوش‌فرم می‌ایسته و ظاهر مرتب و شیکی داره.\n\nیقه اسکی 5 سانتی این مدل هم ظاهر زیبایی به لباس داده و هم برای هوای سرد پاییز و زمستون مناسبه.\n\nیکی از ویژگی‌های مهم این کار، تراکم بالای بافت و مقاومت در برابر پرزدهیه. این مدل از بافت‌های سبک و شل نیست و برای استفاده روزمره انتخاب مناسبیه.\n\nبه‌راحتی می‌تونید با شلوار جین، کتان یا پارچه‌ای ستش کنید و برای استفاده روزانه، محل کار و مهمونی بپوشید.\n\nمشخصات محصول:\nنوع بافت: ریزبافت، متراکم و سفت‌بافت\nیقه: اسکی 5 سانتی\nویژگی: کشسانی مناسب و ایستایی خوب\nرنگ‌بندی: 5 رنگ\nسایزبندی: 65، 70 و 75\nمناسب فصل: پاییز و زمستان\n\nبرای انتخاب سایز مناسب می‌تونید قبل از ثبت سفارش از ما راهنمایی بگیرید.\n\nفروشگاه پوشاک مردانه المارت، تبریز\n\nتمام سفارش‌ها قبل از ارسال از نظر سلامت ظاهری، سایز و رنگ بررسی می‌شن تا خرید مطمئن‌تری داشته باشید.",
+ "is_saleable": true,
+ "is_showable": true,
+ "is_available": true,
+ "primary_price": 28000000,
+ "shipping_area": null,
+ "packaged_weight": 1000,
+ "preparation_day": 0,
+ "attribute_groups": [
+  {
+   "title": "عمومی",
+   "attributes": [
+    {
+     "id": 216,
+     "unit": "میلیمتر - مثال: 120*500",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "ابعاد",
+     "value": "طبق جدول اندازه‌گیری هر سایز",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 219,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "مناسب برای",
+     "value": "آقایان، مناسب پاییز و زمستان",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 220,
+     "unit": "",
+     "type": {
+      "name": "نویسه چند خطی",
+      "value": 3012,
+      "description": null
+     },
+     "title": "سایر توضیحات",
+     "value": "بافت ریز و متراکم، سفت‌بافت، دارای کشسانی مناسب، ایستایی عالی روی تن، مقاوم در برابر پرزدهی، یقه اسکی 5 سانتی و دوخت تمیز",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 221,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "جنس",
+     "value": "بافت کشی ریز و متراکم",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 276,
+     "unit": "سانتیمتر",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "سایز",
+     "value": "65/70/75",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 222,
+     "unit": "",
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "رنگ",
+     "value": "5 رنگ متنوع، مطابق تصاویر محصول",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1319,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "نحوه ی نگهداری و شستشو",
+     "value": "شستشو با آب سرد یا حداکثر 30 درجه، ترجیحاً با دست یا دور ملایم ماشین لباسشویی. از سفیدکننده و خشک‌کن با حرارت بالا استفاده نشود. برای حفظ فرم بافت، لباس روی سطح صاف خشک شود.",
+     "selected_values": null,
+     "required": false
+    },
+    {
+     "id": 1317,
+     "unit": null,
+     "type": {
+      "name": "نویسه",
+      "value": 3011,
+      "description": null
+     },
+     "title": "موارد استفاده",
+     "value": "استفاده روزمره، محل کار، مهمانی و دورهمی",
+     "selected_values": null,
+     "required": false
+    }
+   ]
+  }
+ ],
+ "is_free_shipping": false,
+ "location_deployment": {
+  "name": "ارسال توسط غرفه دار",
+  "value": 3017,
+  "description": null
+ },
+ "is_product_for_revision": false,
+ "has_selectable_variation": false,
+ "can_add_to_cart": true,
+ "review_count": 0,
+ "rating": 0,
+ "variants": [
+  {
+   "id": 95126190,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856109,
+      "title": "زیتونی دودی 65",
+      "value": "زیتونی دودی 65",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126191,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856110,
+      "title": "خاکستری گرافیتی65",
+      "value": "خاکستری گرافیتی65",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126192,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856111,
+      "title": "سرمه‌ای نیمه‌شب 65",
+      "value": "سرمه‌ای نیمه‌شب 65",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126193,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856112,
+      "title": "بژ شنی 65",
+      "value": "بژ شنی 65",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126194,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856113,
+      "title": "آبی سیج65",
+      "value": "آبی سیج65",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126195,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856114,
+      "title": "زیتونی دودی70",
+      "value": "زیتونی دودی70",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126196,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856115,
+      "title": "خاکستری گرافیت70",
+      "value": "خاکستری گرافیت70",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126197,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856116,
+      "title": "سرمه‌ای نیمه‌شب70",
+      "value": "سرمه‌ای نیمه‌شب70",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126198,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856117,
+      "title": "بژ شنی70",
+      "value": "بژ شنی70",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126199,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856118,
+      "title": "آبی سیج70",
+      "value": "آبی سیج70",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126200,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856119,
+      "title": "زیتونی دودی75",
+      "value": "زیتونی دودی75",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126201,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856120,
+      "title": "خاکستری گرافیت75",
+      "value": "خاکستری گرافیت75",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126202,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856121,
+      "title": "سرمه‌ای نیمه‌شب75",
+      "value": "سرمه‌ای نیمه‌شب75",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126203,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856122,
+      "title": "بژ شنی75",
+      "value": "بژ شنی75",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  },
+  {
+   "id": 95126204,
+   "price": 28000000,
+   "primary_price": 28000000,
+   "stock": 1,
+   "order": null,
+   "properties": [
+    {
+     "property": {
+      "id": 53,
+      "title": "سایز و رنگ",
+      "type": "text"
+     },
+     "value": {
+      "id": 1856123,
+      "title": "آبی سیج75",
+      "value": "آبی سیج75",
+      "order": null
+     }
+    }
+   ],
+   "sku": null,
+   "discount": null
+  }
+ ],
+ "variants_selected_index": 0,
+ "shipping_data": {
+  "illegal_for_iran": false,
+  "illegal_for_same_city": false
+ },
+ "free_shipping": {
+  "result": false,
+  "meta_data": {
+   "illegals": {
+    "from_iran": false,
+    "from_same_city": false
+   },
+   "limits": {
+    "to_iran": null,
+    "to_same_city": null
+   }
+  }
+ },
+ "allow_category_change": null,
+ "unit_quantity": 1,
+ "unit_type": {
+  "name": "عددی",
+  "value": 6304,
+  "description": null
+ },
+ "sku": null,
+ "discount": null,
+ "packaging_dimensions": null,
+ "is_wholesale": false,
+ "is_service_variation": false,
+ "is_service_request_enabled": null,
+ "attributes": [
+  {
+   "id": 72816132,
+   "key": "موارد استفاده",
+   "value": "استفاده روزمره، محل کار، مهمانی و دورهمی"
+  },
+  {
+   "id": 72816133,
+   "key": "مناسب برای",
+   "value": "آقایان، مناسب پاییز و زمستان"
+  },
+  {
+   "id": 72816134,
+   "key": "سایر توضیحات",
+   "value": "بافت ریز و متراکم، سفت‌بافت، دارای کشسانی مناسب، ایستایی عالی روی تن، مقاوم در برابر پرزدهی، یقه اسکی 5 سانتی و دوخت تمیز"
+  },
+  {
+   "id": 72816135,
+   "key": "جنس",
+   "value": "بافت کشی ریز و متراکم"
+  },
+  {
+   "id": 72816137,
+   "key": "رنگ",
+   "value": "5 رنگ متنوع، مطابق تصاویر محصول"
+  },
+  {
+   "id": 72816138,
+   "key": "سایز",
+   "value": "65/70/75"
+  },
+  {
+   "id": 72816139,
+   "key": "ابعاد",
+   "value": "طبق جدول اندازه‌گیری هر سایز"
+  },
+  {
+   "id": 72816140,
+   "key": "نحوه ی نگهداری و شستشو",
+   "value": "شستشو با آب سرد یا حداکثر 30 درجه، ترجیحاً با دست یا دور ملایم ماشین لباسشویی. از سفیدکننده و خشک‌کن با حرارت بالا استفاده نشود. برای حفظ فرم بافت، لباس روی سطح صاف خشک شود."
+  }
+ ],
+ "barcode": null,
+ "kalabarg": {
+  "enable": false,
+  "is_bulk": false
+ }
+}
