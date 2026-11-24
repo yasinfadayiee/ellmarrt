@@ -14,7 +14,7 @@ const VERSION = require("crypto").createHash("md5").update((fs.readFileSync(path
 
 const { products, all, allReviews, CATEGORIES, storeReviews } = load();
 const meta = fs.existsSync(path.join(ROOT, "data-raw/_meta.json")) ? JSON.parse(fs.readFileSync(path.join(ROOT, "data-raw/_meta.json"), "utf8")) : {};
-const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews };
+const ctx = { products, CATEGORIES, SITE_URL, BASE, VERSION, storeReviews, syncedAt: meta.syncedAt };
 
 // paths published by the previous build: stock-driven pages (colour, style, shoe size…) that Google already knows stay
 // alive when stock drops, and anything that still disappears gets a redirect stub instead of a 404
@@ -126,7 +126,7 @@ ${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><priority>${u.priority}</prio
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 write("manifest.webmanifest", JSON.stringify({
   name: "المارت | ELLMARRT", short_name: "المارت", lang: "fa", dir: "rtl", start_url: `${BASE}/`, display: "standalone",
-  background_color: "#fbf8f2", theme_color: "#141210",
+  background_color: "#FAF8F5", theme_color: "#0E5A4E",
   icons: [{ src: `${BASE}/assets/img/icon-192.png`, sizes: "192x192", type: "image/png" }, { src: `${BASE}/assets/img/icon-512.png`, sizes: "512x512", type: "image/png" }],
 }));
 write("llms.txt", pages.llms(ctx));
