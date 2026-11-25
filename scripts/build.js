@@ -126,7 +126,7 @@ ${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><priority>${u.priority}</prio
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 write("manifest.webmanifest", JSON.stringify({
   name: "المارت | ELLMARRT", short_name: "المارت", lang: "fa", dir: "rtl", start_url: `${BASE}/`, display: "standalone",
-  background_color: "#FAF8F5", theme_color: "#0E5A4E",
+  background_color: "#F7F9FC", theme_color: "#1D4ED8",
   icons: [{ src: `${BASE}/assets/img/icon-192.png`, sizes: "192x192", type: "image/png" }, { src: `${BASE}/assets/img/icon-512.png`, sizes: "512x512", type: "image/png" }],
 }));
 write("llms.txt", pages.llms(ctx));

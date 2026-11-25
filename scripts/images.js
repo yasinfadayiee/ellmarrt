@@ -57,7 +57,7 @@ const upload = (rel) => { const f = rel && path.join(ROOT, rel); return f && fs.
     if (!fs.existsSync(src) && fs.existsSync(firstOrig)) {
       src = path.join(ROOT, ".cache", `${id}.webp`);
       fs.mkdirSync(path.dirname(src), { recursive: true });
-      await sharp(firstOrig).resize(1280, 1600, { fit: "contain", background: "#F3EFE8" }).webp({ quality: 88 }).toFile(src);
+      await sharp(firstOrig).resize(1280, 1600, { fit: "contain", background: "#F4F7FB" }).webp({ quality: 88 }).toFile(src);
     }
     const m = { hero: null, gallery: [] };
     if (fs.existsSync(src)) {
@@ -70,7 +70,7 @@ const upload = (rel) => { const f = rel && path.join(ROOT, rel); return f && fs.
       const og = path.join(OG, `${id}.jpg`);
       count(await build(src, og, async () => {
         const photo = await sharp(src).resize(504, 630, { fit: "cover" }).toBuffer();
-        await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#F3EFE8" } })
+        await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#F4F7FB" } })
           .composite([{ input: photo, left: 696, top: 0 }, { input: logoPng, left: 150, top: 205 }])
           .jpeg({ quality: 82, mozjpeg: true }).toFile(og);
       }));
@@ -114,7 +114,7 @@ const upload = (rel) => { const f = rel && path.join(ROOT, rel); return f && fs.
   }
 
   // site-wide OG card
-  await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#F3EFE8" } })
+  await sharp({ create: { width: 1200, height: 630, channels: 3, background: "#F4F7FB" } })
     .composite([{ input: await sharp(logo, { density: 300 }).resize({ height: 380 }).png().toBuffer(), gravity: "center" }])
     .jpeg({ quality: 85 }).toFile(path.join(OG, "site.jpg"));
 
