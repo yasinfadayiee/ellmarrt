@@ -22,13 +22,13 @@ module.exports = ({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 }) => 
 <section class="sec-sm"><div class="wrap contact-g">
   <div class="contact-cards">
     ${STORE.phones.map((p, i) => `<a class="ccard" href="tel:${p}">${I.phone}<span><b class="num">${fa0(p)}</b><small>${i === 0 ? "ثبت سفارش و مشاوره" : "ثبت سفارش و خرید عمده"}</small></span></a>`).join("")}
-    <a class="ccard" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">${I.store}<span><b>روبیکا @aliegbal</b><small>ثبت سفارش در پیام‌رسان</small></span></a>
-    <a class="ccard" href="${STORE.rubika}" target="_blank" rel="noopener">${I.share}<span><b>کانال روبیکا @ellmarrt</b><small>جدیدترین مدل‌ها و موجودی</small></span></a>
-    <a class="ccard" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig}<span><b>اینستاگرام @${STORE.igHandle}</b><small>عکس‌ها و استوری محصولات</small></span></a>
+    <a class="ccard" href="${STORE.rubikaOrder}" target="_blank" rel="noopener">${I.store}<span><b>روبیکا <bdi dir="ltr" class="handle">@aliegbal</bdi></b><small>ثبت سفارش در پیام‌رسان</small></span></a>
+    <a class="ccard" href="${STORE.rubika}" target="_blank" rel="noopener">${I.share}<span><b>کانال روبیکا <bdi dir="ltr" class="handle">@ellmarrt</bdi></b><small>جدیدترین مدل‌ها و موجودی</small></span></a>
+    <a class="ccard" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig}<span><b>اینستاگرام <bdi dir="ltr" class="handle">@${STORE.igHandle}</bdi></b><small>عکس‌ها و استوری محصولات</small></span></a>
     <a class="ccard" href="${STORE.basalam}" target="_blank" rel="noopener">${I.bag}<span><b>غرفه باسلام</b><small>خرید امن آنلاین</small></span></a>
   </div>
   <div class="contact-map">
-    <div class="map-art" aria-hidden="true"><svg viewBox="0 0 400 220"><defs><pattern id="br" width="22" height="11" patternUnits="userSpaceOnUse"><path d="M0 0h22M0 5.5h22M11 0v5.5M0 5.5v5.5" stroke="#b08d57" stroke-opacity=".25" fill="none"/></pattern></defs><rect width="400" height="220" fill="url(#br)"/><path d="M40 220V120c0-40 70-70 160-90 90 20 160 50 160 90v100" fill="none" stroke="#b08d57" stroke-width="2"/><path d="M110 220v-70c0-25 40-45 90-55 50 10 90 30 90 55v70" fill="none" stroke="#9a4f2e" stroke-width="2" stroke-dasharray="6 6"/><circle cx="200" cy="150" r="12" fill="#9a4f2e"/><circle cx="200" cy="150" r="24" fill="none" stroke="#9a4f2e" stroke-opacity=".35"/></svg><b>بازار سرپوشیده تبریز</b></div>
+    <div class="map-art"><img src="${ctx.BASE}/assets/img/hojreh-640.webp" width="640" height="480" loading="lazy" decoding="async" alt="حجره المارت در بازار سرپوشیده تبریز"><b>بازار سرپوشیده تبریز · راسته بازار</b></div>
     <div class="addr">${I.arch}<span><b>آدرس حجره</b>${STORE.address}<small>فروش حضوری و عمده</small></span></div>
     <div class="routes"><a class="btn btn-ink" href="https://neshan.org/maps/@${ll},17z" target="_blank" rel="noopener">مسیریابی با نشان</a><a class="btn btn-ghost" href="https://balad.ir/location?latitude=38.0805&longitude=46.2940&zoom=17" target="_blank" rel="noopener">بلد</a><a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=${ll}" target="_blank" rel="noopener">گوگل مپ</a></div>
   </div>
