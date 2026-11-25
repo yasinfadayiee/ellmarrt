@@ -142,9 +142,9 @@ ${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</sc
 <header class="hdr">
   <div class="wrap hdr-in">
     <button type="button" class="ibtn menu-btn" aria-label="منو">${I.menu}</button>
-    <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><img src="${BASE}/assets/img/mark.svg" alt="" width="32" height="42" decoding="async"><span><b>${STORE.name}</b><small>ELLMARRT · TABRIZ</small></span></a>
-    <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><img src="${BASE}/assets/img/logo.svg" alt="" width="90" height="76" loading="lazy" decoding="async"><button type="button" class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}<button type="button" class="nav-theme theme-tg" data-theme-toggle aria-pressed="false">${I.moon}${I.sun}<span>حالت شب</span></button></nav>
-    <form class="hdr-search" action="${BASE}/shop/" role="search">${I.search}<input name="q" type="search" placeholder="جستجو: اسلش، هودی، 5XL…" aria-label="جستجو در محصولات"></form>
+    <a class="brand" href="${BASE}/" aria-label="${STORE.name} — صفحه اصلی"><span class="brand-emblem"><img src="${BASE}/assets/img/mark.svg" alt="" width="38" height="38" decoding="async"></span><span class="brand-lockup"><span class="brand-fa"><b>${STORE.name}</b><i class="brand-dot" aria-hidden="true"></i></span><small class="brand-en">ELLMARRT <span>·</span> TABRIZ</small></span></a>
+    <nav class="nav" aria-label="منوی اصلی"><div class="nav-h"><span class="nav-brand"><span class="brand-emblem"><img src="${BASE}/assets/img/mark.svg" alt="" width="34" height="34" loading="lazy" decoding="async"></span><span class="brand-lockup"><span class="brand-fa"><b>${STORE.name}</b><i class="brand-dot" aria-hidden="true"></i></span><small class="brand-en">ELLMARRT <span>·</span> TABRIZ</small></span></span><button type="button" class="ibtn nav-x" aria-label="بستن منو">✕</button></div>${navLinks.map(([h, t]) => `<a href="${BASE}${h}"${o.path === h ? ' aria-current="page"' : ""}>${t}</a>`).join("")}<button type="button" class="nav-theme theme-tg" data-theme-toggle aria-pressed="false">${I.moon}${I.sun}<span>حالت شب</span></button></nav>
+    <form class="hdr-search" action="${BASE}/shop/" role="search">${I.search}<input name="q" type="search" placeholder="جستجو در المارت…" aria-label="جستجو در محصولات"></form>
     <div class="hdr-act">
       <button type="button" class="ibtn theme-tg d-only" id="theme-toggle" data-theme-toggle aria-label="حالت شب" aria-pressed="false">${I.moon}${I.sun}</button>
       <a class="ibtn hdr-search-ico" href="${BASE}/shop/#q" aria-label="جستجو">${I.search}</a>
@@ -167,7 +167,7 @@ ${o.body}
     </div>
     <div class="ftr-g">
       <div>
-        <img src="${BASE}/assets/img/logo-light.svg" alt="${STORE.latin} — ${STORE.name}" width="170" height="143" loading="lazy" style="width:136px;height:auto;margin-bottom:14px" decoding="async">
+        <div class="ftr-brand"><img src="${BASE}/assets/img/mark-light.svg" alt="${STORE.latin} — ${STORE.name}" width="48" height="48" loading="lazy" decoding="async"><div><span class="brand-fa"><b>${STORE.name}</b><i class="brand-dot" aria-hidden="true"></i></span><small class="brand-en">ELLMARRT <span>·</span> EST. TABRIZ</small></div></div>
         <p>${SITE.footer && SITE.footer.blurb ? esc(SITE.footer.blurb) : `${STORE.full}؛ بیش از ${fa(STORE.years)} سال فعالیت در ${STORE.bazaar}.`} پوشاک روزمره مردانه با پارچه انتخابی، قیمت بازار و سایزبندی واقعی تا {MAX}.</p>
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a><a href="${STORE.rubika}" target="_blank" rel="noopener" aria-label="کانال روبیکا">${I.share}</a></div>
       </div>
@@ -756,7 +756,7 @@ function sizeGuide(ctx) {
     desc: "جدول سایز تیشرت، شلوار و هودی مردانه از L تا 6XL بر اساس قد و وزن؛ با سایزیاب آنلاین المارت سایز دقیق خود را در چند ثانیه پیدا کنید.",
     schema: [crumbSchema(ctx, items), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>سایزیاب و جدول سایز مردانه</h1><p>قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید، یا از جدول زیر استفاده کنید. اندازه دقیق هر مدل در صفحه همان محصول آمده است.</p></header>
+<header class="phead banner"><div class="wrap bt"><span class="kicker">سایزیاب هوشمند المارت</span><h1>سایزیاب و جدول سایز مردانه</h1><p>قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید، یا از جدول زیر استفاده کنید. اندازه دقیق هر مدل در صفحه همان محصول آمده است.</p></div></header>
 <section class="sec-sm"><div class="wrap" style="max-width:640px">${sizer()}</div></section>
 <section class="sec-sm"><div class="wrap prose">
 <h2>جدول سایز تیشرت و بلوز مردانه</h2>
