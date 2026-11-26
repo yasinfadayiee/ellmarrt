@@ -34,7 +34,15 @@ const NOUN = {
   kids: ["لباس", "پسرانه"],
 };
 
-const group = (c) => c.replace(/ (روشن|تیره)$/, "");
+const group = (c) => {
+  const s = String(c || "").replace(/‌/g, " ").trim();
+  if (/^خاکستری/.test(s) || /^طوسی/.test(s)) return "طوسی";
+  if (/^سرمه/.test(s)) return "سرمه‌ای";
+  if (/^بژ/.test(s) || /^کرمی/.test(s)) return "کرمی";
+  if (/^آبی/.test(s)) return "آبی";
+  if (/^زیتونی/.test(s)) return "سبز";
+  return String(c || "").replace(/ (روشن|تیره)$/, "");
+};
 // other words people use for the same colour (Search Console queries: «دورس خاکستری»، «هودی سیاه»)
 const ALT = { "طوسی": "خاکستری", "مشکی": "سیاه", "قهوه‌ای": "شکلاتی", "سرمه‌ای": "سورمه‌ای", "هوایی": "آبی روشن" };
 const SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
@@ -151,7 +159,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     });
   }
 
-  return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorImages: (ctx, pg) => {
+  return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorGroup: group, colorImages: (ctx, pg) => {
     const withCol = pg.list.map((p) => asColor(p, pg.g)).find((t) => t.mainColor != null);
     const t = withCol || asColor(pg.list[0], pg.g);
     const loc = t.mainColor != null ? `${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp` : `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`;
