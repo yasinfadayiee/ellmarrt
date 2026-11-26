@@ -96,7 +96,7 @@
     <div class="card-media"><img src="${p.img}" srcset="${p.img} 480w, ${p.img.replace(/-480\.webp$/, "-960.webp")} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${p.t}" width="480" height="600" loading="lazy" decoding="async">${!p.real && p.alt ? `<img class="alt" src="${p.alt}" alt="" width="480" height="600" loading="lazy" decoding="async">` : ""}
     <div class="card-tags">${p.tag ? `<span class="tag ${p.tagc}">${p.tag}</span>` : ""}</div>
     <button type="button" class="fav" data-id="${p.id}" aria-label="افزودن به علاقه‌مندی‌ها"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.4 4.5 7 4.5c2 0 3.5 1.1 5 2.9 1.5-1.8 3-2.9 5-2.9 3.6 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg></button>${p.real ? `<button type="button" class="real-tg" data-real="${p.real}" aria-pressed="false" aria-label="نمایش عکس واقعی ${p.t}">${camI}<span>عکس واقعی</span></button>` : ""}</div>
-    <div class="card-body"><div class="card-top"><span class="card-cat">${p.cn}</span>${p.rate ? `<span class="card-rate num"><i>★</i>${p.rate}</span>` : ""}</div><h3 class="card-title"><a href="${p.url}">${p.t}</a></h3>
+    <div class="card-body"><div class="card-top"><span class="card-cat">${p.cn}${p.msr ? " · جدول سایز دارد" : ""}</span>${p.rate ? `<span class="card-rate num"><i>★</i>${p.rate}</span>` : ""}</div><h3 class="card-title"><a href="${p.url}">${p.t}</a></h3>
     <div class="price"><b class="num">${fa(p.p)}</b><small>تومان</small><span class="card-cta" aria-hidden="true">مشاهده ←</span></div>${p.dots || ""}<div class="card-sizes">${sizeTags(p)}</div></div></article>`;
 
   /* live color-swatch photo switch on product cards */

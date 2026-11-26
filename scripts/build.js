@@ -57,23 +57,26 @@ fs.mkdirSync(path.join(OUT, "assets/fonts"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "assets/img/favicon-48.png"), path.join(OUT, "favicon.png"));
 fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
 
+const defaultLastmod = (ctx.syncedAt ? new Date(ctx.syncedAt) : new Date()).toISOString().slice(0, 10);
 const urls = [];
 const emit = (route, html, meta = {}) => {
   write(route === "/" ? "index.html" : route.replace(/^\//, "") + (route.endsWith(".html") ? "" : "index.html"), html);
-  if (!meta.noindex) urls.push({ loc: SITE_URL + route, images: meta.images || [], priority: meta.priority || 0.6 });
+  if (!meta.noindex) urls.push({ loc: SITE_URL + route, images: meta.images || [], priority: meta.priority || 0.6, lastmod: meta.lastmod || defaultLastmod });
 };
 
-emit("/", pages.home(ctx), { priority: 1, images: [] });
+emit("/", pages.home(ctx), { priority: 1, images: [{ loc: `${SITE_URL}/assets/img/hero-campaign-1600.webp`, title: "کالکشن پوشاک مردانه المارت — بازار سرپوشیده تبریز" }] });
 emit("/shop/", pages.shop(ctx), { priority: 0.9 });
 for (const c of Object.values(CATEGORIES)) {
   if (!products.some((p) => CATEGORIES[p.cat] === c)) continue;
   emit(`/c/${c.slug}/`, pages.category(ctx, c), { priority: 0.85 });
 }
 for (const p of products) {
-  emit(`/p/${p.id}/`, pages.product(ctx, p), {
-    priority: 0.8,
-    images: [`${SITE_URL}/assets/p/${p.id}-960.webp`, ...(p.images.gallery || []).slice(0, 3).map((g) => `${SITE_URL}/assets/p/${g.file}`)],
-  });
+  const mainImg = p.mainColor != null ? `${p.id}-k${p.mainColor}-960.webp` : `${p.id}-960.webp`;
+  const imgs = [
+    { loc: `${SITE_URL}/assets/p/${mainImg}`, title: p.title },
+    ...(p.images.gallery || []).slice(0, 3).map((g, i) => ({ loc: `${SITE_URL}/assets/p/${g.file}`, title: `${p.title} — عکس واقعی ${i + 1}` })),
+  ];
+  emit(`/p/${p.id}/`, pages.product(ctx, p), { priority: 0.8, images: imgs });
 }
 for (const pg of pages.colorPages(ctx)) emit(pages.colorPath(ctx, pg.cat, pg.g), pages.colorPage(ctx, pg), { priority: 0.75, images: pages.colorImages(ctx, pg) });
 for (const pg of pages.stylePages(ctx)) emit(pages.stylePath(ctx, pg), pages.stylePage(ctx, pg), { priority: 0.75, images: pages.styleImages(ctx, pg) });
@@ -96,7 +99,7 @@ emit("/contact/", pages.contact(ctx), { priority: 0.7 });
 emit("/terms/", pages.terms(ctx), { priority: 0.3 });
 emit("/privacy/", pages.privacy(ctx), { priority: 0.3 });
 emit("/shipping-returns/", pages.shipping(ctx), { priority: 0.5 });
-for (const g of pages.guides) emit(`/guide/${g.slug}/`, pages.guide(ctx, g), { priority: 0.7 });
+for (const g of pages.guides) emit(`/guide/${g.slug}/`, pages.guide(ctx, g), { priority: 0.7, lastmod: g.updated || g.date || "2026-10-12" });
 emit("/guide/", pages.guideIndex(ctx), { priority: 0.6 });
 write("404.html", pages.notFound(ctx));
 
@@ -116,21 +119,32 @@ for (const p of ctx.prev) {
 write("retired.txt", retired.sort().join("\n") + "\n");
 if (retired.length) console.log(`redirect stubs for ${retired.length} retired pages`);
 
-// sitemap with image extension
-const xmlEsc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+// sitemap with image extension + lastmod
+const xmlEsc = (s) => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const imgXml = (img) => {
+  const loc = typeof img === "string" ? img : img.loc;
+  const title = typeof img === "string" ? "" : img.title;
+  return `<image:image><image:loc>${xmlEsc(loc)}</image:loc>${title ? `<image:title>${xmlEsc(title)}</image:title>` : ""}</image:image>`;
+};
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><priority>${u.priority}</priority>${u.images.map((i) => `<image:image><image:loc>${xmlEsc(i)}</image:loc></image:image>`).join("")}</url>`).join("\n")}
+${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority>${u.images.map(imgXml).join("")}</url>`).join("\n")}
 </urlset>
 `);
-write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+const aiBots = ["OAI-SearchBot", "ChatGPT-User", "GPTBot", "PerplexityBot", "ClaudeBot", "Claude-SearchBot", "Google-Extended", "Applebot-Extended", "Bingbot", "Googlebot"];
+write("robots.txt", [
+  ...aiBots.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /admin/\n`),
+  `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`,
+].join("\n"));
 write("manifest.webmanifest", JSON.stringify({
   name: "المارت | ELLMARRT", short_name: "المارت", lang: "fa", dir: "rtl", start_url: `${BASE}/`, display: "standalone",
   background_color: "#F7F9FC", theme_color: "#1D4ED8",
   icons: [{ src: `${BASE}/assets/img/icon-192.png`, sizes: "192x192", type: "image/png" }, { src: `${BASE}/assets/img/icon-512.png`, sizes: "512x512", type: "image/png" }],
 }));
 write("llms.txt", pages.llms(ctx));
+write("llms-full.txt", pages.llmsFull(ctx));
 write("assets/catalog.json", JSON.stringify(pages.catalog(ctx)));
+write("assets/ai-catalog.json", JSON.stringify(pages.aiCatalog(ctx)));
 // admin panel (static app + data snapshot); never indexed
 copyDir(path.join(ROOT, "admin"), path.join(OUT, "admin"));
 const adminIndex = path.join(OUT, "admin/index.html");

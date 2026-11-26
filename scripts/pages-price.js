@@ -12,14 +12,23 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
 
   const pricePages = (ctx) => {
     const out = [];
+    let prevAll = 0;
+    const prevCat = {};
     for (const [limit, slug, label] of LIMITS) {
       const all = under(ctx, limit);
-      // a limit that already covers everything (or nothing new over the smaller one) adds no page
-      if (all.length >= MIN && all.length < ctx.products.filter((p) => p.inStock && p.cat !== "kids").length) out.push({ limit, slug, label, cat: null, list: all });
+      // a limit that already covers everything (or adds nothing over the smaller bracket) adds no page
+      if (all.length >= MIN && all.length > prevAll && all.length < ctx.products.filter((p) => p.inStock && p.cat !== "kids").length) {
+        out.push({ limit, slug, label, cat: null, list: all });
+        prevAll = all.length;
+      }
       for (const cat of Object.keys(NOUN)) {
         if (!ctx.CATEGORIES[cat]) continue;
         const list = under(ctx, limit, cat), total = ctx.products.filter((p) => p.inStock && p.cat === cat).length;
-        if (list.length >= MIN && list.length < total) out.push({ limit, slug, label, cat, list });
+        const prev = prevCat[cat] || 0;
+        if (list.length >= MIN && list.length > prev && list.length < total) {
+          out.push({ limit, slug, label, cat, list });
+          prevCat[cat] = list.length;
+        }
       }
     }
     return out;
@@ -36,6 +45,9 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     const min = list[0].price, max = list[list.length - 1].price;
     const cats = [...new Set(list.map((p) => p.cat))].filter((k) => CATEGORIES[k]);
     const what = cat ? NOUN[cat] : "پوشاک";
+    const titleFull = `${h1} | ${fa(list.length)} مدل از ${fa(min)} تومان`;
+    const titleShort = `${h1} | از ${fa(min)} تومان`;
+    const pageTitle = titleFull.length + 9 <= 68 ? titleFull : titleShort;
     const qa = [
       [`${h1} چه مدل‌هایی دارد؟`, `${fa(list.length)} مدل ${cat ? NOUN[cat] : "لباس"} با قیمت از ${fa(min)} تا ${fa(max)} تومان${cats.length > 1 ? `؛ از دسته‌های ${cats.map((k) => CATEGORIES[k].name).join("، ")}` : ""}. فهرست با ارزان‌ترین مدل شروع می‌شود.`],
       ["قیمت‌ها نهایی است؟", "قیمت هر مدل همان است که در غرفه المارت در باسلام ثبت شده و هر چند ساعت یک‌بار به‌روز می‌شود؛ هنگام خرید، قیمت نهایی را در صفحه سفارش باسلام می‌بینید."],
@@ -43,13 +55,14 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     ];
     return layout(ctx, {
       path,
-      title: `${h1} | ${fa(list.length)} مدل از ${fa(min)} تومان`,
-      desc: `${fa(list.length)} مدل ${what} مردانه با قیمت ${fa(min)} تا ${fa(max)} تومان، موجود از بازار تبریز. سایز و رنگ هر مدل را ببینید و از باسلام یا سفارش مستقیم بخرید.`,
+      title: pageTitle,
+      desc: `${fa(list.length)} مدل ${what}${cat === "kids" ? "" : " مردانه"} زیر ${label} با قیمت ${fa(min)} تا ${fa(max)} تومان، از بازار تبریز. سایز و رنگ هر مدل را ببینید و از باسلام یا سفارش مستقیم بخرید.`,
       image: `${ctx.SITE_URL}/assets/og/${list[0].id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>${h1}</h1><p>${fa(list.length)} مدل موجود؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان. ارزان‌ترین‌ها اول آمده‌اند.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>
+<section class="sec-sm"><div class="wrap prose"><h2>نکات خرید اقتصادی در این بازه قیمتی</h2><p>همه قیمت‌های این صفحه مستقیماً با غرفه رسمی المارت در باسلام همگام‌سازی می‌شوند و بازتاب قیمت واقعی بازار سرپوشیده تبریز بدون واسطه هستند. در هر کارت می‌توانید سایزهای آماده ارسال و تصویر واقعی کالا را پیش از باز کردن صفحه محصول ببینید.</p><p>برای انتخاب دقیق‌تر، روی محصول موردنظر بزنید تا جدول اندازه‌گیری سانتی‌متری (در مدل‌های دارای جدول) و جنس پارچه را با لباس اندازه خودتان مقایسه کنید. اگر قد و وزن را می‌دانید <a href="${BASE}/size-guide/">سایزیاب المارت</a> در چند ثانیه سایز پیشنهادی را نشان می‌دهد و برای قواره‌های آزادتر می‌توانید بخش <a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a> را هم ببینید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
 <section class="sec-sm"><div class="wrap"><p class="note-sm">${c ? `<a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a> · ` : ""}<a class="link" href="${BASE}/shop/">فروشگاه</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب</a>${cats.length > 1 ? " · " + cats.map((k) => `<a class="link" href="${BASE}/c/${CATEGORIES[k].slug}/">${CATEGORIES[k].name}</a>`).join(" · ") : ""}</p></div></section>`,
     });

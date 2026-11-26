@@ -113,7 +113,10 @@ ${o.path === "/" ? '<meta name="enamad" content="25394575"/>' : ""}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(o.desc)}">
 <link rel="canonical" href="${url}">
-${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index,follow,max-image-preview:large">'}
+${o.noindex ? '<meta name="robots" content="noindex">' : `<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="alternate" hreflang="fa-IR" href="${url}">
+<link rel="alternate" hreflang="x-default" href="${url}">`}
+<link rel="alternate" type="text/plain" href="${SITE_URL}/llms.txt" title="LLM Context — ELLMARRT">
 <meta name="theme-color" content="#1D4ED8">
 <meta name="google-site-verification" content="uXxAD7CF1q8Fo0xZpy1_uE84WzXJWtndZYkGuYqUT9A">
 <meta name="msvalidate.01" content="E832DBD41A08E553E3013637AB159DEE">
@@ -124,7 +127,12 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" co
 <meta property="og:description" content="${esc(o.desc)}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${image}">
+<meta property="og:image:alt" content="${esc(title)}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(o.desc)}">
+<meta name="twitter:image" content="${image}">
+${o.extraHead || ""}
 <link rel="icon" href="${BASE}/assets/img/mark.svg" type="image/svg+xml">
 <link rel="icon" href="${BASE}/favicon.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="${BASE}/assets/img/apple-touch-icon.png">
@@ -258,6 +266,7 @@ function cardData(ctx, p) {
   const realUrl = rp ? `${ctx.BASE}/assets/p/${rp.file}` : null;
   return {
     id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: liveSizes(p), st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
+    msr: !!measures(p),
     url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`,
     real: realUrl,
     alt: realUrl ? null : (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
@@ -270,7 +279,7 @@ function card(ctx, p, eager = false) {
 <div class="card-media"><img src="${d.img}" srcset="${d.img} 480w, ${d.img.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(p.title)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${!d.real && d.alt ? `<img class="alt" src="${d.alt}" srcset="${d.alt} 480w, ${d.alt.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(`${p.title} — نمای دوم`.slice(0, 120))}" width="480" height="600" loading="lazy" decoding="async">` : ""}
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button type="button" class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button>${d.real ? `<button type="button" class="real-tg" data-real="${d.real}" aria-pressed="false" aria-label="${esc(`نمایش عکس واقعی ${short(p)}`)}">${I.camera}<span>عکس واقعی</span></button>` : ""}</div>
-<div class="card-body"><div class="card-top"><span class="card-cat">${d.cn}</span>${d.rate ? `<span class="card-rate num"><i>★</i>${d.rate}</span>` : ""}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
+<div class="card-body"><div class="card-top"><span class="card-cat">${d.cn}${d.msr ? " · جدول سایز دارد" : ""}</span>${d.rate ? `<span class="card-rate num"><i>★</i>${d.rate}</span>` : ""}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
 <div class="price"><b class="num">${fa(p.price)}</b><small>تومان</small><span class="card-cta" aria-hidden="true">مشاهده ←</span></div>${d.dots}<div class="card-sizes">${cardSizes(liveSizes(p)).map((s) => s === "…" ? `<i>…</i>` : `<span>${s}</span>`).join("")}</div></div></article>`;
 }
 const crumbs = (ctx, items) => `<nav class="crumbs wrap" aria-label="مسیر"><ol>${items.map(([h, t], i) => `<li>${i < items.length - 1 ? `<a href="${ctx.BASE}${h}">${t}</a>` : `<span aria-current="page">${t}</span>`}</li>`).join("")}</ol></nav>`;
@@ -279,15 +288,22 @@ const crumbSchema = (ctx, items) => ({
   itemListElement: items.map(([h, t], i) => ({ "@type": "ListItem", position: i + 1, name: t, item: ctx.SITE_URL + h })),
 });
 const orgSchema = (ctx) => ({
-  "@context": "https://schema.org", "@type": "ClothingStore", "@id": `${ctx.SITE_URL}/#store`,
+  "@context": "https://schema.org", "@type": ["ClothingStore", "LocalBusiness"], "@id": `${ctx.SITE_URL}/#store`,
   name: `${STORE.name} (${STORE.latin})`, alternateName: [STORE.latin, STORE.full, "ال‌مارت", "ال مارت", "ELLMART", "پیرایش"],
   url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: [`${ctx.SITE_URL}/assets/og/site.jpg`, `${ctx.SITE_URL}/assets/og/hojreh.jpg`],
   description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا {MAX}.`,
+  disambiguatingDescription: `فروشگاه و تولیدی پوشاک مردانه المارت (ellmarrt.ir) در بازار سرپوشیده تبریز با {YEARS} سال سابقه؛ مستقل از فروشگاه‌های همنام در سایر شهرها.`,
   address: { "@type": "PostalAddress", streetAddress: STORE.address, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
+  geo: { "@type": "GeoCoordinates", latitude: 38.0805, longitude: 46.294 },
+  hasMap: "https://www.google.com/maps/search/?api=1&query=38.0805,46.2940",
   areaServed: { "@type": "Country", name: "Iran" }, currenciesAccepted: "IRR", priceRange: "$$",
   foundingDate: String(new Date().getFullYear() - STORE.years),
+  knowsAbout: ["پوشاک مردانه", "لباس سایز بزرگ مردانه تا {MAX}", "شلوار اسلش مردانه", "تیشرت نخ پنبه مردانه", "هودی و دورس مردانه", "بازار سرپوشیده تبریز", "پخش عمده پوشاک مردانه"],
+  identifier: { "@type": "PropertyValue", name: "کد تأیید دامنه اینماد", value: "25394575" },
   sameAs: [STORE.instagram, STORE.basalam, STORE.rubika],
   telephone: "+98" + STORE.phones[0].slice(1),
+  contactPoint: STORE.phones.map((p) => ({ "@type": "ContactPoint", telephone: "+98" + p.slice(1), contactType: "sales", areaServed: "IR", availableLanguage: ["fa", "az"] })),
+  ...(ctx.storeReviews && ctx.storeReviews.count ? { aggregateRating: { "@type": "AggregateRating", ratingValue: ctx.storeReviews.average, ratingCount: ctx.storeReviews.count, bestRating: 5, worstRating: 1 } } : {}),
 });
 const faqSchema = (qa) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qa.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
 
@@ -353,7 +369,7 @@ function home(ctx) {
       <h1>${esc(hero("line1", "شیک بپوش،"))} <br>${esc(hero("pre", "مثل"))} <em>${esc(hero("em", "بازاری‌ها"))}</em> ${esc(hero("post", "بخر."))}</h1>
       <p class="hero-lead">${hero("lead", "") ? esc(hero("lead", "")) : `پوشاک روزمره مردانه با پارچه نخ‌پنبه و کتان کشی اعلا، سایزبندی واقعی تا <b class="num">{MAX}</b> و ارسال از روز اول.`}</p>
       <div class="hero-cta"><a class="btn btn-accent" href="${BASE}/shop/">${esc(hero("cta1", "مشاهده و خرید"))} ${I.arrow}</a><a class="btn btn-glass" href="${BASE}/size-guide/">${esc(hero("cta2", "سایزیاب ۱۰ ثانیه‌ای"))}</a></div>
-      <div class="hero-kpis d-only"><span><b class="num">۲۳+</b> سال بازار تبریز</span><span><b class="num">${fa(P.filter((p) => p.inStock).length)}</b> مدل آماده ارسال</span><span>تا <b class="num">{MAX}</b> واقعی</span></div>
+      <div class="hero-kpis d-only"><span><b class="num">{YEARS}+</b> سال بازار تبریز</span><span><b class="num">${fa(P.filter((p) => p.inStock).length)}</b> مدل آماده ارسال</span><span>تا <b class="num">{MAX}</b> واقعی</span></div>
     </div>
     ${heroFloats.length ? `<div class="hero-floats d-only">${heroFloats.map((fp) => `<a class="hero-float" href="${pUrl(ctx, fp)}"><img src="${BASE}/assets/p/${mainBase(fp)}-480.webp" width="480" height="600" loading="lazy" decoding="async" alt="${esc(short(fp))}"><div class="hero-float-in"><small>${catOf(ctx, fp).name}</small><b>${esc(short(fp))}</b><span><i class="num">${fa(fp.price)}</i> تومان ${I.arrow}</span></div></a>`).join("")}</div>` : ""}
   </div>
@@ -381,7 +397,7 @@ function home(ctx) {
 <section class="sec-sm home-trust" aria-label="ضمانت خرید از المارت"><div class="wrap"><div class="trust">
   <div>${I.truck}<p style="margin:0"><em>ارسال روز اول</em><b>تحویل فوری به کل ایران</b><span>پست پیشتاز، سفارشی و پیک تبریز</span></p></div>
   <div>${I.shield}<p style="margin:0"><em>خرید امن باسلام</em><b>پرداخت مطمئن و بازگشت وجه</b><span>دارای نماد اعتماد دامنه ۲۵۳۹۴۵۷۵</span></p></div>
-  <div>${I.ruler}<p style="margin:0"><em>تا 6XL واقعی</em><b>الگوی استاندارد و سایزیاب دقیق</b><span>اندازه دقیق هر مدل در سانتی‌متر</span></p></div>
+  <div>${I.ruler}<p style="margin:0"><em>تا {MAX} واقعی</em><b>الگوی استاندارد و سایزیاب دقیق</b><span>اندازه دقیق هر مدل در سانتی‌متر</span></p></div>
   <div>${I.camera}<p style="margin:0"><em>کنترل کیفیت حجره</em><b>تصاویر واقعی و دوخت مطمئن</b><span>بررسی تک‌به‌تک پیش از بسته‌بندی</span></p></div>
 </div></div></section>
 
@@ -473,7 +489,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
 
 <section class="sec-sm bg-cream seo-dir"><div class="wrap">
   <div class="sec-head"><div><span class="kicker">راهنمای مسیرها</span><h2>پوشاک مردانه از بازار سرپوشیده تبریز</h2></div></div>
-  <p class="seo-intro">المارت ادامه راه پدری است که کارش را در بازار سرپوشیده تبریز به ما سپرد؛ غرفه ما ${fa(STORE.years)} سال سابقه فعالیت در این بازار دارد. امروز هم با همان تجربه، لباس مردانه و سایز بزرگ واقعی عرضه می‌کنیم و هر کالا را پیش از فرستادن بررسی می‌کنیم. سفارش‌ها از روز اول کاری پس از خرید به سراسر ایران ارسال می‌شوند.</p>
+  <p class="seo-intro">فروشگاه و تولیدی پوشاک مردانه المارت (<bdi dir="ltr">ellmarrt.ir</bdi>) در بازار سرپوشیده تبریز با ${fa(STORE.years)} سال سابقه خانوادگی فعالیت می‌کند و مستقل از فروشگاه‌های همنام در سایر شهرها است. هر مدل را پیش از ارسال از نظر جنس، دوخت و سایز بررسی می‌کنیم و سفارش‌ها از روز اول کاری به سراسر ایران ارسال می‌شوند.</p>
   <div class="dir-grid">
     <div><h3>دسته‌بندی و مدل‌ها</h3><p class="dir-links">${inStockCategories.map(([, c]) => `<a class="link" href="${BASE}/c/${c.slug}/">${c.name}</a>`).join(" · ")}</p>${sty.styleLinks(ctx, null)}</div>
     <div><h3>خرید بر اساس رنگ و بودجه</h3><p class="dir-links">${colorList.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>${price.priceLinks(ctx, null)}</div>
@@ -482,8 +498,8 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
 </div></section>`;
   return layout(ctx, {
     path: "/",
-    title: `${STORE.name} | پوشاک مردانه بازار تبریز؛ تیشرت، شلوار اسلش و سایز بزرگ تا {MAX}`,
-    desc: `خرید آنلاین پوشاک مردانه از ${STORE.name}، ${fa(STORE.years)} سال در بازار بزرگ تبریز: تیشرت نخ پنبه، شلوار اسلش، هودی، پیراهن و لباس سایز بزرگ مردانه تا {MAX} با قیمت منصفانه و ارسال به سراسر ایران.`,
+    title: `${STORE.name} | پوشاک مردانه بازار تبریز و سایز بزرگ تا {MAX}`,
+    desc: `خرید پوشاک مردانه از ${STORE.name} در بازار تبریز ({YEARS} سال سابقه): تیشرت، شلوار اسلش، هودی و سایز بزرگ تا {MAX} با ارسال به سراسر ایران.`,
     preload: heroPreload,
     preloadSet: heroPreloadSet,
     preloadSizes: heroPreloadSizes,
@@ -528,7 +544,7 @@ function shop(ctx) {
 }
 
 function itemList(ctx, list) {
-  return { "@context": "https://schema.org", "@type": "ItemList", itemListElement: list.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `${ctx.SITE_URL}/p/${p.id}/`, name: p.title })) };
+  return { "@context": "https://schema.org", "@type": "ItemList", numberOfItems: list.length, itemListElement: list.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `${ctx.SITE_URL}/p/${p.id}/`, name: p.title })) };
 }
 
 /* CTR titles/descriptions: first candidate that fits the SERP limits (title <= 70 chars incl. brand suffix, desc <= 160) */
@@ -615,10 +631,12 @@ function product(ctx, p) {
   const more = related.length < 4 ? P.filter((x) => x.id !== p.id && x.cat !== p.cat && x.inStock && !related.includes(x)).slice(0, 4 - related.length) : [];
   const desc = `${p.title} از ${STORE.name}، بازار تبریز${p.material ? `؛ جنس ${p.material}` : ""}${sizes.length ? `، سایز ${sizes[0]} تا ${sizes[sizes.length - 1]}` : ""}. قیمت ${fa(p.price)} تومان، خرید امن و ارسال به سراسر ایران.`;
   const offerAvail = p.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
+  const priceValidUntil = new Date(Date.now() + 90 * 864e5).toISOString().slice(0, 10);
+  const writtenReviews = (p.reviews || []).filter((r) => r.text && r.text.trim().length >= 3).slice(0, 5);
   const schema = {
     "@context": "https://schema.org", "@type": "Product", "@id": `${SITE_URL}/p/${p.id}/#product`,
     name: p.title, sku: String(p.id), mpn: String(p.id), category: GOOGLE_CAT[p.cat] || "Apparel & Accessories > Clothing",
-    brand: { "@type": "Brand", name: STORE.latin },
+    brand: { "@type": "Brand", name: `${STORE.name} (${STORE.latin})` },
     image: [...new Set([`${SITE_URL}/assets/p/${mainBase(p)}-960.webp`, ...p.images.gallery.map((g) => `${SITE_URL}/assets/p/${g.file}`)])].slice(0, 5),
     description: p.copy.plain.slice(0, 4900),
     ...(p.material ? { material: p.material } : {}),
@@ -627,10 +645,30 @@ function product(ctx, p) {
     audience: { "@type": "PeopleAudience", suggestedGender: p.cat === "kids" ? "unisex" : "male" },
     ...(p.price > 0 ? { offers: {
       "@type": "Offer", url: `${SITE_URL}/p/${p.id}/`, priceCurrency: "IRR", price: p.price * 10,
+      priceValidUntil,
       availability: offerAvail,
-      itemCondition: "https://schema.org/NewCondition", seller: { "@type": "Organization", "@id": `${SITE_URL}/#store`, name: STORE.name, url: `${SITE_URL}/` },
+      itemCondition: "https://schema.org/NewCondition",
+      seller: { "@type": "Organization", "@id": `${SITE_URL}/#store`, name: STORE.name, url: `${SITE_URL}/` },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "IR" },
+        deliveryTime: { "@type": "ShippingDeliveryTime", handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" } },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "IR",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnLink: `${SITE_URL}/shipping-returns/`,
+      },
     } } : {}),
-    ...(p.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating.avg, reviewCount: p.rating.count, bestRating: 5 } } : {}),
+    ...(p.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating.avg, reviewCount: p.rating.count, bestRating: 5, worstRating: 1 } } : {}),
+    ...(writtenReviews.length ? { review: writtenReviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name || "خریدار باسلام" },
+      datePublished: String(r.date || "").slice(0, 10),
+      reviewBody: r.text.trim(),
+      reviewRating: { "@type": "Rating", ratingValue: r.star, bestRating: 5, worstRating: 1 },
+    })) } : {}),
   };
   const data = { id: p.id, hero: true, variants: p.variants.map(({ color, size, stock, price }) => ({ color, size, stock, price })) };
   const priceBlock = `<div class="pprice" aria-live="polite"><span id="price-from"${new Set(p.variants.filter((v) => v.stock > 0).map((v) => v.price)).size > 1 ? "" : " hidden"}>از</span><b class="num" id="product-price">${fa(p.price)}</b><small>تومان</small><span id="stock" class="stock${p.inStock ? (low ? " low" : "") : " no"}">${p.inStock ? (low ? `فقط ${fa(p.stock)} عدد باقی‌مانده` : "موجود در انبار") : "ناموجود"}</span></div>`;
@@ -698,6 +736,11 @@ ${pfaq.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"
       return (d.length < 110 && extra ? `${p.copy.lead} ${extra}؛ قیمت ${fa(p.price)} تومان، ارسال به سراسر ایران از بازار تبریز.` : d).slice(0, 165);
     })(),
     ogType: "product",
+    extraHead: [
+      p.price > 0 ? `<meta property="product:price:amount" content="${p.price * 10}">\n<meta property="product:price:currency" content="IRR">` : "",
+      `<meta property="product:availability" content="${p.inStock ? "in stock" : "out of stock"}">`,
+      `<meta property="product:brand" content="${STORE.latin}">`,
+    ].filter(Boolean).join("\n"),
     image: `${SITE_URL}/assets/og/${p.id}.jpg`,
     preload: hero,
     preloadSet: `${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w`,
@@ -725,7 +768,7 @@ function bigSize(ctx) {
     body: `${crumbs(ctx, items)}
 <header class="phead banner"><div class="wrap bt"><span class="kicker">کالکشن ویژه · 3XL تا {MAX}</span><h1>لباس سایز بزرگ مردانه؛ واقعاً بزرگ.</h1><p>پیدا کردن لباسی که هم اندازه باشد و هم شیک، برای خیلی از آقایان سخت است. در المارت سایز بزرگ یک برچسب نیست؛ قواره سینه، قد و دمپا برای هیکل درشت دوخته شده است. همه محصولات 4XL تا {MAX} را اینجا ببینید.</p></div></header>
 <section class="sec-sm" style="padding-top:20px"><div class="wrap"><div class="grid">${list.map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
-<section class="sec-sm"><div class="wrap"><div class="fit rv"><div class="fit-copy"><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا 6XL پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
+<section class="sec-sm"><div class="wrap"><div class="fit rv"><div class="fit-copy"><h2>سایز دقیق خودت رو بدون حدس بخر.</h2><p>سایزیاب بر اساس قد و وزن، از L تا {MAX} پیشنهاد می‌دهد.</p></div>${sizer()}</div></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">بر اساس نوع لباس</span><h2>سایز بزرگ هر دسته</h2></div></div><p class="note-sm">${sz.bigCats(ctx).map((k) => `<a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join(" · ")}</p><p class="note-sm">هر سایز چند کیلو است؟ ${["3XL", "4XL", "5XL", "6XL"].map((z) => `<a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z}</a>`).join(" · ")} · <a class="link" href="${BASE}/size/weight/">سایز بر اساس وزن</a></p><p class="note-sm"><a class="link" href="${BASE}/big-size/tabriz/">لباس سایز بزرگ مردانه در تبریز (خرید حضوری)</a></p></div></section>
 <section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">تا 3XL</span><h2>مدل‌های دیگر با سایز 3XL</h2></div></div><div class="grid">${xl3.slice(0, 8).map((p) => card(ctx, p)).join("")}</div></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>`,
@@ -752,8 +795,8 @@ function sizeGuide(ctx) {
   };
   return layout(ctx, {
     path: "/size-guide/",
-    title: "سایز لباس مردانه بر اساس قد و وزن | سایزیاب و جدول سایز L تا {MAX}",
-    desc: "جدول سایز تیشرت، شلوار و هودی مردانه از L تا 6XL بر اساس قد و وزن؛ با سایزیاب آنلاین المارت سایز دقیق خود را در چند ثانیه پیدا کنید.",
+    title: "سایز لباس مردانه بر اساس قد و وزن | سایزیاب تا {MAX}",
+    desc: "جدول سایز تیشرت، شلوار و هودی مردانه از L تا {MAX} بر اساس قد و وزن؛ با سایزیاب آنلاین المارت سایز دقیق خود را در چند ثانیه پیدا کنید.",
     schema: [crumbSchema(ctx, items), faqSchema(qa)],
     body: `${crumbs(ctx, items)}
 <header class="phead banner"><div class="wrap bt"><span class="kicker">سایزیاب هوشمند المارت</span><h1>سایزیاب و جدول سایز مردانه</h1><p>قد و وزن خود را وارد کنید تا سایز پیشنهادی را ببینید، یا از جدول زیر استفاده کنید. اندازه دقیق هر مدل در صفحه همان محصول آمده است.</p></div></header>
@@ -893,6 +936,7 @@ const guides = [
   {
     slug: "big-size-men",
     date: "2026-11-03",
+    seoTitle: "لباس مناسب مردان چاق و شکم‌دار | سایز بزرگ تا {MAX}",
     title: "لباس مناسب مردان چاق و شکم‌دار؛ راهنمای خرید لباس سایز بزرگ مردانه",
     desc: "آقایان چاق و شکم‌دار چه لباسی بپوشند؟ قواره، رنگ، یقه و جنس مناسب، شلوار کمرکش، لباس خواستگاری و مهمانی و انتخاب سایز 3XL تا {MAX} بر اساس وزن.",
     cats: ["tshirt", "pants"],
@@ -941,6 +985,7 @@ const guides = [
   {
     slug: "tshirt-fit",
     date: "2026-10-18",
+    seoTitle: "تیشرت باکسی، اورسایز یا معمولی؛ راهنمای انتخاب",
     title: "تیشرت باکسی، اورسایز یا معمولی؛ کدام قواره برای شما مناسب است؟",
     desc: "راهنمای انتخاب تیشرت مردانه: فرق قواره باکسی، اورسایز و معمولی، جنس نخ پنبه و نخ ۳۰، انتخاب سایز و ست کردن تیشرت با شلوار.",
     cats: ["tshirt"],
@@ -958,6 +1003,7 @@ const guides = [
   {
     slug: "polo-shirt",
     date: "2026-10-18",
+    seoTitle: "پولوشرت و تیشرت یقه‌دار مردانه؛ راهنمای انتخاب",
     title: "پولوشرت و تیشرت یقه‌دار مردانه؛ انتخاب برای تابستان و محیط کار",
     desc: "پولوشرت چه جنسی بخریم؟ نخ سوزنی، مراکشی بیسکویتی یا نیم‌زیپ؛ فرق پولوشرت با تیشرت یقه انگلیسی و نحوه ست کردن برای کار و مهمانی.",
     cats: ["polo", "shirt"],
@@ -1034,41 +1080,56 @@ const guides = [
   },
   {
     slug: "mens-shoe-size-guide",
+    date: "2026-10-12",
+    updated: "2026-11-26",
+    seoTitle: "راهنمای سایز و خرید کفش اسپرت مردانه (۴۱ تا ۴۵)",
     title: "راهنمای سایز و انتخاب کفش مردانه؛ از اندازه‌گیری پا تا جنس و زیره",
-    desc: "راهنمای اندازه‌گیری پا و انتخاب کفش مردانه؛ بررسی سایز، رویه و آستر، راحتی زیره، تفاوت قالب مدل‌ها و نکته‌های تمیز کردن پیش از خرید.",
+    desc: "راهنمای اندازه‌گیری دقیق پا به سانتی‌متر و انتخاب سایز کفش اسپرت مردانه (۴۱ تا ۴۵)؛ بررسی زیره PU، دوردوخت صنعتی و نگهداری کفش.",
     cats: ["shoes"],
-    html: (ctx) => `<p>برای خرید کفش، شماره‌ای که همیشه می‌پوشید نقطه شروع است. پیش از سفارش، اندازه پا و مشخصات همان مدل را کنار هم بگذارید. در <a href="${ctx.BASE}/c/${ctx.CATEGORIES.shoes.slug}/">دسته کفش مردانه</a> مدل‌های اسپرت دوردوخت با سایزهای ۴۱ تا ۴۵ معرفی شده‌اند؛ برای انتخاب نهایی، اطلاعات صفحه هر محصول را جداگانه بخوانید.</p>
-<h2>۱. اندازه‌گیری پا پیش از انتخاب سایز</h2>
-<p>اندازه‌گیری را عصر و در حالت ایستاده انجام دهید. کاغذ را روی سطح صاف بگذارید و با جورابی که قرار است همراه کفش بپوشید، روی آن بایستید. از کسی بخواهید محل پاشنه و بلندترین انگشت را علامت بزند. فاصله این دو نقطه را به سانتی‌متر اندازه بگیرید و برای پای دیگر هم تکرار کنید. اندازه پای بزرگ‌تر را مبنا بگذارید. طول پا را با جدول سایز همان محصول مقایسه کنید؛ جدول عمومی جای اطلاعات قالب آن مدل را نمی‌گیرد. <a href="${ctx.BASE}/size-guide/">راهنمای سایز المارت</a> را هم ببینید، اما اگر جدول اختصاصی کفش درج نشده، پیش از سفارش طول داخلی و پیشنهاد فروشنده برای اندازه پای خودتان را بپرسید.</p>
-<h2>۲. جنس رویه و آستر را جداگانه بپرسید</h2>
-<p>نام مدل و عکس برای شناخت دقیق جنس کافی نیستند. به برچسب جنس همان محصول نگاه کنید و اگر اطلاعات کامل نیست، جنس رویه و سطح داخلی را جداگانه از فروشنده بپرسید. درباره ضخامت آستر و درزهایی که با پا تماس دارند هم سؤال کنید. ظاهر مشابه دو کفش به معنی جنس یکسان آن‌ها نیست. از روی رنگ یا براق بودن عکس نمی‌توان درباره ترکیب رویه یا روش شستشو تصمیم گرفت. برای استفاده طولانی، توضیح روشن درباره سطح داخلی از حدس زدن بر اساس ظاهر کاربردی‌تر است.</p>
-<h2>۳. زیره و راحتی هنگام راه رفتن</h2>
-<p>در عنوان یکی از مدل‌های این دسته، زیره PU ذکر شده است؛ این مشخصه را به همه مدل‌ها تعمیم ندهید. دوردوخت بودن هم به‌تنهایی میزان نرمی یا راحتی را مشخص نمی‌کند. مشخصات همان کفش را بخوانید و درباره انعطاف زیره، کفی و وزن آن سؤال کنید. هنگام امتحان کردن، چند قدم بردارید و به فشار زیر پنجه و پاشنه توجه کنید. اگر درباره سطح استفاده توضیحی درج نشده، از ظاهر زیره نتیجه نگیرید که برای هر مسیر یا فعالیتی مناسب است.</p>
-<h2>۴. تفاوت قالب و نشانه‌های تنگی یا گشادی</h2>
-<p>یک شماره یکسان در دو مدل ممکن است حس متفاوتی روی پا داشته باشد. علاوه بر طول، پهنای پنجه و فضای روی پا را در نظر بگیرید. انگشت‌ها نباید جمع شوند و پاشنه نباید هنگام هر قدم به‌وضوح از کفش بیرون بیاید. اگر طول مناسب است اما کناره پا فشار دارد، صرفاً شماره بزرگ‌تر را راه‌حل قطعی ندانید؛ درباره پهنای قالب بپرسید. به امید اینکه فشار آزاردهنده بعداً برطرف شود انتخاب نکنید. تجربه کفش قبلی خود را با اندازه پا و توضیح قالب مدل جدید مقایسه کنید.</p>
-<h2>۵. تمیز کردن با توجه به جنس</h2>
-<p>روش نگهداری را از برچسب یا فروشنده همان محصول بگیرید. پیش از استفاده از شوینده، سازگاری آن با جنس رویه را بررسی کنید و ابتدا بخش کوچکی دور از دید را امتحان کنید. دستور شستشوی یک مدل را برای مدل دیگر به کار نبرید. درباره امکان شستن کفی یا بندها جداگانه سؤال کنید. برای خشک کردن هم روش توصیه‌شده محصول را رعایت کنید؛ اگر اطلاعاتی ندارید، پیش از شستشوی کامل یا استفاده از گرمای مستقیم از فروشنده راهنمایی بخواهید.</p>
-<h2>۶. انتخاب برای استفاده‌ای که واقعاً دارید</h2>
-<p>پیش از سفارش مشخص کنید کفش را برای رفت‌وآمد روزانه، حضور در محیط کار یا فعالیت دیگری می‌خواهید. مدت پوشیدن و نوع مسیر را به فروشنده بگویید تا پاسخ او مشخص باشد. عنوان اسپرت به‌تنهایی تأیید مناسب بودن برای دویدن یا تمرین تخصصی نیست. در پایان، اندازه، قالب، جنس و روش نگهداری را یک‌بار مرور کنید. اگر یکی از این اطلاعات برای تصمیم شما ضروری است و در صفحه نیست، پرسیدن پیش از خرید از انتخاب صرفاً بر اساس عکس مطمئن‌تر است.</p>`,
+    faq: [
+      ["چطور طول پا را برای خرید اینترنتی کفش اندازه بگیریم؟", "عصر و در حالت ایستاده روی یک برگ کاغذ بایستید، پاشنه را به دیوار بچسبانید و جلوی بلندترین انگشت را علامت بزنید. فاصله دو نقطه را به سانتی‌متر اندازه بگیرید و با جدول طول پای همان مدل مقایسه کنید."],
+      ["کفش اسپرت دوردوخت زیره PU چه مزیتی دارد؟", "دوردوخت صنعتی اتصال رویه و زیره را محکم‌تر می‌کند و زیره PU (پلی‌یورتان) وزن سبکی دارد و ضربه قدم زدن را برای استفاده روزمره بهتر جذب می‌کند."],
+      ["کفش اسپرت را در ماشین لباسشویی بشوییم؟", "خیر؛ شستشو در ماشین لباسشویی به دوخت و چسب فشار می‌آورد. برای تمیز کردن از دستمال مرطوب و شوینده ملایم استفاده کنید و در سایه خشک کنید."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, t) => (p(id) ? `<a href="${pUrl(ctx, p(id))}">${t}</a>` : t);
+      return `<p>شماره کفش در کارخانه‌های مختلف یکی دو میلی‌متر تفاوت دارد؛ مطمئن‌ترین راه برای خرید اینترنتی کفش اسپرت، اندازه‌گیری طول پا به سانتی‌متر است. در <a href="${ctx.BASE}/c/${ctx.CATEGORIES.shoes.slug}/">دسته کفش اسپرت المارت</a> مدل‌های دوردوخت روزمره در سایزهای ۴۱ تا ۴۵ عرضه می‌شوند و در صفحه <a href="${ctx.BASE}/size/shoes/">جدول سایز کفش مردانه</a> می‌توانید طول پا برای هر شماره را ببینید.</p>
+<h2>۱. اندازه‌گیری دقیق طول پا در خانه</h2>
+<ol><li>اندازه‌گیری را عصر انجام دهید (پا در پایان روز کمی ورم طبیعی دارد) و جورابی بپوشید که معمولاً همراه کفش می‌پوشید.</li><li>کاغذ را روی زمین صاف بچسبانید، پاشنه را کامل به دیوار تکیه دهید و وزن بدن را روی پا بیندازید.</li><li>جلوی بلندترین انگشت را علامت بزنید و فاصله را تا دیوار با خط‌کش یا متر بخوانید؛ برای پای دیگر هم تکرار کنید و عدد بزرگ‌تر را مبنا بگذارید.</li></ol>
+<p>اگر پای شما بین دو شماره افتاد، برای پنجه پهن یا پوشیدن جوراب ضخیم، یک شماره بزرگ‌تر راحت‌تر است.</p>
+<h2>۲. رویه، زیره PU و دوردوخت یعنی چه؟</h2>
+<ul><li><b>دوردوخت صنعتی:</b> علاوه بر پرس و چسب، دور تا دور رویه به زیره دوخته می‌شود؛ در مدل‌هایی مثل ${a(55720135, "کفش اسپرت مردانه سه‌خط")} و ${a(43999644, "کفش اسپرت دوردوخت زیره PU")} این دوخت عمر کفش را در استفاده روزانه بالا می‌برد.</li><li><b>زیره PU:</b> پلی‌یورتان وزن کمی دارد، انعطاف‌پذیر است و برای پیاده‌روی، دانشگاه و محیط کار خستگی کمتری ایجاد می‌کند.</li><li><b>نمای واقعی در غرفه:</b> در صفحه هر محصول، تب «عکس واقعی» ظاهر و بافت رویه را زیر نور طبیعی نشان می‌دهد.</li></ul>
+<h2>۳. ست کردن و نگهداری</h2>
+<p>کفش اسپرت سفید یا مشکی با <a href="${ctx.BASE}/c/pants/">شلوار اسلش کتان کشی</a>، کارگو و جین راحت ست می‌شود. برای تمیز کردن، گردوغبار را با برس نرم پاک کنید و با دستمال مرطوب بکشید؛ کفش را داخل ماشین لباسشویی نیندازید و کنار بخاری خشک نکنید.</p>`;
+    },
   },
   {
     slug: "mens-shorts-buying-guide",
+    date: "2026-10-12",
+    updated: "2026-11-26",
+    seoTitle: "راهنمای خرید شلوارک مردانه و سایز بزرگ (3XL تا {MAX:shorts})",
     title: "راهنمای خرید شلوارک مردانه؛ جنس، قد شلوارک و سایز مناسب",
-    desc: "راهنمای انتخاب شلوارک مردانه برای خانه و روزمره؛ بررسی جنس پارچه، قد نسبت به زانو، اندازه کمر و قواره، ست کردن رنگ‌ها و روش نگهداری.",
+    desc: "راهنمای انتخاب شلوارک مردانه و سایز بزرگ تا {MAX:shorts}: مقایسه پارچه کتان و کنفی، انتخاب قد مناسب نسبت به زانو، اندازه کمر و شستشو.",
     cats: ["shorts"],
-    html: (ctx) => `<p>شلوارک را با توجه به اندازه و موقعیت استفاده انتخاب کنید. عکس به شناخت ظاهر کمک می‌کند، اما قد، کمر و آزادی حرکت را باید جداگانه بررسی کرد. در <a href="${ctx.BASE}/c/${ctx.CATEGORIES.shorts.slug}/">دسته شلوارک مردانه</a> عنوان‌هایی مثل شلوارک کتان دو جیب سایز بزرگ و شلوارک اسپرت کنفی دیده می‌شود. مشخصات یک مدل را به بقیه تعمیم ندهید؛ بعضی محصولات جزئیات اندازه کمتری دارند و لازم است پیش از سفارش سؤال کنید.</p>
-<h2>۱. برای خانه، روزمره یا ورزش سبک؟</h2>
-<p>اول مشخص کنید بیشتر کجا شلوارک می‌پوشید. برای خانه، راحتی هنگام نشستن و بلند شدن را در اولویت بگذارید. برای استفاده روزمره، قد و پوشش دلخواه و نیازتان به جیب را هم در نظر بگیرید. اگر برای ورزش سبک می‌خرید، درباره آزادی حرکت در ران و فاق سؤال کنید و فقط به واژه اسپرت در عنوان تکیه نکنید. وجود این واژه به‌تنهایی ویژگی فنی پارچه یا مناسب بودن برای هر تمرینی را تأیید نمی‌کند. نوع فعالیت خود را دقیق بگویید تا فروشنده درباره همان کاربرد پاسخ دهد.</p>
-<h2>۲. جنس پارچه را از مشخصات بخوانید</h2>
-<p>در عنوان محصولات این دسته نام کتان و کنفی آمده است، اما از نام به‌تنهایی نمی‌توان درصد الیاف، ضخامت یا میزان کشسانی را فهمید. به برچسب جنس همان محصول نگاه کنید و ترکیب پارچه را در صورت نیاز بپرسید. اگر نرمی سطح داخلی یا ضخامت برایتان مهم است، سؤال را مشخص مطرح کنید. عکس بافت می‌تواند کمک کند، ولی جای توضیح جنس را نمی‌گیرد. همچنین بدون اطلاعات محصول، درباره آب‌رفت یا میزان خنکی آن حکم قطعی ندهید و اندازه را بر اساس حدس درباره کش آمدن پارچه انتخاب نکنید.</p>
-<h2>۳. قد شلوارک نسبت به زانو</h2>
-<p>قد دلخواه را با یک شلوارک اندازه خودتان بسنجید. آن را صاف روی سطح بگذارید و از بالای کمر تا لبه پایین اندازه بگیرید. سپس همین اندازه را با قد اعلام‌شده محصول مقایسه کنید. جای قرار گرفتن کمر روی بدن هم روی فاصله لبه شلوارک تا زانو اثر دارد. از فروشنده بپرسید قد را از کدام نقطه گرفته است تا مقایسه دقیق باشد. عکس روی تن فرد دیگر معیار کافی نیست؛ تفاوت قد و فرم بدن باعث می‌شود یک شلوارک روی دو نفر در جای متفاوتی بایستد.</p>
-<h2>۴. اندازه کمر و قواره را با هم بررسی کنید</h2>
-<p>برای مدل کتان دو جیب، سایزهای 3XL تا 6XL درج شده‌اند. این حروف را معادل یک اندازه ثابت در همه مدل‌ها ندانید. دور کمر، دور ران، فاق و قد را بپرسید و با لباس راحت خودتان مقایسه کنید. <a href="${ctx.BASE}/size-guide/">راهنمای سایز</a> برای روش مقایسه اندازه‌ها کمک می‌کند. اگر کمر کشی یا بنددار می‌خواهید، ابتدا وجود آن را در همان مدل تأیید کنید؛ از عکس درباره ساختار کمر نتیجه قطعی نگیرید. در مدل کشی، اندازه در حالت عادی و میزان باز شدن کمر را بپرسید. بند هم جای انتخاب قواره مناسب را نمی‌گیرد.</p>
-<h2>۵. رنگ و ست با تیشرت یا پولوشرت</h2>
-<p>برای شلوارک کتان دو جیب، رنگ‌های سبز، یشمی، کرمی و زیتونی در اطلاعات محصول آمده‌اند. انتخاب رنگ را با لباس‌هایی شروع کنید که از قبل دارید. تیشرت یا پولوشرت ساده کمک می‌کند ترکیب را راحت‌تر هماهنگ کنید؛ اگر بالاتنه طرح‌دار است، میزان شلوغی کل پوشش را در نظر بگیرید. رنگ عکس ممکن است با نمایشگر شما کمی متفاوت دیده شود، پس اگر تفاوت دو رنگ نزدیک برایتان مهم است، توضیح یا عکس روشن‌تری بخواهید. رنگ‌های یک محصول را برای مدل دیگری قطعی فرض نکنید.</p>
-<h2>۶. نگهداری و بررسی پیش از شستشو</h2>
-<p>روش شستشو و خشک کردن را از برچسب همان شلوارک بگیرید. جیب‌ها را خالی کنید و دستور مربوط به دمای آب و اتو را بخوانید. برای مدل‌هایی که جزئیات جنس ندارند، پیش از شستشوی اول از فروشنده سؤال کنید؛ نام کتان یا کنفی به‌تنهایی دستور نگهداری کامل نیست. لباس را با توجه به توصیه برچسب و رنگ آن بشویید. پیش از ثبت سفارش نیز اندازه‌ها، رنگ انتخابی و اطلاعات نگهداری را مرور کنید تا خرید با نیاز روزانه و فرصت شما برای رسیدگی به لباس هماهنگ باشد.</p>`,
+    faq: [
+      ["شلوارک مردانه سایز بزرگ بر اساس وزن چه سایزی بخریم؟", "به عنوان راهنمای اولیه، 3XL برای حدود ۹۰ تا ۱۰۵ کیلوگرم، 4XL برای ۱۰۵ تا ۱۲۰ کیلوگرم و 5XL و 6XL برای بالای ۱۲۰ کیلوگرم مناسب‌اند. همیشه دور کمر شلوارک اندازه خودتان را با جدول محصول مقایسه کنید."],
+      ["قد استاندارد شلوارک مردانه چقدر باید باشد؟", "برای استفاده روزمره و بیرون، قدی که درست بالای زانو یا روی زانو بایستد خوش‌فرم‌تر و متعادل‌تر است."],
+      ["شلوارک کتان را چطور بشوییم؟", "با آب سرد و پشت‌ورو بشویید و در سایه خشک کنید تا رنگ پارچه و کش کمر فرم خود را حفظ کند."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, t) => (p(id) ? `<a href="${pUrl(ctx, p(id))}">${t}</a>` : t);
+      return `<p>شلوارک مردانه خوب باید در هوای گرم خنک باشد، هنگام نشستن روی ران کش نیاید و کمرش بدون فشار بایستد. در <a href="${ctx.BASE}/c/${ctx.CATEGORIES.shorts.slug}/">بخش شلوارک مردانه المارت</a> مدل‌های کتان دو جیب با قواره واقعی و سایز بزرگ تا {MAX:shorts} عرضه می‌شوند.</p>
+<h2>۱. جنس پارچه: کتان یا سبک روزمره؟</h2>
+<p>پارچه <b>کتان</b> روی پا ایستایی بهتری دارد، در سفر و بیرون مرتب دیده می‌شود و جیب‌هایش با گذاشتن موبایل یا کلید آویزان نمی‌شوند؛ مثل ${a(42724724, "شلوارک کتان دو جیب سایز بزرگ")}. مدل‌های سبک‌تر و نخی برای استفاده در خانه، گرمای شدید و استراحت بعد از تمرین راحت‌ترند.</p>
+<h2>۲. قد شلوارک و آزادی ران</h2>
+<p>قد شلوارک را روی یک شلوارک اندازه خودتان از بالای کمر تا لبه پایین متر بزنید. مدل‌هایی که تا نزدیک زانو می‌آیند برای آقایان قدبلند و سایزهای بزرگ تناسب بهتری می‌سازند و پا را کشیده‌تر نشان می‌دهند. آزادی دور ران مهم‌ترین معیار راحتی هنگام نشستن و رانندگی است.</p>
+<h2>۳. کمر کش و بنددار + راهنمای وزن</h2>
+<p>کمر کش و بنددار باعث می‌شود بعد از غذا یا در حرکت احساس فشار نداشته باشید. به عنوان نقطه شروع: سایز 3XL حدود ۹۰ تا ۱۰۵ کیلو، 4XL حدود ۱۰۵ تا ۱۲۰ کیلو و 5XL و 6XL بیش از ۱۲۰ کیلو را پوشش می‌دهند. برای مقایسه دقیق‌تر <a href="${ctx.BASE}/size/weight/">جدول سایز بر اساس وزن</a> و <a href="${ctx.BASE}/size-guide/">سایزیاب المارت</a> را ببینید.</p>
+<h2>۴. ست کردن و شستشو</h2>
+<p>شلوارک کرمی، زیتونی یا یشمی با <a href="${ctx.BASE}/c/tshirt/">تیشرت نخ پنبه</a> سفید یا مشکی ترکیبی بی‌دردسر می‌سازد. شلوارک را با آب سرد بشویید و در سایه خشک کنید.</p>`;
+    },
   },
   {
     slug: "boys-pants-guide",
@@ -1088,6 +1149,7 @@ const guides = [
   {
     slug: "winter-outfit-men",
     date: "2026-11-01",
+    seoTitle: "ست پاییزی و زمستانی مردانه؛ هودی، دورس و شلوار",
     title: "ست پاییزی و زمستانی مردانه؛ هودی، دورس و شلوار را چطور ست کنیم",
     desc: "چند ست ساده و گرم برای پاییز و زمستان: هودی با شلوار اسلش، دورس با کارگو، بلوز آستین‌بلند با شلوار بگ؛ قاعده رنگ، جنس و سایز برای لایه‌پوشی.",
     cats: ["sweat", "pants"],
@@ -1115,6 +1177,7 @@ const guides = [
   {
     slug: "fabric-guide",
     date: "2026-11-03",
+    seoTitle: "دورس چیست؟ فرق دورس، اسپان، نخ پنبه و کتان کشی",
     title: "دورس چیست؟ فرق دورس، اسپان، نخ پنبه، کتان کشی و توکرک در لباس مردانه",
     desc: "دورس چیست و دورس دو نخ با سه نخ چه فرقی دارد؟ فرق اسپان با نخ پنبه، نخ پنبه ۲۸ و ۳۰، کتان کشی، توکرک، کبریتی و سنگشور به زبان ساده با مثال از لباس‌های واقعی.",
     cats: ["sweat", "tshirt", "pants"],
@@ -1147,6 +1210,7 @@ const guides = [
   {
     slug: "yalda-outfit-men",
     date: "2026-11-03",
+    seoTitle: "لباس شب یلدا مردانه ۱۴۰۵ | ست یلدایی شیک",
     title: "لباس شب یلدا مردانه ۱۴۰۵؛ ست یلدایی شیک بدون طرح هندوانه (مردانه و پدر و پسر)",
     desc: "برای شب یلدا ۱۴۰۵ چه بپوشیم؟ ست یلدایی مردانه با رنگ‌های زرشکی، یشمی و مشکی، ست پدر و پسر برای عکس خانوادگی و پیشنهاد برای آقایان سایز بزرگ؛ با مدل‌های واقعی المارت.",
     cats: ["sweat", "polo", "kids"],
@@ -1173,6 +1237,7 @@ const guides = [
   {
     slug: "moroccan-fabric-men",
     date: "2026-11-03",
+    seoTitle: "پیراهن و تیشرت مراکشی مردانه؛ ویژگی‌های پارچه مراکشی",
     title: "پیراهن و تیشرت مراکشی مردانه؛ پارچه مراکشی چیست و برای چه کسی مناسب است",
     desc: "پارچه مراکشی در لباس مردانه چیست؟ ویژگی پیراهن یقه انگلیسی و تیشرت مراکشی، فرق آن با نخ پنبه، اتو و چروک، مناسب چه فصلی است و چطور بشوییم؛ با مدل‌های واقعی.",
     cats: ["shirt", "tshirt"],
@@ -1199,6 +1264,7 @@ const guides = [
   {
     slug: "slash-pants-style",
     date: "2026-11-03",
+    seoTitle: "شلوار اسلش با چی ست میشه؟ راهنمای ست مردانه",
     title: "شلوار اسلش با چی ست میشه؟ ست کردن شلوار اسلش مردانه با تیشرت، هودی و کفش",
     desc: "شلوار اسلش چیست و با چه بپوشیم؟ ست شلوار اسلش مردانه با تیشرت، پولوشرت، هودی و پیراهن، اینکه با شلوار اسلش چه کفشی بپوشیم و قاعده رنگ برای هر مدل اسلش.",
     cats: ["pants", "tshirt"],
@@ -1221,6 +1287,64 @@ const guides = [
 <ul><li><b>مشکی:</b> با همه رنگ‌ها؛ امن‌ترین انتخاب.</li><li><b>طوسی:</b> با سفید، مشکی، سرمه‌ای و یشمی.</li><li><b>یشمی و سبز ساقه‌ای:</b> با مشکی، سفید، کرمی و نسکافه‌ای؛ با قرمز و نارنجی نه.</li><li><b>کرمی و استخوانی:</b> با مشکی، سرمه‌ای، قهوه‌ای و یشمی.</li></ul>
 <h2>اسلش برای آقایان سایز بزرگ</h2>
 <p>اسلش با دمپای ساده یا مچی متعادل بهتر از دمپای خیلی تنگ است، چون تناسب بالا و پایین تنه را حفظ می‌کند. بالاتنه را تیره و اندازه بپوشید. <a href="${ctx.BASE}/big-size/pants/">شلوار اسلش سایز بزرگ</a> را ببینید.</p>`;
+    },
+  },
+  {
+    slug: "big-size-winter-men",
+    date: "2026-11-26",
+    seoTitle: "هودی و دورس سایز بزرگ مردانه؛ راهنمای انتخاب تا {MAX}",
+    title: "راهنمای خرید هودی، دورس و سویشرت سایز بزرگ مردانه (3XL تا {MAX})",
+    desc: "چطور هودی و دورس سایز بزرگ مردانه بخریم که شیک بایستد؟ مقایسه دورس دو نخ، سه‌نخ و توکرک، جدول سایز بر اساس وزن و پیشنهاد ست زمستانی.",
+    cats: ["sweat", "pants"],
+    faq: [
+      ["برای وزن ۱۱۰ تا ۱۳۰ کیلو هودی یا دورس چه سایزی بگیریم؟", "در جدول سایز المارت وزن ۱۰۵ تا ۱۱۸ کیلوگرم معمولاً با 4XL و ۱۱۸ تا ۱۳۲ کیلوگرم با 5XL مطابقت دارد. اگر روی لباس دیگر می‌پوشید، عرض سینه مدل را با جدول صفحه محصول مقایسه کنید."],
+      ["برای آقایان شکم‌دار هودی بهتر است یا سویشرت زیپ‌دار؟", "هودی تک‌لایه برای ظاهر یکدست و سویشرت تمام‌زیپ (وقتی باز پوشیده شود) برای ایجاد خط عمودی و لاغرتر نشان دادن بالاتنه انتخاب‌های بسیار خوبی هستند."],
+      ["دورس دو نخ بخریم یا توکرک؟", "دورس دو نخ برای پاییز، فضاهای سرپوشیده و لایه‌پوشی سبک‌تر است؛ دورس سه‌نخ و توکرک برای سرمای زمستان و استفاده در فضای باز گرمای بیشتری می‌دهد."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, t) => (p(id) ? `<a href="${pUrl(ctx, p(id))}">${t}</a>` : t);
+      return `<p>پیدا کردن لباس گرم مردانه در سایزهای بزرگ که هم سینه و شکم را راحت بپوشاند و هم روی سرشانه نیفتد سخت است. این راهنما مخصوص آقایانی است که در پاییز و زمستان دنبال هودی، دورس و سویشرت سایز بزرگ از 3XL تا {MAX} هستند و می‌خواهند بدون ظاهر حجیم، گرم و مرتب بپوشند.</p>
+<h2>۱. انتخاب پارچه: دو نخ، سه‌نخ یا توکرک؟</h2>
+<table><thead><tr><th>جنس</th><th>ضخامت و گرما</th><th>بهترین کاربرد</th></tr></thead><tbody>
+<tr><td>دورس دو نخ لاکرا</td><td>متوسط و ایستا</td><td>پاییز، محیط کار، پوشیدن زیر کاپشن</td></tr>
+<tr><td>دورس سه‌نخ</td><td>ضخیم و سنگین</td><td>هوای سرد و استفاده بیرون بدون کاپشن</td></tr>
+<tr><td>توکرک (داخل کرکی)</td><td>نرم و بسیار گرم</td><td>زمستان، پیاده‌روی سرد، سفر</td></tr>
+</tbody></table>
+<p>پارچه‌های خیلی شل یا کشباف نازک برجستگی شکم را بیشتر نشان می‌دهند؛ دورس دو نخ و توکرک ایستایی بهتری روی تن می‌سازند. برای نمونه ${a(63645940, "هودی مردانه مشکی ساده")} از دورس توکرک لاکرادار تا 4XL تولید شده است.</p>
+<h2>۲. قواره و جزئیاتی که اندام را متناسب‌تر نشان می‌دهد</h2>
+<ul><li><b>رنگ‌های پایه و تیره:</b> مشکی، سرمه‌ای و طوسی تیره برای بالاتنه امن‌ترین انتخاب‌اند.</li><li><b>قد لباس:</b> در سایز 4XL قد استاندارد بالاتنه حدود ۸۰ سانتی‌متر است تا موقع نشستن بالا نرود.</li><li><b>یقه نیم‌زیپ یا کلاه متعادل:</b> نیم‌زیپ نگاه را به سمت یقه می‌برد و برای آقایانی که نمی‌خواهند لباسشان خیلی اسپرت یا بسته باشد مناسب است؛ مدل ${a(64343889, "دورس نیم‌زیپ پشت‌چاپ")} و مجموعه <a href="${ctx.BASE}/big-size/sweatshirt/">هودی و دورس سایز بزرگ</a> را ببینید.</li></ul>
+<h2>۳. جدول وزن و اندازه برای سایزهای بزرگ</h2>
+<table><thead><tr><th>سایز</th><th>قد پیشنهادی</th><th>وزن (کیلوگرم)</th><th>عرض سینه حدود</th></tr></thead><tbody>${SIZE_ROWS.slice(3).map((r) => `<tr><td style="direction:ltr;font-weight:800"><a href="${ctx.BASE}/size/${r[0].toLowerCase()}/">${r[0]}</a></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]} سانت</td></tr>`).join("")}</tbody></table>
+<p>اگر بین دو سایز هستید، به صفحه <a href="${ctx.BASE}/size/weight/">سایز بر اساس وزن</a> بروید یا عرض سینه لباس راحت خودتان را با جدول اندازه همان محصول مقایسه کنید.</p>
+<h2>۴. ست زمستانی سایز بزرگ</h2>
+<p>بهترین ترکیب روزمره، هودی یا دورس تیره همراه با ${a(54125344, "شلوار اسلش کتان کشی سایز بزرگ")} یا ${a(42728145, "شلوار اسلش اسپان نخی سایز بزرگ")} است؛ کمر کشی و قد بلندتر شلوارهای سایز بزرگ المارت، راحتی کامل هنگام نشستن و رانندگی را تضمین می‌کند. همه مدل‌های پایین‌تنه را در <a href="${ctx.BASE}/big-size/pants/">شلوار اسلش سایز بزرگ</a> ببینید.</p>`;
+    },
+  },
+  {
+    slug: "gift-for-men-clothing",
+    date: "2026-11-26",
+    seoTitle: "راهنمای خرید لباس هدیه مردانه با قد و وزن",
+    title: "راهنمای خرید لباس هدیه مردانه؛ انتخاب سایز دقیق فقط با قد و وزن",
+    desc: "می‌خواهید برای همسر، پدر یا برادر لباس هدیه بخرید ولی سایزش را دقیق نمی‌دانید؟ راهنمای انتخاب مدل کم‌ریسک و پیدا کردن سایز فقط با قد و وزن.",
+    cats: ["sweat", "polo", "tshirt"],
+    faq: [
+      ["اگر فقط قد و وزن طرف مقابل را بدانیم چطور سایز لباس هدیه را انتخاب کنیم؟", "با جدول وزن به سایز یا سایزیاب ۱۰ ثانیه‌ای المارت، وزن و قد تقریبی را وارد کنید. برای مثال وزن ۷۵ تا ۸۵ کیلو معمولاً XL و ۸۵ تا ۹۵ کیلو معمولاً 2XL است."],
+      ["کم‌ریسک‌ترین لباس مردانه برای هدیه چیست؟", "پولوشرت نیم‌زیپ، دورس ساده یا هودی بیسیک در رنگ‌های مشکی، سرمه‌ای یا طوسی؛ چون قواره استاندارد دارند و با شلوارهای روزمره به‌راحتی ست می‌شوند."],
+      ["اگر سایز هدیه اندازه نبود امکان تعویض وجود دارد؟", "در صورت استفاده‌نشدن و سالم بودن برچسب و بسته‌بندی، هم در خرید باسلام و هم در سفارش مستقیم امکان بررسی و هماهنگی تعویض سایز طبق صفحه ارسال و مرجوعی وجود دارد."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, t) => (p(id) ? `<a href="${pUrl(ctx, p(id))}">${t}</a>` : t);
+      return `<p>بزرگ‌ترین نگرانی هنگام خرید لباس هدیه برای همسر، پدر یا برادر این است که «اگر سایزش نخورد چه کار کنم؟» خوشبختانه اگر قد و وزن تقریبی او را بدانید و مدلی با قواره مطمئن انتخاب کنید، احتمال اشتباه به حداقل می‌رسد.</p>
+<h2>۱. پیدا کردن سایز فقط با وزن و قد</h2>
+<table><thead><tr><th>وزن تقریبی</th><th>قد معمول</th><th>سایز پیشنهادی</th></tr></thead><tbody>${SIZE_ROWS.map((r) => `<tr><td>${r[2]} کیلو</td><td>${r[1]} سانت</td><td style="direction:ltr;font-weight:800"><a href="${ctx.BASE}/size/${r[0].toLowerCase()}/">${r[0]}</a></td></tr>`).join("")}</tbody></table>
+<p>اگر فرد موردنظر شکم دارد یا لباس آزاد دوست دارد، یک سایز بالاتر بگیرید. همچنین می‌توانید دقیق‌تر در <a href="${ctx.BASE}/size-guide/">سایزیاب آنلاین المارت</a> عددها را بررسی کنید یا مدل‌های بالای 3XL را در <a href="${ctx.BASE}/big-size/">بخش سایز بزرگ</a> ببینید.</p>
+<h2>۲. کم‌ریسک‌ترین مدل‌ها برای هدیه</h2>
+<ul><li><b>برای محیط کار و مهمانی:</b> ${a(53765502, "پولوشرت نیم‌زیپ گلدوزی‌شده")} یا ${a(53614296, "تیشرت یقه انگلیسی خنک")} ظاهر مرتب‌تری از تیشرت ساده دارند و بین مردان مختلف بسیار محبوب‌اند.</li><li><b>برای پاییز و زمستان:</b> ${a(60191258, "دورس دو نخ لاکرا ۱۰۰٪ پنبه")} یا ${a(60937967, "سویشرت کلاه‌دار تمام‌زیپ")} انتخاب‌های گرم و کاربردی هستند؛ مدل‌های تمام‌زیپ از نظر تن‌خور انعطاف بیشتری دارند.</li><li><b>برای هدیه کامل و بی‌دردسر:</b> ${a(60209573, "ست بلوز و شلوار یقه‌دار کبریتی")} بالا و پایین هماهنگ را یک‌جا دارد.</li></ul>
+<h2>۳. چه رنگ‌هایی همیشه جواب می‌دهند؟</h2>
+<p>اگر سلیقه دقیق رنگی را نمی‌دانید، سراغ رنگ‌های پایه بروید: <b>مشکی، سرمه‌ای، طوسی یا کرمی</b>. این رنگ‌ها تقریباً با هر شلوار و کفشی که در کمد است ست می‌شوند. برای دیدن مدل‌های تفکیک‌شده بر اساس رنگ می‌توانید از <a href="${ctx.BASE}/c/sweatshirt/black/">دورس و هودی مشکی</a> یا <a href="${ctx.BASE}/c/polo/navy/">پولوشرت سرمه‌ای</a> شروع کنید.</p>
+<p>پیش از نهایی کردن خرید، شرایط تعویض سایز را در صفحه <a href="${ctx.BASE}/shipping-returns/">ارسال و مرجوعی</a> بخوانید یا در <a href="${ctx.BASE}/contact/">تماس با المارت</a> با ما مشورت کنید.</p>`;
     },
   },
 ];
@@ -1253,14 +1377,38 @@ function guide(ctx, g) {
   const own = ctx.products.filter((p) => g.cats.includes(p.cat) && p.inStock && (g.slug !== "big-size-men" || isBig(p))).sort(best);
   const pairCats = [...new Set(g.cats.flatMap((c) => PAIRS[c] || []))];
   const prods = [...own, ...ctx.products.filter((p) => p.inStock && pairCats.includes(p.cat) && !own.includes(p)).sort(best)].slice(0, 4);
+  const cov = guideCover(ctx, g);
+  const ogImg = cov ? `${ctx.SITE_URL}/assets/og/${cov.id}.jpg` : `${ctx.SITE_URL}/assets/og/site.jpg`;
+  const htmlBody = g.html(ctx);
+  const wordCount = htmlBody.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  const datePub = g.date || "2026-10-12";
+  const dateMod = g.updated || g.date || "2026-11-26";
+  const schemaList = [
+    crumbSchema(ctx, items),
+    {
+      "@context": "https://schema.org", "@type": "Article",
+      headline: g.title, description: g.desc, inLanguage: "fa-IR",
+      image: [ogImg],
+      wordCount,
+      author: { "@type": "Organization", name: STORE.name, url: `${ctx.SITE_URL}/` },
+      publisher: { "@type": "Organization", "@id": `${ctx.SITE_URL}/#store`, name: STORE.name, logo: { "@type": "ImageObject", url: `${ctx.SITE_URL}/assets/img/icon-512.png` } },
+      mainEntityOfPage: `${ctx.SITE_URL}/guide/${g.slug}/`,
+      datePublished: datePub,
+      dateModified: dateMod,
+    },
+    ...(g.faq && g.faq.length ? [faqSchema(g.faq)] : []),
+  ];
   return layout(ctx, {
     path: `/guide/${g.slug}/`,
-    title: g.title,
+    title: g.seoTitle || g.title,
     desc: g.desc,
     ogType: "article",
-    schema: [crumbSchema(ctx, items), { "@context": "https://schema.org", "@type": "Article", headline: g.title, description: g.desc, inLanguage: "fa-IR", author: { "@type": "Organization", name: STORE.name }, publisher: { "@id": `${ctx.SITE_URL}/#store` }, mainEntityOfPage: `${ctx.SITE_URL}/guide/${g.slug}/`, datePublished: g.date || "2026-10-12" }],
-    body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1><p class="gmeta">${fa(readMin(ctx, g))} دقیقه مطالعه · ${new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(g.date || "2026-10-12"))}</p>${g.html(ctx)}${(g.cats || []).includes("shoes") && sz.shoeChart(ctx) ? `<p>جدول دقیق: <a href="${ctx.BASE}/size/shoes/">سایز کفش مردانه به سانتی‌متر</a></p>` : ""}${(g.cats || []).some((k) => sz.bigCats(ctx).includes(k)) ? `<p>سایز بزرگ: ${(g.cats || []).filter((k) => sz.bigCats(ctx).includes(k)).map((k) => `<a href="${ctx.BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join(" · ")}</p>` : ""}</div></article>
-<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>
+    image: ogImg,
+    extraHead: `<meta property="article:published_time" content="${datePub}">\n<meta property="article:modified_time" content="${dateMod}">`,
+    schema: schemaList,
+    body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1><p class="gmeta">${fa(readMin(ctx, g))} دقیقه مطالعه · ${new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(dateMod))}</p>${htmlBody}${(g.cats || []).includes("shoes") && sz.shoeChart(ctx) ? `<p>جدول دقیق: <a href="${ctx.BASE}/size/shoes/">سایز کفش مردانه به سانتی‌متر</a></p>` : ""}${(g.cats || []).some((k) => sz.bigCats(ctx).includes(k)) ? `<p>سایز بزرگ: ${(g.cats || []).filter((k) => sz.bigCats(ctx).includes(k)).map((k) => `<a href="${ctx.BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join(" · ")}</p>` : ""}</div></article>
+${g.faq && g.faq.length ? `<section class="sec-sm bg-cream"><div class="wrap faq"><h2>سوالات پرتکرار</h2>${g.faq.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}
+<section class="sec-sm${g.faq && g.faq.length ? "" : " bg-cream"}"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>راهنماهای بیشتر</h2><ul>${guides.filter((x) => x.slug !== g.slug).map((x) => `<li><a href="${ctx.BASE}/guide/${x.slug}/">${x.title}</a></li>`).join("")}</ul></div></section>`,
   });
 }
@@ -1287,25 +1435,166 @@ function notFound(ctx) {
 }
 
 function llms(ctx) {
-  return fillSizes(ctx, `# ${STORE.name} (${STORE.latin})
-> ${STORE.full} — ${STORE.bazaar}، ${fa(STORE.years)} سال سابقه. پوشاک مردانه روزمره و سایز بزرگ تا {MAX}. خرید از طریق غرفه باسلام: ${STORE.basalam}
+  const live = ctx.products.filter((p) => p.inStock);
+  const rv = ctx.storeReviews;
+  const cats = Object.entries(ctx.CATEGORIES).map(([k, c]) => {
+    const list = live.filter((p) => p.cat === k);
+    if (!list.length) return null;
+    const min = Math.min(...list.map((p) => p.price)), max = Math.max(...list.map((p) => p.price));
+    return `- [${c.name}](${ctx.SITE_URL}/c/${c.slug}/): ${fa(list.length)} مدل موجود، قیمت از ${fa(min)} تا ${fa(max)} تومان`;
+  }).filter(Boolean).join("\n");
+  const styles = sty.stylePages(ctx).map((x) => `- [${x.h1}](${ctx.SITE_URL}${sty.stylePath(ctx, x)})`).join("\n");
+  const guideLinks = guides.map((g) => `- [${g.title}](${ctx.SITE_URL}/guide/${g.slug}/): ${g.desc}`).join("\n");
+  return fillSizes(ctx, `# ${STORE.name} (${STORE.latin}) — پوشاک مردانه بازار تبریز
+> ${STORE.full} در ${STORE.bazaar} با {YEARS} سال سابقه خانوادگی. مستقل از فروشگاه‌های همنام در سایر شهرها (وبسایت رسمی: ${ctx.SITE_URL}). تخصصی در تیشرت نخ پنبه، شلوار اسلش و راحتی، هودی و دورس و پوشاک سایز بزرگ مردانه تا {MAX}.
 
-## صفحات
-- ${ctx.SITE_URL}/shop/ : همه محصولات
-- ${ctx.SITE_URL}/big-size/ : لباس سایز بزرگ مردانه
-- ${ctx.SITE_URL}/size-guide/ : جدول سایز و سایزیاب
-- ${ctx.SITE_URL}/faq/ : ارسال و پرداخت
-- ${ctx.SITE_URL}/wholesale/ : خرید عمده پوشاک مردانه
-${sz.sizePages.map((z) => `- ${ctx.SITE_URL}/size/${z.toLowerCase()}/ : سایز ${z} چند کیلو است`).join("\n")}
-${sz.bigCats(ctx).map((k) => `- ${ctx.SITE_URL}/big-size/${ctx.CATEGORIES[k].slug}/ : ${sz.BIG_CATS[k].h1}`).join("\n")}${sz.shoeChart(ctx) ? `\n- ${ctx.SITE_URL}/size/shoes/ : جدول سایز کفش مردانه` : ""}
+## اطلاعات رسمی فروشگاه (Verified Store Facts)
+- نام برند و دامنه رسمی: ${STORE.name} (${STORE.latin}) — ${ctx.SITE_URL}/
+- نشانی حضوری: ${STORE.address}
+- تلفن ثبت سفارش و مشاوره: ${STORE.phones.map(fa0).join(" و ")}
+- غرفه خرید آنلاین امن: ${STORE.basalam}${rv && rv.count ? ` (امتیاز ${fa(rv.average)} از ۵ از ${fa(rv.count)} نظر خریداران)` : ""}
+- اینستاگرام و روبیکا: ${STORE.instagram} | ${STORE.rubika}
+- ارسال و پرداخت: ارسال از روز اول کاری به سراسر ایران (پست پیشتاز/سفارشی) و پیک موتوری در تبریز؛ خرید امن با ضمانت باسلام یا سفارش مستقیم با کد پیگیری EL-XXXX.
+- کد تأیید دامنه اینماد: ۲۵۳۹۴۵۷۵
+- نسخه کامل برای هوش مصنوعی: ${ctx.SITE_URL}/llms-full.txt | کاتالوگ JSON: ${ctx.SITE_URL}/assets/ai-catalog.json
 
-## محصولات
-${ctx.products.map((p) => `- ${p.title} — ${fa(p.price)} تومان${p.sizes.length ? ` — سایز ${p.sizes.join("/")}` : ""}: ${ctx.SITE_URL}/p/${p.id}/`).join("\n")}
+## صفحات اصلی و ابزارها
+- [فروشگاه کامل](${ctx.SITE_URL}/shop/): همه ${fa(ctx.products.length)} محصول با فیلتر سایز و قیمت
+- [لباس سایز بزرگ مردانه](${ctx.SITE_URL}/big-size/): کالکشن تخصصی 3XL تا {MAX}
+- [لباس سایز بزرگ مردانه در تبریز](${ctx.SITE_URL}/big-size/tabriz/): خرید حضوری در بازار تبریز و ارسال سراسری
+- [فروشگاه لباس مردانه در تبریز](${ctx.SITE_URL}/tabriz-bazaar/): معرفی حجره و خرید حضوری
+- [سایزیاب آنلاین و جدول سایز](${ctx.SITE_URL}/size-guide/): پیشنهاد سایز بر اساس قد و وزن (L تا {MAX})
+- [سایز لباس مردانه بر اساس وزن](${ctx.SITE_URL}/size/weight/): جدول وزن ۶۵ تا ۱۵۰ کیلوگرم
+- [تولیدی و پخش عمده پوشاک مردانه تبریز](${ctx.SITE_URL}/wholesale/)
+- [ارسال، مرجوعی و سفارش مستقیم](${ctx.SITE_URL}/shipping-returns/)
+- [سوالات متداول](${ctx.SITE_URL}/faq/)
+- [تماس با المارت](${ctx.SITE_URL}/contact/)
+
+## دسته‌بندی محصولات
+${cats}
+
+## صفحات سایز بزرگ و سایز بر اساس وزن
+${sz.bigCats(ctx).map((k) => `- [${sz.BIG_CATS[k].h1}](${ctx.SITE_URL}/big-size/${ctx.CATEGORIES[k].slug}/)`).join("\n")}
+${sz.sizePages.map((z) => `- [سایز ${z} چند کیلو است؟](${ctx.SITE_URL}/size/${z.toLowerCase()}/)`).join("\n")}${sz.shoeChart(ctx) ? `\n- [جدول سایز کفش مردانه به سانتی‌متر](${ctx.SITE_URL}/size/shoes/)` : ""}
+
+## صفحات مدل و استایل
+${styles}
+
+## راهنماهای خرید تخصصی
+${guideLinks}
+
+## فهرست محصولات (${fa(ctx.products.length)} مدل)
+${ctx.products.map((p) => { const szs = liveSizes(p); return `- [${p.title}](${ctx.SITE_URL}/p/${p.id}/) — ${fa(p.price)} تومان${szs.length ? ` — سایز ${szs.join("/")}` : ""}${p.material ? ` — ${p.material}` : ""}`; }).join("\n")}
 `);
 }
 
+function llmsFull(ctx) {
+  const live = ctx.products.filter((p) => p.inStock);
+  const rv = ctx.storeReviews;
+  const sc = sz.shoeChart(ctx);
+  const pantsRows = [
+    ["L – XL", "۶۵ تا ۸۵", "۱۰۰"],
+    ["2XL", "۸۵ تا ۹۵", "۱۰۵"],
+    ["3XL", "۹۰ تا ۱۰۵", "۱۱۰"],
+    ["4XL", "۱۰۵ تا ۱۲۰", "۱۱۰"],
+    ["5XL – 6XL", "۱۲۰ به بالا", "۱۱۰"],
+  ];
+  const allFaq = [...HOME_FAQ, ...FAQ_FULL.filter(([q]) => !HOME_FAQ.some(([hq]) => hq === q))];
+  const prodDetails = ctx.products.map((p) => {
+    const szs = liveSizes(p);
+    const cols = p.colors.filter((_, i) => p.colorInStock.includes(i));
+    const m = measures(p);
+    const msrTxt = m ? m.rows.map(([z, v]) => `${z}: ${m.cols.map((c) => v[c] ? `${c} ${fa0(v[c])}` : null).filter(Boolean).join("، ")}`).join(" | ") : "";
+    return [
+      `### ${p.title}`,
+      `- شناسه: ${p.id} | دسته: ${catOf(ctx, p).name} | وضعیت: ${p.inStock ? "موجود" : "ناموجود"}`,
+      `- قیمت: ${fa(p.price)} تومان (${fa(p.price * 10)} ریال)`,
+      ...(p.material ? [`- جنس: ${p.material}`] : []),
+      ...(szs.length ? [`- سایزهای موجود: ${szs.join("، ")}`] : []),
+      ...(cols.length ? [`- رنگ‌های موجود: ${cols.join("، ")}`] : []),
+      ...(msrTxt ? [`- اندازه‌های واقعی (سانتی‌متر): ${msrTxt}`] : []),
+      ...(p.rating ? [`- امتیاز خریداران: ${fa(p.rating.avg)} از ۵ (${fa(p.rating.count)} نظر)`] : []),
+      `- لینک صفحه: ${ctx.SITE_URL}/p/${p.id}/`,
+      `- لینک خرید باسلام: ${p.buyUrl}`,
+    ].join("\n");
+  }).join("\n\n");
+
+  return fillSizes(ctx, `# ${STORE.name} (${STORE.latin}) — مرجع کامل برای موتورهای جستجو و هوش مصنوعی
+> ${STORE.full} در ${STORE.bazaar} ({YEARS} سال سابقه). مستقل از فروشگاه‌های همنام در شهرهای دیگر. وبسایت رسمی: ${ctx.SITE_URL}/
+
+## ۱. معرفی و اعتبار فروشگاه
+- نام: ${STORE.name} (${STORE.latin}) — ${STORE.full}
+- نشانی حجره: ${STORE.address} (مختصات جغرافیایی: 38.0805, 46.2940)
+- شماره‌های تماس و پیامک سفارش: ${STORE.phones.map(fa0).join(" ، ")}
+- خرید آنلاین با ضمانت: ${STORE.basalam}${rv && rv.count ? ` — امتیاز کل غرفه: ${fa(rv.average)} از ۵ بر اساس ${fa(rv.count)} امتیاز خریداران واقعی در باسلام` : ""}
+- شبکه‌های اجتماعی: اینستاگرام ${STORE.instagram} | کانال روبیکا ${STORE.rubika} | سفارش در روبیکا ${STORE.rubikaOrder}
+- مدل موجود: ${fa(live.length)} مدل آماده ارسال از ${fa(ctx.products.length)} محصول، تا سایز {MAX}.
+- ارسال: از روز اول کاری پس از ثبت سفارش با پست پیشتاز یا سفارشی به سراسر ایران و پیک موتوری در تبریز.
+
+## ۲. جدول راهنمای سایز مردانه (تیشرت، پولوشرت، هودی و پیراهن)
+| سایز | قد (سانتی‌متر) | وزن (کیلوگرم) | عرض سینه (سانت) | قد لباس (سانت) |
+|---|---|---|---|---|
+${SIZE_ROWS.map((r) => `| ${r[0]} | ${r[1]} | ${r[2]} | ${r[3]} | ${r[4]} |`).join("\n")}
+
+## ۳. جدول راهنمای سایز شلوار اسلش و شلوارک
+| سایز | وزن تقریبی (کیلوگرم) | قد شلوار (سانتی‌متر) |
+|---|---|---|
+${pantsRows.map((r) => `| ${r[0]} | ${r[1]} | ${r[2]} |`).join("\n")}
+${sc ? `\n## ۴. جدول سایز کفش اسپرت مردانه (مدل ${sc.p.title})\n| سایز | طول پا (سانتی‌متر) |\n|---|---|\n${sc.rows.map(([z, v]) => `| ${fa0(z)} | ${fa0(v["طول پا"])} |`).join("\n")}\n` : ""}
+## ۵. پرسش و پاسخ‌های رسمی فروشگاه
+${allFaq.map(([q, a]) => `**${q}**\n${a}`).join("\n\n")}
+
+## ۶. خلاصه راهنماهای خرید المارت
+${guides.map((g) => `- **${g.title}** (${ctx.SITE_URL}/guide/${g.slug}/): ${g.desc}`).join("\n")}
+
+## ۷. کاتالوگ کامل محصولات
+${prodDetails}
+`);
+}
+
+function aiCatalog(ctx) {
+  const rv = ctx.storeReviews;
+  const maxMap = sizeMax(ctx);
+  return {
+    generatedAt: ctx.syncedAt || new Date().toISOString(),
+    store: {
+      name: STORE.name,
+      latin: STORE.latin,
+      url: `${ctx.SITE_URL}/`,
+      basalam: STORE.basalam,
+      instagram: STORE.instagram,
+      rubika: STORE.rubika,
+      phones: STORE.phones,
+      address: STORE.address,
+      city: STORE.city,
+      yearsActive: STORE.years,
+      maxSize: maxMap[""],
+      rating: rv && rv.count ? { average: rv.average, count: rv.count, bestRating: 5 } : null,
+    },
+    products: ctx.products.map((p) => {
+      const m = measures(p);
+      return {
+        id: p.id,
+        title: p.title,
+        category: catOf(ctx, p).name,
+        categorySlug: catOf(ctx, p).slug,
+        priceToman: p.price,
+        priceIRR: p.price * 10,
+        inStock: p.inStock,
+        liveSizes: liveSizes(p),
+        colorsInStock: p.colors.filter((_, i) => p.colorInStock.includes(i)),
+        material: p.material || null,
+        measurements: m ? Object.fromEntries(m.rows) : null,
+        rating: p.rating,
+        url: `${ctx.SITE_URL}/p/${p.id}/`,
+        buyUrl: p.buyUrl,
+      };
+    }),
+  };
+}
+
 const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
-const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, STORE, I, fa0 });
+const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, faqSchema, STORE, I, fa0, fa });
 const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS });
 
 const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });
@@ -1313,4 +1602,4 @@ const gar = require("./pages-garments")({ layout, crumbs, crumbSchema, faqSchema
 const wt = require("./pages-weight")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, SIZE_ROWS, STORE, fa, fa0, esc });
 const sty = require("./pages-styles")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
 
-module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms };
+module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), aiCatalog, home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms, llmsFull };

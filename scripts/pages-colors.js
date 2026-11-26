@@ -110,9 +110,18 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       [`قیمت ${h1} چقدر است؟`, nIn ? `قیمت مدل‌های موجود ${noun} ${g} از ${fa(min)} تا ${fa(max)} تومان است. قیمت نهایی را در باسلام بررسی کنید.` : `این مدل‌ها فعلاً ناموجودند. قیمت و موجودی نهایی را در صفحه محصول بررسی کنید.`],
       [`${noun} ${g} را از کجا بخرم؟`, `المارت ${fa(STORE.years)} سال سابقه در ${STORE.bazaar} دارد. مدل مورد نظر را باز کنید، سایز و رنگ ${g} را انتخاب کنید و از باسلام یا با «سفارش مستقیم» خرید کنید.`],
     ];
+    const titleOptions = nIn >= MIN
+      ? [
+          `خرید ${h1}${alt} | ${fa(nIn)} مدل از ${fa(min)} تومان`,
+          `خرید ${h1}${alt} | از ${fa(min)} تومان`,
+          `خرید ${h1} | از ${fa(min)} تومان`,
+          `خرید ${h1}`,
+        ]
+      : [`${h1}${alt} | قیمت و مدل‌ها`, `${h1} | قیمت و مدل‌ها`];
+    const pageTitle = titleOptions.find((t) => t.length + 9 <= 68) || titleOptions[titleOptions.length - 1];
     return layout(ctx, {
       path,
-      title: nIn >= MIN ? `خرید ${h1}${alt} | ${fa(nIn)} مدل از ${fa(min)} تومان` : `${h1}${alt} | قیمت و مدل‌ها`,
+      title: pageTitle,
       desc: nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، از بازار تبریز. مشاهده مدل‌ها، قیمت و خرید از باسلام.` : `مدل‌های ${noun} ${g}${alt} ${NOUN[cat][1]} المارت از بازار تبریز؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],

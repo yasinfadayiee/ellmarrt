@@ -93,9 +93,17 @@ ${list.length ? `<section class="sec-sm" id="size-products"><div class="wrap"><d
       [`قیمت ${B.h1} چقدر است؟`, `قیمت ${fa(list.length)} مدل موجود از ${fa(min)} تا ${fa(max)} تومان است و خرید از غرفه رسمی المارت در باسلام انجام می‌شود.`],
       [`برای وزن ${w(top)} کیلو چه سایزی بگیرم؟`, `در جدول سایز المارت این وزن با سایز ${top} جور است. جدول دقیق هر مدل در صفحه همان محصول، زیر انتخاب سایز آمده است.`],
     ];
+    const sizesRange = sizes.length > 2 ? `${sizes[0]} تا ${top}` : sizes.join("، ");
+    const titleOpts = [
+      `${B.h1} | ${sizesRange} از ${fa(min)} تومان`,
+      `${B.h1} | ${sizesRange}`,
+      `${B.h1} از ${fa(min)} تومان`,
+      B.h1,
+    ];
+    const pageTitle = titleOpts.find((t) => t.length + 9 <= 68) || titleOpts[titleOpts.length - 1];
     return layout(ctx, {
       path,
-      title: `${B.h1} | ${sizes.length > 2 ? `${sizes[0]} تا ${top}` : sizes.join("، ")} از ${fa(min)} تومان`,
+      title: pageTitle,
       desc: `${fa(list.length)} مدل ${B.what} مردانه در سایز ${sizes[0]} تا ${top}، موجود و آماده ارسال از بازار تبریز. اندازه واقعی هر سایز، قیمت از ${fa(min)} تومان و خرید امن از باسلام.`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
@@ -202,7 +210,7 @@ ${(has.length ? has : shoes).length ? `<section class="sec-sm"><div class="wrap"
     ];
     return layout(ctx, {
       path,
-      title: "تولیدی و پخش عمده پوشاک مردانه تبریز | تیشرت، شلوار اسلش، هودی از بازار تبریز",
+      title: "تولیدی و پخش عمده پوشاک مردانه تبریز از بازار تبریز",
       desc: `پخش عمده پوشاک مردانه از ${STORE.bazaar}: ${fa(live.length)} مدل تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ تا {MAX}. قیمت عمده با تماس یا پیام، ارسال به سراسر ایران.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa)],
       body: `${crumbs(ctx, items)}

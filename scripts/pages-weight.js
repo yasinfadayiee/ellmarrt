@@ -39,7 +39,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     ];
     return layout(ctx, {
       path,
-      title: "سایز لباس مردانه بر اساس وزن | جدول وزن به سایز تیشرت و شلوار (L تا {MAX})",
+      title: "سایز لباس مردانه بر اساس وزن | جدول L تا {MAX}",
       desc: `جدول سایز لباس مردانه بر اساس وزن: برای هر وزن از ${fa0(WEIGHTS[0])} تا ${fa0(WEIGHTS[WEIGHTS.length - 1])} کیلو سایز تیشرت، هودی و شلوار را ببینید؛ از L تا {MAX} با اندازه واقعی مدل‌های المارت.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
@@ -101,7 +101,7 @@ ${list.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"
     return layout(ctx, {
       path,
       title: "لباس سایز بزرگ مردانه در تبریز | تیشرت، شلوار و هودی تا {MAX} | المارت",
-      desc: `خرید لباس سایز بزرگ مردانه در تبریز از غرفه المارت در بازار سرپوشیده: ${fa(list.length)} مدل تیشرت، شلوار اسلش و هودی از 3XL تا {MAX}، از ${fa(min)} تومان؛ خرید حضوری، پیک در تبریز و ارسال به سراسر ایران.`,
+      desc: `لباس سایز بزرگ مردانه در تبریز از بازار سرپوشیده: ${fa(list.length)} مدل تیشرت، شلوار اسلش و هودی 3XL تا {MAX} از ${fa(min)} تومان؛ خرید حضوری و ارسال سراسری.`,
       schema: [crumbSchema(ctx, items), faqSchema(qa), itemList(ctx, list)],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>لباس سایز بزرگ مردانه در تبریز</h1><p>المارت ${fa(STORE.years)} سال است در بازار سرپوشیده تبریز پوشاک مردانه می‌فروشد و سایز بزرگ واقعی از 3XL تا {MAX} دارد. الان <b>${fa(list.length)} مدل</b> در سایز بزرگ موجود است.</p></header>
