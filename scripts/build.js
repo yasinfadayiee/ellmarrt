@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { load } = require("./catalog");
+const CURATED = require("../data/curated");
 const pages = require("./pages");
 
 const ROOT = path.join(__dirname, "..");
@@ -105,13 +106,24 @@ write("404.html", pages.notFound(ctx));
 
 // pages that were in the last sitemap but are gone now (stock ran out, product removed): redirect to the closest
 // parent page that exists, so links and rankings are not thrown away. Not listed in the new sitemap.
+const KNOWN_RETIRED = ["/p/46296076/", "/p/44437851/"];
+const SPECIFIC_REDIRECTS = {
+  "/p/46296076/": "/c/tshirt/boxy/",
+  "/p/44437851/": "/c/pants/cargo/",
+};
 const live = new Set(urls.map((u) => u.loc.replace(SITE_URL, "") || "/"));
 const retired = [];
-for (const p of ctx.prev) {
+for (const p of new Set([...ctx.prev, ...KNOWN_RETIRED])) {
   if (live.has(p) || !p.startsWith("/") || p.includes("?")) continue;
   let to = p.replace(/[^/]+\/$/, "");
   while (to.length > 1 && !live.has(to)) to = to.replace(/[^/]+\/$/, "");
-  if (p.startsWith("/p/")) to = "/shop/";
+  if (p.startsWith("/p/")) {
+    const id = (p.match(/^\/p\/(\d+)\/$/) || [])[1];
+    const curCat = id && CURATED[id] && CATEGORIES[CURATED[id][1]] && `/c/${CATEGORIES[CURATED[id][1]].slug}/`;
+    if (SPECIFIC_REDIRECTS[p] && live.has(SPECIFIC_REDIRECTS[p])) to = SPECIFIC_REDIRECTS[p];
+    else if (curCat && live.has(curCat)) to = curCat;
+    else to = "/shop/";
+  }
   const url = SITE_URL + to;
   write(p.replace(/^\//, "") + "index.html", `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>المارت</title><link rel="canonical" href="${url}"><meta name="robots" content="noindex,follow"><meta http-equiv="refresh" content="0; url=${url}"></head><body><a href="${url}">ادامه</a></body></html>`);
   retired.push(p);

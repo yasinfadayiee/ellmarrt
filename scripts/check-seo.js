@@ -91,12 +91,15 @@ for (const file of htmlFiles) {
   if (words < 180) thinPages.push([rel, words]);
 
   const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  let hasFaqSchema = false;
   for (const sm of schemas) {
     const obj = JSON.parse(sm[1]);
+    if (obj["@type"] === "FAQPage") hasFaqSchema = true;
     if (obj["@type"] === "Product" && obj.offers) {
       assert(obj.offers.priceValidUntil, `Missing priceValidUntil on ${rel}`);
-      assert(obj.offers.shippingDetails, `Missing shippingDetails on ${rel}`);
-      assert(obj.offers.hasMerchantReturnPolicy, `Missing hasMerchantReturnPolicy on ${rel}`);
+      assert(obj.offers.shippingDetails && obj.offers.shippingDetails.deliveryTime && obj.offers.shippingDetails.deliveryTime.transitTime, `Missing shippingDetails/transitTime on ${rel}`);
+      assert(obj.offers.hasMerchantReturnPolicy && obj.offers.hasMerchantReturnPolicy.merchantReturnDays === 7, `Missing merchantReturnDays on ${rel}`);
+      assert(obj.offers.hasMerchantReturnPolicy.returnMethod && obj.offers.hasMerchantReturnPolicy.returnFees, `Missing returnMethod/returnFees on ${rel}`);
     }
     if (obj["@type"] === "Article") {
       assert(obj.image && obj.image.length, `Missing Article image on ${rel}`);
@@ -106,6 +109,14 @@ for (const file of htmlFiles) {
       assert(obj.geo && obj.disambiguatingDescription, `Missing store geo/disambiguatingDescription on ${rel}`);
     }
   }
+  if (/^\/guide\/[^/]+\/$/.test(rel)) assert(hasFaqSchema, `Missing FAQPage on guide ${rel}`);
+}
+
+for (const [stub, dest] of [["p/46296076/index.html", "/c/tshirt/boxy/"], ["p/44437851/index.html", "/c/pants/cargo/"]]) {
+  const full = path.join(DOCS, stub);
+  assert(fs.existsSync(full), `Missing retired redirect stub: docs/${stub}`);
+  const stubHtml = fs.readFileSync(full, "utf8");
+  assert(stubHtml.includes("noindex,follow") && stubHtml.includes(dest), `Invalid redirect stub docs/${stub} (expected ${dest})`);
 }
 
 assert.deepEqual(brokenLinks, [], `Broken internal links: ${JSON.stringify(brokenLinks)}`);
@@ -132,5 +143,6 @@ assert(!/\{MAX(?::\w+)?\}|\{YEARS\}/.test(llms + llmsFull), "Unreplaced token in
 
 const aiCat = JSON.parse(fs.readFileSync(path.join(DOCS, "assets/ai-catalog.json"), "utf8"));
 assert(aiCat.store && Array.isArray(aiCat.products) && aiCat.products.length > 0, "Invalid assets/ai-catalog.json");
+assert(Array.isArray(aiCat.guides) && aiCat.guides.length > 0 && aiCat.sizeChart && Array.isArray(aiCat.sizeChart.tops), "Missing guides or sizeChart in assets/ai-catalog.json");
 
 console.log(`PASS: ${checkedPages} indexable pages, ${aiCat.products.length} AI-catalog products, 0 broken links, 0 duplicate titles/descs, 0 thin pages, full schema & GEO verified.`);

@@ -63,11 +63,13 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, SIZE
 <header class="wrap phead"><h1>${G.h1}</h1><p>اول با قد و وزن سایز تقریبی را پیدا کنید، بعد آن را با اندازه واقعی همان مدل مقایسه کنید. ${G.also} هم در این صفحه آمده‌اند.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:820px">
 <h2>سایز ${G.noun} بر اساس قد و وزن</h2>${general}
+</div></section>
+<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود الان</span><h2>${G.noun} مردانه در همه سایزها</h2></div></div><div class="grid">${list.slice(0, 12).map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>
+<section class="sec-sm"><div class="wrap prose" style="max-width:820px">
 ${charts.length ? `<h2>اندازه واقعی هر مدل (سانتی‌متر)</h2><p>این اعداد را فروشنده برای هر مدل با لباس صاف روی میز نوشته است؛ دو مدل با یک اسم سایز می‌توانند چند سانت فرق داشته باشند.</p>${charts.map(modelTable).join("")}` : ""}
 <h2>سوالات سایز ${G.noun}</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
 <p>بیشتر: <a href="${BASE}/size-guide/">سایزیاب با قد و وزن</a> · <a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${others}</p>
-</div></section>
-<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود الان</span><h2>${G.noun} مردانه در همه سایزها</h2></div></div><div class="grid">${list.slice(0, 12).map((p, i) => card(ctx, p, i < 2)).join("")}</div></div></section>`,
+</div></section>`,
     });
   }
 
