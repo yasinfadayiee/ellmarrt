@@ -73,5 +73,5 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     return pg.length ? `<p class="note-sm">بر اساس بودجه: ${pg.map((x) => `<a class="link" href="${ctx.BASE}${pathOf(ctx, x)}">${h1Of(x)}</a>`).join(" · ")}</p>` : "";
   };
 
-  return { pricePages, pricePage, pricePath: pathOf, priceTitle: h1Of, priceLinks, priceImages: (ctx, pg) => [`${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`] };
+  return { pricePages, pricePage, pricePath: pathOf, priceTitle: h1Of, priceLinks, priceImages: (ctx, pg) => [{ loc: `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`, title: h1Of(pg) }] };
 };

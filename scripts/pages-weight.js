@@ -37,15 +37,23 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       ["سایز لباس مردانه را با وزن چطور پیدا کنم؟", "وزن خود را در جدول پیدا کنید؛ ستون اول سایز تیشرت، هودی و پیراهن و ستون دوم سایز شلوار را نشان می‌دهد. اگر وزنتان روی مرز دو سایز است یا شکم دارید، سایز بزرگ‌تر راحت‌تر است."],
       ["آیا فقط وزن برای انتخاب سایز کافی است؟", "وزن نقطه شروع خوبی است، اما قد و فرم بدن هم مهم است. بعد از پیدا کردن سایز، عرض سینه و قد همان مدل را در صفحه محصول با لباسی که اندازه‌تان است مقایسه کنید."],
     ];
+    const isBig = (p) => liveSizes(p).some((z) => ["3XL", "4XL", "5XL", "6XL"].includes(z));
+    const bigPicks = ctx.products.filter((p) => p.inStock && isBig(p)).sort(rank).slice(0, 4);
+    const seen = new Set(bigPicks.map((p) => p.id));
+    const regPicks = ctx.products.filter((p) => p.inStock && !seen.has(p.id)).sort(rank).slice(0, 4);
+    const picks = [...bigPicks, ...regPicks];
     return layout(ctx, {
       path,
       title: "سایز لباس مردانه بر اساس وزن | جدول L تا {MAX}",
       desc: `جدول سایز لباس مردانه بر اساس وزن: برای هر وزن از ${fa0(WEIGHTS[0])} تا ${fa0(WEIGHTS[WEIGHTS.length - 1])} کیلو سایز تیشرت، هودی و شلوار را ببینید؛ از L تا {MAX} با اندازه واقعی مدل‌های المارت.`,
-      schema: [crumbSchema(ctx, items), faqSchema(qa)],
+      schema: [crumbSchema(ctx, items), faqSchema(qa), ...(picks.length ? [itemList(ctx, picks)] : [])],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>سایز لباس مردانه بر اساس وزن</h1><p>وزنتان را پیدا کنید تا سایز تیشرت و شلوار را ببینید. روی هر وزن بزنید تا اندازه دقیق و مدل‌های موجود همان سایز را ببینید.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:760px">
 <table><thead><tr><th>وزن</th><th>تیشرت، هودی، پیراهن</th><th>شلوار</th></tr></thead><tbody>${weightPages.map((w) => `<tr><td style="font-weight:800">${wLink(ctx, w)}</td><td style="direction:ltr">${topFor(w).join(" / ")}</td><td style="direction:ltr">${pantsFor(w).join(" / ") || "—"}</td></tr>`).join("")}</tbody></table>
+</div></section>
+${picks.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">پرفروش‌ترین‌ها</span><h2>نمونه مدل‌های موجود (معمولی و سایز بزرگ)</h2></div><a class="link" href="${ctx.BASE}/shop/">همه مدل‌ها</a></div><div class="grid">${picks.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>` : ""}
+<section class="sec-sm"><div class="wrap prose" style="max-width:760px">
 <h2>سوالات</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
 <p>بیشتر: <a href="${ctx.BASE}/size-guide/">سایزیاب با قد و وزن</a> · <a href="${ctx.BASE}/size/tshirt/">جدول سایز تیشرت مردانه</a> · <a href="${ctx.BASE}/size/pants/">جدول سایز شلوار اسلش مردانه</a> · <a href="${ctx.BASE}/big-size/">لباس سایز بزرگ مردانه</a></p>
 </div></section>`,
@@ -78,10 +86,12 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
 <section class="sec-sm" style="padding-top:8px"><div class="wrap prose" style="max-width:760px">
 <table><thead><tr><th>سایز</th><th>وزن (کیلوگرم)</th><th>قد شما (سانتی‌متر)</th><th>عرض سینه تیشرت</th><th>قد تیشرت</th></tr></thead><tbody>${tops.map((z) => { const q = rowOf(z); return `<tr><td style="direction:ltr;font-weight:800"><a href="${BASE}/size/${z.toLowerCase()}/">${z}</a></td><td>${q[2]}</td><td>${q[1]}</td><td>${q[3]}</td><td>${q[4]}</td></tr>`; }).join("")}</tbody></table>
 <p>قد معمول سایز ${main} در جدول ما ${r[1]} سانتی‌متر است؛ اگر بلندتر هستید، قد لباس را در صفحه محصول ببینید.${ch ? ` عرض سینه ${main} در مدل‌های المارت ${ch[0] === ch[1] ? fa0(ch[0]) : `از ${fa0(ch[0])} تا ${fa0(ch[1])}`} سانتی‌متر است (لباس صاف روی میز).` : ""}</p>
+</div></section>
+${list.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود در سایز شما</span><h2>مدل‌های ${main}${lowList.length && pants[pants.length - 1] !== main ? ` و شلوار ${pants[pants.length - 1]}` : ""}</h2></div></div><div class="grid">${list.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>` : ""}
+<section class="sec-sm"><div class="wrap prose" style="max-width:760px">
 <h2>سوالات</h2><div class="faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div>
 <p>${prev ? `وزن کمتر: ${wLink(ctx, prev)} · ` : ""}${next ? `وزن بیشتر: ${wLink(ctx, next)} · ` : ""}<a href="${BASE}/size/weight/">جدول کامل وزن و سایز</a> · <a href="${BASE}/size/${main.toLowerCase()}/">سایز ${main} چند کیلو است؟</a>${w >= 105 ? ` · <a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>` : ""}</p>
-</div></section>
-${list.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">موجود در سایز شما</span><h2>مدل‌های ${main}${lowList.length && pants[pants.length - 1] !== main ? ` و شلوار ${pants[pants.length - 1]}` : ""}</h2></div></div><div class="grid">${list.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>` : ""}`,
+</div></section>`,
     });
   }
 

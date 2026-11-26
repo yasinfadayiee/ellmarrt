@@ -19,6 +19,8 @@ const STYLES = [
     "تیشرت باکسی برش گشاد و شانه افتاده دارد و قدش کوتاه‌تر از عرضش است؛ همان فرم ترندی که با شلوار بگ، کارگو و جین خوب ست می‌شود. برای انتخاب اندازه، عرض سینه و قد همین مدل را با لباس خوش‌اندازه خود مقایسه کنید."],
   ["tshirt", "printed", "تیشرت طرح‌دار مردانه", /طرح(?! ساده| متفاوت)|چاپ/,
     "تیشرت طرح‌دار با یک شلوار ساده یک‌رنگ بهتر دیده می‌شود. برای ماندگاری چاپ، تیشرت را پشت‌ورو و با آب سرد بشویید و روی چاپ اتو نکشید."],
+  ["tshirt", "cotton", "تیشرت نخ پنبه مردانه", /نخ ?پنبه|پنبه/,
+    "تیشرت نخ پنبه مردانه برای استفاده روزمره و زیر لباس در تمام فصل‌ها مناسب است؛ تنفس‌پذیری بالا و لمس نرم پارچه باعث می‌شود در گرما و استفاده طولانی راحت باشد. برای مقایسه ضخامت و جنس دقیق، مشخصات و جدول سایز هر مدل را در صفحه محصول ببینید."],
   ["tshirt", "plain", "تیشرت ساده مردانه", /ساده|مشکی مردانه پنبه/,
     "تیشرت ساده پایه کمد لباس است؛ زیر سویشرت و پیراهن باز، یا تنها با شلوار اسلش و جین پوشیده می‌شود. برای مقایسه ضخامت، جنس و مشخصات همان مدل را بررسی کنید؛ نمره نخ به‌تنهایی معیار ضخامت پارچه نیست."],
   ["polo", "collar", "تیشرت یقه‌دار مردانه", /یقه ?دار|یقه انگلیسی|دو دکمه/,
@@ -82,14 +84,32 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       [`${h1} چه سایزهایی دارد؟`, sizes.length ? `سایزهای ${sizes.join("، ")}. جدول اندازه هر مدل در صفحه همان محصول، زیر انتخاب سایز آمده است.` : `سایز هر مدل در صفحه همان محصول آمده است.`],
       [`${h1} را از کجا بخرم؟`, `المارت ${fa(STORE.years)} سال سابقه در ${STORE.bazaar} دارد. مدل را باز کنید، رنگ و سایز را انتخاب کنید و از غرفه رسمی المارت در باسلام یا با «سفارش مستقیم» (تلفن و پیامک) خرید کنید.`],
     ];
+    const altTxt = ALT[pg.slug] ? ` (${ALT[pg.slug]})` : "";
+    const titleOptions = nIn
+      ? [
+          `خرید ${h1}${altTxt} | ${fa(nIn)} مدل از ${fa(min)} تومان`,
+          `خرید ${h1} | ${fa(nIn)} مدل از ${fa(min)} تومان`,
+          `خرید ${h1}${altTxt} | از ${fa(min)} تومان`,
+          `خرید ${h1} | از ${fa(min)} تومان`,
+          `خرید ${h1}`,
+        ]
+      : [`${h1} | مدل‌ها و موجودی`];
+    const pageTitle = titleOptions.find((t) => t.length + 9 <= 68) || titleOptions[titleOptions.length - 1];
+    const collarLead = pg.slug === "collar" ? "تی‌شرت یقه‌دار و پولوشرت مردانه" : `${h1}${ALT[pg.slug] ? ` یا ${ALT[pg.slug]}` : ""}`;
+    const rawDesc = nIn
+      ? `${fa(nIn)} مدل ${collarLead}${sizeTxt ? `، سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال روز اول کاری و خرید از باسلام.`
+      : `مدل‌های ${h1} المارت فعلاً ناموجودند. جزئیات مدل‌ها و موجودی به‌روز را بررسی کنید.`;
+    const pageDesc = rawDesc.length > 162 && nIn
+      ? `${fa(nIn)} مدل ${pg.slug === "collar" ? "تی‌شرت یقه‌دار مردانه" : h1}${sizeTxt ? `، سایز ${sizeTxt}` : ""}؛ قیمت از ${fa(min)} تومان، ارسال از بازار تبریز.`
+      : rawDesc;
     return layout(ctx, {
       path,
-      title: nIn ? `خرید ${h1}${ALT[pg.slug] ? ` (${ALT[pg.slug]})` : ""} | قیمت و سایزها` : `${h1} | مدل‌ها و موجودی`,
-      desc: nIn ? `${fa(nIn)} مدل ${h1}${ALT[pg.slug] ? ` یا ${ALT[pg.slug]}` : ""}${sizeTxt ? `، سایز ${sizeTxt}` : ""} از بازار تبریز؛ قیمت از ${fa(min)} تومان، ارسال به سراسر ایران و خرید از باسلام.` : `مدل‌های ${h1} المارت فعلاً ناموجودند. جزئیات مدل‌ها و موجودی به‌روز را بررسی کنید.`,
+      title: pageTitle,
+      desc: pageDesc,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>${h1}</h1><p>${fa(list.length)} مدل${sizeTxt ? ` در سایز ${sizeTxt}` : ""}؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان. پرفروش‌ترین‌ها اول آمده‌اند.</p></header>
+<header class="wrap phead"><h1>${h1}</h1><p>${pg.slug === "collar" ? "تی‌شرت یقه‌دار مردانه؛ " : ""}${fa(list.length)} مدل${sizeTxt ? ` در سایز ${sizeTxt}` : ""}؛ قیمت از <b class="num">${fa(min)}</b> تا <b class="num">${fa(max)}</b> تومان، ارسال روز اول کاری. پرفروش‌ترین‌ها اول آمده‌اند.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>${h1} چیست و با چه ست می‌شود؟</h2><p>${note}</p><p>همه این مدل‌ها از ${c.name} المارت هستند و مستقیم از ${STORE.bazaar} ارسال می‌شوند. اگر سایزتان را نمی‌دانید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
@@ -97,5 +117,5 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     });
   }
 
-  return { stylePages, stylePage, stylePath: pathOf, styleLinks, stylesOf, styleImages: (ctx, pg) => [`${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`] };
+  return { stylePages, stylePage, stylePath: pathOf, styleLinks, stylesOf, styleImages: (ctx, pg) => [{ loc: `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`, title: pg.h1 }] };
 };

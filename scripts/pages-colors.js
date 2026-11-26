@@ -49,7 +49,17 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
   };
   const listOf = (ctx, cat, g) => ctx.products
     .filter((p) => p.inStock && p.cat === cat && p.colors.some((c, k) => group(c) === g && p.colorInStock.includes(k)))
-    .sort(rank);
+    .sort((a, b) => {
+      if (cat === "sweat") {
+        const sA = /دورس|هودی|سویشرت/.test(a.title) ? 1 : 0;
+        const sB = /دورس|هودی|سویشرت/.test(b.title) ? 1 : 0;
+        if (sA !== sB) return sB - sA;
+        const cA = asColor(a, g).mainColor != null ? 1 : 0;
+        const cB = asColor(b, g).mainColor != null ? 1 : 0;
+        if (cA !== cB) return cB - cA;
+      }
+      return rank(a, b);
+    });
   // sold-out models that come in colour g (used only to keep a page Google already knows)
   const soldOf = (ctx, cat, g) => ctx.products
     .filter((p) => !p.inStock && p.cat === cat && p.colors.some((c) => group(c) === g))
@@ -119,14 +129,21 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
         ]
       : [`${h1}${alt} | قیمت و مدل‌ها`, `${h1} | قیمت و مدل‌ها`];
     const pageTitle = titleOptions.find((t) => t.length + 9 <= 68) || titleOptions[titleOptions.length - 1];
+    const leadNoun = cat === "sweat" ? `دورس ${g} و هودی ${g} مردانه` : `${noun} ${g}${alt} ${NOUN[cat][1]}`;
+    const rawDesc = nIn
+      ? `${fa(nIn)} مدل ${leadNoun}${sizeTxt ? `، سایز ${sizeTxt}` : ""}؛ قیمت از ${fa(min)} تومان، ارسال روز اول کاری از بازار تبریز.`
+      : `مدل‌های ${leadNoun} المارت از بازار تبریز؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`;
+    const pageDesc = rawDesc.length > 160 && nIn
+      ? `${fa(nIn)} مدل ${cat === "sweat" ? `دورس ${g} و هودی ${g}` : `${noun} ${g} ${NOUN[cat][1]}`}${sizeTxt ? ` (${sizeTxt})` : ""} از ${fa(min)} تومان؛ ارسال روز اول کاری.`
+      : rawDesc;
     return layout(ctx, {
       path,
       title: pageTitle,
-      desc: nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} ${NOUN[cat][1]}${sizeTxt ? ` در سایز ${sizeTxt}` : ""}، از بازار تبریز. مشاهده مدل‌ها، قیمت و خرید از باسلام.` : `مدل‌های ${noun} ${g}${alt} ${NOUN[cat][1]} المارت از بازار تبریز؛ قیمت و موجودی هر چند ساعت از باسلام به‌روز می‌شود.`,
+      desc: pageDesc,
       image: `${ctx.SITE_URL}/assets/og/${first.id}.jpg`,
       schema: [crumbSchema(ctx, items), itemList(ctx, list), faqSchema(qa)],
       body: `${crumbs(ctx, items)}
-<header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${noun} ${g}${alt} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}. پرفروش‌ترین‌ها اول آمده‌اند.` : `مدل‌های ${noun} ${g}${alt} المارت فعلاً تمام شده‌اند.`} رنگ و موجودی هر مدل را در صفحه محصول بررسی کنید.</p></header>
+<header class="wrap phead"><h1>${h1}</h1><p>${nIn ? `${fa(nIn)} مدل ${leadNoun} که الان موجود است${sizeTxt ? ` در سایز ${sizeTxt}` : ""}. پرفروش‌ترین‌ها اول آمده‌اند.` : `مدل‌های ${leadNoun} المارت فعلاً تمام شده‌اند.`} رنگ و موجودی هر مدل را در صفحه محصول بررسی کنید.</p></header>
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, asColor(p, g), k < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>درباره رنگ ${g}</h2><p>${COLORS[g][1]}</p><p>مدل‌های بالا از ${ctx.CATEGORIES[cat].name} مجموعه المارت هستند. اگر درباره سایز مطمئن نیستید، <a href="${BASE}/size-guide/">سایزیاب</a> را با قد و وزنتان امتحان کنید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
@@ -134,5 +151,10 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     });
   }
 
-  return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorImages: (ctx, pg) => { const t = asColor(pg.list[0], pg.g); return t.mainColor != null ? [`${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp`] : []; } };
+  return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorImages: (ctx, pg) => {
+    const withCol = pg.list.map((p) => asColor(p, pg.g)).find((t) => t.mainColor != null);
+    const t = withCol || asColor(pg.list[0], pg.g);
+    const loc = t.mainColor != null ? `${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp` : `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`;
+    return [{ loc, title: h1Of(pg.cat, pg.g) }];
+  } };
 };
