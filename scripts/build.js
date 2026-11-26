@@ -143,6 +143,24 @@ write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.map((u) => `<url><loc>${xmlEsc(u.loc)}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority>${u.images.map(imgXml).join("")}</url>`).join("\n")}
 </urlset>
 `);
+const feedProducts = [...products].filter((p) => p.inStock).sort((a, b) => b.created.localeCompare(a.created) || (b.featured - a.featured) || ((b.sales || 0) - (a.sales || 0))).slice(0, 15);
+const feedItems = [
+  ...pages.guides.map((g) => `<item><title>${xmlEsc(g.title)}</title><link>${SITE_URL}/guide/${g.slug}/</link><guid isPermaLink="true">${SITE_URL}/guide/${g.slug}/</guid><pubDate>${new Date(g.updated || g.date || "2026-11-26").toUTCString()}</pubDate><description>${xmlEsc(g.desc)}</description></item>`),
+  ...feedProducts.map((p) => `<item><title>${xmlEsc(p.title)}</title><link>${SITE_URL}/p/${p.id}/</link><guid isPermaLink="true">${SITE_URL}/p/${p.id}/</guid><pubDate>${new Date(p.created || ctx.syncedAt || Date.now()).toUTCString()}</pubDate><description>${xmlEsc(`${p.copy.lead} قیمت ${Number(p.price).toLocaleString("fa-IR")} تومان؛ خرید از المارت بازار تبریز.`)}</description></item>`),
+];
+write("feed.xml", pages.fillSizes(ctx, `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>المارت (ELLMARRT) — پوشاک مردانه بازار تبریز</title>
+<link>${SITE_URL}/</link>
+<description>تازه‌ترین محصولات و راهنماهای خرید پوشاک مردانه و سایز بزرگ المارت از بازار سرپوشیده تبریز.</description>
+<language>fa-IR</language>
+<lastBuildDate>${new Date(ctx.syncedAt || Date.now()).toUTCString()}</lastBuildDate>
+<atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+${feedItems.join("\n")}
+</channel>
+</rss>
+`));
 const aiBots = ["OAI-SearchBot", "ChatGPT-User", "GPTBot", "PerplexityBot", "ClaudeBot", "Claude-SearchBot", "Google-Extended", "Applebot-Extended", "Bingbot", "Googlebot"];
 write("robots.txt", [
   ...aiBots.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /admin/\n`),

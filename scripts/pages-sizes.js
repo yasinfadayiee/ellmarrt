@@ -43,6 +43,8 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       [`شلوار سایز ${s} برای چه وزنی است؟`, `شلوار اسلش و راحتی سایز ${s} برای وزن ${PANTS[s][0]} کیلوگرم است و قد آن حدود ${PANTS[s][1]} سانتی‌متر است.`],
       ...(alias.length ? [[`${s} همان ${alias[0]} است؟`, `بله. ${s}${alias[1] ? ` یا «${alias[1]}»` : ""} همان ${alias[0]} است؛ فروشگاه‌ها هر دو شکل را می‌نویسند.`]] : []),
     ];
+    const WEIGHT_MAP = { L: [70, 75], XL: [75, 80, 85], "2XL": [85, 90, 95], "3XL": [95, 100, 105], "4XL": [105, 110, 115], "5XL": [120, 125, 130], "6XL": [140, 150] };
+    const wLinks = (WEIGHT_MAP[s] || []).map((kg) => `<a class="link" href="${BASE}/size/weight/${kg}/">وزن ${fa0(kg)} کیلو</a>`).join(" · ");
     return layout(ctx, {
       path,
       title: ["2XL", "3XL"].includes(s) ? `سایز ${s} (${alias[0]}) چند کیلو است؟ ${alias[0]} چه سایزی است مردانه` : `سایز ${s} چند کیلو است؟ جدول وزن و قد سایز ${s} مردانه`,
@@ -62,7 +64,7 @@ ${real.length ? `<h2>اندازه واقعی سایز ${s} در مدل‌های 
 </div></section>
 <section class="sec-sm"><div class="wrap" style="max-width:640px">${sizer()}</div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq"><h2>سوالات سایز ${s}</h2>${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
-<section class="sec-sm"><div class="wrap"><p class="note-sm">سایزهای دیگر: ${sizePages.filter((z) => z !== s).map((z) => `<a class="link" href="${BASE}/size/${slug(z)}/">${z}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">جدول کامل سایز</a>${BIG.includes(s) ? ` · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>` : ""}</p></div></section>`,
+<section class="sec-sm"><div class="wrap"><p class="note-sm">سایزهای دیگر: ${sizePages.filter((z) => z !== s).map((z) => `<a class="link" href="${BASE}/size/${slug(z)}/">${z}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">جدول کامل سایز</a>${BIG.includes(s) ? ` · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>` : ""}</p>${wLinks ? `<p class="note-sm">سایز بر اساس وزن و دسته: ${wLinks} · <a class="link" href="${BASE}/size/tshirt/">جدول سایز تیشرت</a> · <a class="link" href="${BASE}/size/hoodie/">جدول سایز هودی و دورس</a> · <a class="link" href="${BASE}/size/pants/">جدول سایز شلوار</a></p>` : ""}</div></section>`,
     });
   }
 

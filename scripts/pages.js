@@ -117,6 +117,7 @@ ${o.noindex ? '<meta name="robots" content="noindex">' : `<meta name="robots" co
 <link rel="alternate" hreflang="fa-IR" href="${url}">
 <link rel="alternate" hreflang="x-default" href="${url}">`}
 <link rel="alternate" type="text/plain" href="${SITE_URL}/llms.txt" title="LLM Context — ELLMARRT">
+<link rel="alternate" type="application/rss+xml" href="${SITE_URL}/feed.xml" title="${STORE.name} — محصولات و راهنماهای خرید">
 <meta name="theme-color" content="#1D4ED8">
 <meta name="google-site-verification" content="uXxAD7CF1q8Fo0xZpy1_uE84WzXJWtndZYkGuYqUT9A">
 <meta name="msvalidate.01" content="E832DBD41A08E553E3013637AB159DEE">
@@ -354,7 +355,9 @@ function home(ctx) {
   }).filter(Boolean);
 
   const inStockCategories = Object.entries(C).filter(([key]) => P.some((p) => p.inStock && p.cat === key));
-  const colorList = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 18);
+  const allColors = col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length);
+  const mustColors = allColors.filter((x) => (x.cat === "pants" && x.g === "طوسی") || (x.cat === "tshirt" && x.g === "کرمی"));
+  const colorList = [...new Map([...allColors.slice(0, 22), ...mustColors].map((x) => [`${x.cat}:${x.g}`, x])).values()];
   const heroFloats = [43999644, 42719795].map((id) => P.find((p) => p.id === id && p.inStock)).filter(Boolean);
   if (heroFloats.length < 2) {
     for (const p of best) if (heroFloats.length < 2 && !heroFloats.includes(p)) heroFloats.push(p);
@@ -496,7 +499,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
   <div class="dir-grid">
     <div><h3>دسته‌بندی و مدل‌ها</h3><p class="dir-links">${inStockCategories.map(([, c]) => `<a class="link" href="${BASE}/c/${c.slug}/">${c.name}</a>`).join(" · ")}</p>${sty.styleLinks(ctx, null)}</div>
     <div><h3>خرید بر اساس رنگ و بودجه</h3><p class="dir-links">${colorList.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>${price.priceLinks(ctx, null)}</div>
-    <div><h3>سایز، راهنما و بازار تبریز</h3><p class="dir-links"><a class="link" href="${BASE}/tabriz-bazaar/">فروشگاه لباس مردانه در تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${homeGuides.map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/size/weight/">سایز لباس بر اساس وزن</a> · <a class="link" href="${BASE}/big-size/tabriz/">لباس سایز بزرگ مردانه در تبریز</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p></div>
+    <div><h3>سایز، راهنما و بازار تبریز</h3><p class="dir-links"><a class="link" href="${BASE}/tabriz-bazaar/">فروشگاه لباس مردانه در تبریز</a> · <a class="link" href="${BASE}/guide/">راهنمای خرید</a> · ${homeGuides.map((g) => `<a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>`).join(" · ")} · <a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a>${gar.garmentKinds(ctx).map((k) => ` · <a class="link" href="${BASE}/size/${k}/">${gar.GARMENTS[k].h1}</a>`).join("")}${sz.shoeChart(ctx) ? ` · <a class="link" href="${BASE}/size/shoes/">جدول سایز کفش مردانه</a>` : ""} · <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a>${sz.bigCats(ctx).map((k) => ` · <a class="link" href="${BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join("")} · <a class="link" href="${BASE}/size/4xl/">سایز 4XL چند کیلو است؟</a> · <a class="link" href="${BASE}/size/weight/">سایز لباس بر اساس وزن</a> · <a class="link" href="${BASE}/big-size/tabriz/">لباس سایز بزرگ مردانه در تبریز</a> · <a class="link" href="${BASE}/wholesale/">خرید عمده پوشاک مردانه</a></p></div>
   </div>
 </div></section>`;
   return layout(ctx, {
@@ -1576,6 +1579,89 @@ const guides = [
 <h2>۲. فرق سایزگیری دورس دو نخ با هودی توکرک</h2>
 <ul><li><b><a href="${ctx.BASE}/c/sweatshirt/fleece/">هودی و دورس توکرک</a>:</b> کرک داخل کمی حجم دارد و معمولاً روی تیشرت پوشیده می‌شود؛ اگر بین دو سایز هستید، سایز بزرگ‌تر در شانه و زیر بغل راحت‌تر است.</li><li><b>دورس دو نخ و بلوز پنبه:</b> بافت نازک‌تر و ایستایی صاف‌تری دارد و زیر کاپشن جمع نمی‌شود.</li><li><b>سایزیاب سریع:</b> عدد قد و وزن را در <a href="${ctx.BASE}/size-guide/">سایزیاب هوشمند المارت</a> بزنید و سپس عرض سینه همان محصول را کنترل کنید.</li></ul>`,
   },
+  {
+    slug: "how-to-wash-hoodie-dorce-tshirt",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    seoTitle: "شستشوی هودی، دورس و تیشرت مردانه بدون آب‌رفت و پرز",
+    title: "نحوه صحیح شستشو و نگهداری هودی، دورس، تیشرت نخ پنبه و شلوار کتان بدون آب‌رفت",
+    desc: "چطور هودی توکرک، دورس دو نخ، تیشرت چاپ‌دار و شلوار اسلش کتان کشی را بشوییم تا آب نرود، پرز ندهد و رنگش کدر نشود؟ جدول دمای آب و خشک‌کردن.",
+    cats: ["sweat", "tshirt", "pants"],
+    faq: [
+      ["هودی توکرک و دورس را با چه دمای آبی بشوییم که آب نرود و پرز ندهد؟", "بهترین دما آب سرد یا ولرم حداکثر ۳۰ درجه سانتی‌گراد با شوینده مایع ملایم و دور ملایم لباسشویی است؛ لباس را پشت‌ورو بشویید و از خشک‌کن داغ استفاده نکنید."],
+      ["برای حفظ چاپ تیشرت باکسی و طرح‌دار چه نکته‌ای مهم است؟", "تیشرت چاپ‌دار را همیشه پشت‌ورو و با آب سرد بشویید، از سفیدکننده استفاده نکنید و هرگز اتوی داغ را مستقیم روی چاپ نکشید."],
+      ["شلوار اسلش کتان کشی و هودی را آویزان خشک کنیم یا پهن کنیم؟", "هودی و دورس سنگین را در حالت خیس با چوب‌لباسی آویزان نکنید چون سرشانه کش می‌آید؛ روی بند یا سطح صاف در سایه پهن کنید تا فرم لباس ثابت بماند."],
+    ],
+    html: (ctx) => `<p>بسیاری از لباس‌های باکیفیت نه به‌خاطر ضعف دوخت، بلکه به‌دلیل شست‌وشوی با آب داغ، دور خشک‌کن بالا یا آویزان کردن اشتباه، بعد از دو ماه شکل اولشان را از دست می‌دهند. این راهنمای خلاصه دقیقاً بر اساس جنس پارچه به شما می‌گوید هر لباس را چطور بشویید.</p>
+<div class="note"><b>خلاصه سریع:</b> قانون طلایی نگهداری لباس مردانه سه مرحله دارد: <b>پشت‌ورو کردن لباس</b>، شست‌وشو با <b>آب سرد یا ولرم (حداکثر ۳۰ درجه)</b> و <b>خشک‌کردن در سایه بدون خشک‌کن داغ</b>.</div>
+<h2>۱. جدول شستشو بر اساس جنس پارچه</h2>
+<table><thead><tr><th>نوع لباس و پارچه</th><th>دمای آب</th><th>نحوه خشک‌کردن و اتو</th></tr></thead><tbody>
+<tr><td><a href="${ctx.BASE}/c/sweatshirt/fleece/">هودی توکرک</a> و <a href="${ctx.BASE}/c/sweatshirt/dorce/">دورس دو نخ</a></td><td>سرد یا ولرم، پشت‌ورو</td><td>پهن روی بند در سایه؛ بدون آویز سرشانه</td></tr>
+<tr><td><a href="${ctx.BASE}/c/tshirt/cotton/">تیشرت نخ پنبه</a> و <a href="${ctx.BASE}/c/tshirt/printed/">طرح‌دار</a></td><td>حداکثر ۳۰ درجه، پشت‌ورو</td><td>بدون اتوی مستقیم روی چاپ</td></tr>
+<tr><td><a href="${ctx.BASE}/c/pants/katan/">شلوار کتان کشی</a> و اسلش</td><td>سرد، دور ملایم</td><td>اتوی ملایم در صورت نیاز، دور از آفتاب تند</td></tr>
+<tr><td>پولوشرت و پیراهن مراکشی</td><td>سرد با دور ملایم</td><td>خشک کردن روی چوب‌لباسی، اتو از پشت</td></tr>
+<tr><td>کفش اسپرت زیره PU</td><td>دستمال مرطوب و برس نرم</td><td>شستشو در ماشین لباسشویی ممنوع؛ دور از بخاری</td></tr>
+</tbody></table>
+<h2>۲. نکات مهم برای جلوگیری از پرزدهی و تغییر رنگ</h2>
+<ul><li>لباس‌های تیره (مشکی، سرمه‌ای، زغالی) را از لباس‌های سفید و کرمی جدا بشویید.</li><li>پیش از شستن سویشرت زیپ‌دار یا شلوار جیب‌زیپ‌دار، زیپ‌ها را ببندید تا به بافت بقیه لباس‌ها گیر نکند.</li><li>برای شناخت دقیق‌تر تفاوت دورس، اسپان، نخ پنبه و کتان کشی پیش از خرید، <a href="${ctx.BASE}/guide/fabric-guide/">راهنمای جامع جنس پارچه‌ها</a> را بخوانید.</li></ul>`,
+  },
+  {
+    slug: "best-mens-pants-for-big-thighs-and-belly",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    seoTitle: "بهترین شلوار مردانه برای ران درشت و شکم‌دار (تا {MAX:pants})",
+    title: "بهترین شلوار مردانه برای ران درشت و شکم‌دار؛ انتخاب کمرکش، فاق بلند و قد مناسب تا {MAX:pants}",
+    desc: "اگر ران درشت یا شکم دارید چه شلوار اسلش یا کتانی بخرید؟ مقایسه دمپا ساده، مچی متعادل و کمرکش فاق‌دار از 3XL تا {MAX:pants} با راهنمای وزن.",
+    cats: ["pants"],
+    faq: [
+      ["برای آقایان شکم‌دار و ران درشت کدام مدل شلوار راحت‌تر و خوش‌فرم‌تر است؟", "شلوار اسلش کمرکش و بنددار با فاق کافی و قواره راسته یا دمپای ساده بهترین انتخاب است، چون روی شکم فشار نمی‌آورد و تعادل ران و ساق را حفظ می‌کند."],
+      ["برای وزن ۱۱۰ تا ۱۳۰ کیلوگرم چه سایز شلواری مناسب است؟", "بر اساس جدول وزن المارت، وزن ۱۰۵ تا ۱۲۰ کیلوگرم با سایز 4XL و بالای ۱۲۰ کیلوگرم با سایزهای 5XL و 6XL و قد شلوار حدود ۱۱۰ سانتی‌متر هماهنگ است."],
+      ["برای افراد ران درشت شلوار دمپا کش بهتر است یا دمپا ساده؟", "دمپای خیلی تنگ ران را پرحجم‌تر نشان می‌دهد؛ شلوار دمپا ساده (راسته) یا مچی متعادل با پارچه کتان کشی یا اسپان نخی تناسب بسیار بهتری می‌سازد."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, t) => (p(id) ? `<a href="${pUrl(ctx, p(id))}">${t}</a>` : t);
+      return `<p>آقایانی که ران پر یا شکم دارند معمولاً بین دو مشکل گیر می‌کنند: یا شلوار در کمر و ران تنگ است و هنگام نشستن فشار می‌آورد، یا اگر سایز بالاتر بگیرند دمپای شلوار بیش از حد گشاد و بی‌فرم می‌شود. راه‌حل درست، انتخاب هم‌زمان فاق، کمرکش و برش دمپاست.</p>
+<div class="note"><b>خلاصه سریع:</b> برای ران درشت و شکم‌دار، شلوار <b>کمرکش و بنددار با فاق استاندارد</b>، پارچه <a href="${ctx.BASE}/c/pants/katan/">کتان کشی</a> (برای بیرون) یا <a href="${ctx.BASE}/c/pants/cotton/">نخی و اسپان</a> (برای خانه و سفر) و دمپای <a href="${ctx.BASE}/c/pants/straight/">راسته یا مچی متعادل</a> در مجموعه <a href="${ctx.BASE}/big-size/pants/">شلوار سایز بزرگ مردانه</a> بهترین تن‌خور را می‌دهد.</div>
+<h2>۱. سه معیار اصلی قبل از خرید شلوار سایز بزرگ</h2>
+<table><thead><tr><th>معیار</th><th>انتخاب مناسب</th><th>چرا مهم است؟</th></tr></thead><tbody>
+<tr><td>کمر و بند</td><td>کمرکش پهن و بنددار</td><td>زیر شکم جای می‌گیرد و هنگام نشستن یا رانندگی فشار نمی‌آورد</td></tr>
+<tr><td>فاق و عرض ران</td><td>فاق بلند با کشسانی عرضی</td><td>هنگام بالا رفتن از پله یا نشستن پایین نمی‌کشد</td></tr>
+<tr><td>فرم دمپا</td><td>راسته دمپا ساده یا مچی متعادل</td><td>از لاغر به نظر رسیدن ساق پا نسبت به ران جلوگیری می‌کند</td></tr>
+</tbody></table>
+<h2>۲. مدل‌های پیشنهادی المارت در سایز 3XL تا {MAX:pants}</h2>
+<ul><li><b>برای بیرون و مهمانی:</b> ${a(54125344, "شلوار اسلش کتان کشی سایز بزرگ ۴XL تا ۶XL")}، ${a(45029484, "شلوار کتان شسته کمرکش و بنددار")} و ${a(50425812, "شلوار بغل‌نوار کنفی کتان کشی")}.</li><li><b>برای خانه، سفر و رانندگی:</b> ${a(42728145, "شلوار اسلش اسپان نخی سایز بزرگ")} با نرمی بالا و کمر راحت.</li></ul>
+<p>سایز دقیق خودتان را بر اساس <a href="${ctx.BASE}/size/weight/110/">وزن ۱۱۰ کیلو</a> یا <a href="${ctx.BASE}/size/weight/120/">۱۲۰ کیلو</a> ببینید و اندازه واقعی هر مدل را با <a href="${ctx.BASE}/size/4xl/">سایز 4XL</a>، <a href="${ctx.BASE}/size/5xl/">5XL</a>، <a href="${ctx.BASE}/size/6xl/">6XL</a> و <a href="${ctx.BASE}/size/pants/">جدول کامل سایز شلوار</a> مقایسه کنید.</p>`;
+    },
+  },
+  {
+    slug: "mens-budget-outfit-guide",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    seoTitle: "ست لباس مردانه اقتصادی زیر ۱ تا ۲ میلیون تومان",
+    title: "راهنمای ست لباس مردانه اقتصادی؛ چطور زیر ۱ تا ۲ میلیون تومان از بازار تبریز شیک بپوشیم",
+    desc: "بهترین انتخاب‌های اقتصادی پوشاک مردانه زیر ۱، ۱٫۵ و ۲ میلیون تومان: تیشرت نخ پنبه، شلوار اسلش و کتان، هودی و دورس و نکات مقایسه کیفیت قبل از خرید.",
+    cats: ["tshirt", "pants", "sweat"],
+    faq: [
+      ["با بودجه زیر ۱ یا ۱٫۵ میلیون تومان چه لباس مردانه‌ای می‌توان خرید؟", "در بخش‌های بودجه‌بندی‌شده المارت می‌توانید مدل‌های متنوعی از تیشرت نخ پنبه، شلوار اسلش و کتان روزمره را در بازه‌های زیر ۱ میلیون و زیر ۱٫۵ میلیون تومان با قیمت بازار تبریز مقایسه کنید."],
+      ["آیا قیمت پایین‌تر در فروشگاه المارت به معنای کاهش کیفیت است؟", "خیر؛ دلیل قیمت مناسب، عرضه مستقیم از حجره بازار سرپوشیده تبریز و حذف واسطه‌های فروشگاهی است و مشخصات پارچه و جدول سایز در صفحه هر مدل درج شده است."],
+      ["چطور مدل‌های اقتصادی در سایز خودم را سریع پیدا کنم؟", "از صفحه‌های دسته‌بندی بر اساس بودجه یا فیلتر سایز و ترتیب قیمت در صفحه فروشگاه استفاده کنید تا فقط مدل‌های موجود در بازه بودجه و سایزتان نمایش داده شوند."],
+    ],
+    html: (ctx) => {
+      const links = price.pricePages(ctx).map((x) => `<li><a href="${ctx.BASE}${price.pricePath(ctx, x)}">${price.priceTitle(x)}</a></li>`).join("");
+      return `<p>خوش‌تیپ پوشیدن همیشه به معنی هزینه سنگین نیست؛ وقتی مستقیم از حجره بازار تهیه می‌کنید و سراغ مدل‌های ساده و پایه‌ای می‌روید که با همه لباس‌ها ست می‌شوند، با بودجه اقتصادی هم می‌توانید چند ست کاربردی بسازید.</p>
+<div class="note"><b>خلاصه سریع:</b> برای خرید اقتصادی و بی‌ریسک، یک شلوار ساده مشکی یا سرمه‌ای را با تیشرت نخ پنبه یا دورس پایه ترکیب کنید و قیمت‌ها را مستقیم در بازه‌های بودجه زیر ببینید.</div>
+<h2>۱. صفحه‌های خرید بر اساس بودجه (به‌روزرسانی خودکار با موجودی)</h2>
+<ul>${links}</ul>
+<h2>۲. جدول ترکیب اقتصادی برای هر موقعیت</h2>
+<table><thead><tr><th>موقعیت</th><th>ترکیب پیشنهادی</th><th>نکته صرفه‌جویی</th></tr></thead><tbody>
+<tr><td>استفاده روزمره و دانشگاه</td><td>تیشرت نخ پنبه ساده + شلوار اسلش کتان کشی</td><td>رنگ پایه انتخاب کنید تا با هر کفشی ست شود</td></tr>
+<tr><td>محیط کار نیمه‌رسمی</td><td>پولوشرت یا تیشرت یقه‌دار + شلوار راسته کتان</td><td>نیاز به اتوی مداوم و نگهداری خاص ندارد</td></tr>
+<tr><td>پاییز و زمستان</td><td>دورس یا هودی ساده زیر کاپشن + اسلش تیره</td><td>روی یک مدل خوش‌قواره تمرکز کنید</td></tr>
+</tbody></table>
+<p>برای دیدن همه مدل‌ها با فیلتر سایز تا {MAX} به <a href="${ctx.BASE}/shop/">فروشگاه المارت</a> بروید، درباره خرید بی‌واسطه در <a href="${ctx.BASE}/tabriz-bazaar/">صفحه بازار سرپوشیده تبریز</a> بخوانید و برای سفارش عمده هم به صفحه <a href="${ctx.BASE}/wholesale/">پخش عمده پوشاک مردانه</a> سر بزنید.</p>`;
+    },
+  },
 ];
 
 const readMin = (ctx, g) => Math.max(2, Math.round(g.html(ctx).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length / 200));
@@ -1697,7 +1783,7 @@ function llms(ctx) {
 - اینستاگرام و روبیکا: ${STORE.instagram} | ${STORE.rubika}
 - ارسال و پرداخت: ارسال از روز اول کاری به سراسر ایران (پست پیشتاز/سفارشی) و پیک موتوری در تبریز؛ خرید امن با ضمانت باسلام یا سفارش مستقیم با کد پیگیری EL-XXXX.
 - کد تأیید دامنه اینماد: ۲۵۳۹۴۵۷۵
-- نسخه کامل برای هوش مصنوعی: ${ctx.SITE_URL}/llms-full.txt | کاتالوگ JSON: ${ctx.SITE_URL}/assets/ai-catalog.json
+- نسخه کامل برای هوش مصنوعی: ${ctx.SITE_URL}/llms-full.txt | کاتالوگ JSON: ${ctx.SITE_URL}/assets/ai-catalog.json | خوراک RSS: ${ctx.SITE_URL}/feed.xml
 
 ## صفحات اصلی و ابزارها
 - [فروشگاه کامل](${ctx.SITE_URL}/shop/): همه ${fa(ctx.products.length)} محصول با فیلتر سایز و قیمت
@@ -1716,6 +1802,7 @@ ${cats}
 
 ## صفحات سایز بزرگ و سایز بر اساس وزن
 ${sz.bigCats(ctx).map((k) => `- [${sz.BIG_CATS[k].h1}](${ctx.SITE_URL}/big-size/${ctx.CATEGORIES[k].slug}/)`).join("\n")}
+${gar.garmentKinds(ctx).map((k) => `- [${gar.GARMENTS[k].h1}](${ctx.SITE_URL}/size/${k}/)`).join("\n")}
 ${sz.sizePages.map((z) => `- [سایز ${z} چند کیلو است؟](${ctx.SITE_URL}/size/${z.toLowerCase()}/)`).join("\n")}${sz.shoeChart(ctx) ? `\n- [جدول سایز کفش مردانه به سانتی‌متر](${ctx.SITE_URL}/size/shoes/)` : ""}
 
 ## صفحات مدل و استایل
@@ -1852,4 +1939,4 @@ const gar = require("./pages-garments")({ layout, crumbs, crumbSchema, faqSchema
 const wt = require("./pages-weight")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, SIZE_ROWS, STORE, fa, fa0, esc });
 const sty = require("./pages-styles")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
 
-module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), aiCatalog, home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms, llmsFull };
+module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), aiCatalog, fillSizes, home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms, llmsFull };

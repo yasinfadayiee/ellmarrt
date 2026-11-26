@@ -53,6 +53,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
       ["قیمت‌ها نهایی است؟", "قیمت هر مدل همان است که در غرفه المارت در باسلام ثبت شده و هر چند ساعت یک‌بار به‌روز می‌شود؛ هنگام خرید، قیمت نهایی را در صفحه سفارش باسلام می‌بینید."],
       ["سایز مناسب را چطور پیدا کنم؟", "قد و وزنتان را در سایزیاب وارد کنید یا جدول اندازه همان مدل را ببینید؛ سایز هر کارت همین الان موجود بودن آن را نشان می‌دهد."],
     ];
+    const otherPrices = pricePages(ctx).filter((x) => pathOf(ctx, x) !== path);
     return layout(ctx, {
       path,
       title: pageTitle,
@@ -64,7 +65,7 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
 <section class="sec-sm" style="padding-top:8px"><div class="wrap"><div class="grid">${list.map((p, k) => card(ctx, p, k < 2)).join("")}</div></div></section>
 <section class="sec-sm"><div class="wrap prose"><h2>نکات خرید اقتصادی در این بازه قیمتی</h2><p>همه قیمت‌های این صفحه مستقیماً با غرفه رسمی المارت در باسلام همگام‌سازی می‌شوند و بازتاب قیمت واقعی بازار سرپوشیده تبریز بدون واسطه هستند. در هر کارت می‌توانید سایزهای آماده ارسال و تصویر واقعی کالا را پیش از باز کردن صفحه محصول ببینید.</p><p>برای انتخاب دقیق‌تر، روی محصول موردنظر بزنید تا جدول اندازه‌گیری سانتی‌متری (در مدل‌های دارای جدول) و جنس پارچه را با لباس اندازه خودتان مقایسه کنید. اگر قد و وزن را می‌دانید <a href="${BASE}/size-guide/">سایزیاب المارت</a> در چند ثانیه سایز پیشنهادی را نشان می‌دهد و برای قواره‌های آزادتر می‌توانید بخش <a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a> را هم ببینید.</p></div></section>
 <section class="sec-sm bg-cream"><div class="wrap faq">${qa.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>
-<section class="sec-sm"><div class="wrap"><p class="note-sm">${c ? `<a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a> · ` : ""}<a class="link" href="${BASE}/shop/">فروشگاه</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب</a>${cats.length > 1 ? " · " + cats.map((k) => `<a class="link" href="${BASE}/c/${CATEGORIES[k].slug}/">${CATEGORIES[k].name}</a>`).join(" · ") : ""}</p></div></section>`,
+<section class="sec-sm"><div class="wrap">${otherPrices.length ? `<p class="note-sm">سایر بازه‌های بودجه: ${otherPrices.map((x) => `<a class="link" href="${BASE}${pathOf(ctx, x)}">${h1Of(x)}</a>`).join(" · ")}</p>` : ""}<p class="note-sm">${c ? `<a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a> · ` : ""}<a class="link" href="${BASE}/shop/">فروشگاه</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب</a>${cats.length > 1 ? " · " + cats.map((k) => `<a class="link" href="${BASE}/c/${CATEGORIES[k].slug}/">${CATEGORIES[k].name}</a>`).join(" · ") : ""}</p></div></section>`,
     });
   }
 

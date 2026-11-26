@@ -10,9 +10,11 @@ const DOCS = path.join(ROOT, "docs");
 const requiredFiles = [
   "index.html",
   "sitemap.xml",
+  "feed.xml",
   "robots.txt",
   "llms.txt",
   "llms-full.txt",
+  "size/hoodie/index.html",
   "assets/catalog.json",
   "assets/ai-catalog.json",
   "CNAME",
@@ -75,6 +77,7 @@ for (const file of htmlFiles) {
   assert(html.includes('property="og:title"'), `Missing og:title on ${rel}`);
   assert(html.includes('name="twitter:title"'), `Missing twitter:title on ${rel}`);
   assert(html.includes("llms.txt"), `Missing llms.txt discovery link on ${rel}`);
+  assert(html.includes('type="application/rss+xml"'), `Missing RSS discovery link on ${rel}`);
 
   const title = tm[1];
   const desc = dm[1];
@@ -136,6 +139,10 @@ for (const token of ["OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Disallow
 const sitemap = fs.readFileSync(path.join(DOCS, "sitemap.xml"), "utf8");
 assert(sitemap.includes("<lastmod>"), "sitemap.xml missing <lastmod>");
 assert(sitemap.includes("<image:title>"), "sitemap.xml missing <image:title>");
+
+const feed = fs.readFileSync(path.join(DOCS, "feed.xml"), "utf8");
+assert(feed.includes('<rss version="2.0"') && feed.includes("<item>"), "Invalid docs/feed.xml RSS feed");
+assert(!/\{MAX(?::\w+)?\}|\{YEARS\}/.test(feed), "Unreplaced token in feed.xml");
 
 const llms = fs.readFileSync(path.join(DOCS, "llms.txt"), "utf8");
 const llmsFull = fs.readFileSync(path.join(DOCS, "llms-full.txt"), "utf8");
