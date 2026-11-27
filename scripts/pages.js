@@ -104,6 +104,14 @@ function layout(ctx, o) {
       ? SITE.announcements.filter(Boolean)
       : ["ارسال از روز اول کاری به کل ایران", `${fa(STORE.years)} سال سابقه در ${STORE.bazaar}`, "سایزبندی واقعی تا {MAX} · ضمانت باسلام"]),
   ].slice(0, 3);
+  const storeId = `${SITE_URL}/#store`;
+  const rawSchemas = (o.schema || []).filter(Boolean);
+  const schemas = rawSchemas.filter((s, idx) =>
+    !(s["@id"] === storeId && rawSchemas.findIndex((x) => x["@id"] === storeId) !== idx)
+  );
+  if (!o.noindex && !schemas.some((s) => s["@id"] === storeId)) {
+    schemas.push(orgSchema(ctx));
+  }
   return fillSizes(ctx, `<!doctype html>
 <html lang="fa" dir="rtl" data-base="${BASE}">
 <head>
@@ -143,7 +151,7 @@ ${SITE.analytics && SITE.analytics.goatcounter ? `<script data-goatcounter="http
 ${o.preload ? `<link rel="preload" as="image" href="${o.preload}"${o.preloadSet ? ` imagesrcset="${o.preloadSet}" imagesizes="${o.preloadSizes}"` : ""} fetchpriority="high">` : ""}
 <script>document.documentElement.classList.add("js");try{if(localStorage.getItem("elm-theme")==="shab")document.documentElement.setAttribute("data-theme","shab")}catch(e){}</script>
 <link rel="stylesheet" href="${BASE}/assets/css/site.css?v=${VERSION}">
-${(o.schema || []).map((s) => `<script type="application/ld+json">${json(s)}</script>`).join("\n")}
+${schemas.map((s) => `<script type="application/ld+json">${json(s)}</script>`).join("\n")}
 </head>
 <body${o.bodyClass ? ` class="${o.bodyClass}"` : ""}>
 <a class="skip" href="#main">رفتن به محتوای اصلی</a>
@@ -288,10 +296,24 @@ const crumbSchema = (ctx, items) => ({
   "@context": "https://schema.org", "@type": "BreadcrumbList",
   itemListElement: items.map(([h, t], i) => ({ "@type": "ListItem", position: i + 1, name: t, item: ctx.SITE_URL + h })),
 });
+const orgLogo = (ctx) => ({
+  "@type": "ImageObject",
+  url: `${ctx.SITE_URL}/assets/img/icon-512.png`,
+  width: 512,
+  height: 512,
+});
+const orgRef = (ctx) => ({
+  "@type": "Organization",
+  "@id": `${ctx.SITE_URL}/#store`,
+  name: `${STORE.name} (${STORE.latin})`,
+  url: `${ctx.SITE_URL}/`,
+  logo: orgLogo(ctx),
+  sameAs: [STORE.instagram, STORE.basalam, STORE.rubika],
+});
 const orgSchema = (ctx) => ({
-  "@context": "https://schema.org", "@type": ["ClothingStore", "LocalBusiness"], "@id": `${ctx.SITE_URL}/#store`,
+  "@context": "https://schema.org", "@type": ["ClothingStore", "LocalBusiness", "Organization"], "@id": `${ctx.SITE_URL}/#store`,
   name: `${STORE.name} (${STORE.latin})`, alternateName: [STORE.latin, STORE.full, "ال‌مارت", "ال مارت", "ELLMART", "پیرایش"],
-  url: `${ctx.SITE_URL}/`, logo: `${ctx.SITE_URL}/assets/img/icon-512.png`, image: [`${ctx.SITE_URL}/assets/og/site.jpg`, `${ctx.SITE_URL}/assets/og/hojreh.jpg`],
+  url: `${ctx.SITE_URL}/`, logo: orgLogo(ctx), image: [`${ctx.SITE_URL}/assets/og/site.jpg`, `${ctx.SITE_URL}/assets/og/hojreh.jpg`],
   description: `فروشگاه پوشاک مردانه ${STORE.name} از ${STORE.bazaar}؛ تیشرت، شلوار اسلش، هودی و لباس سایز بزرگ مردانه تا {MAX}.`,
   disambiguatingDescription: `فروشگاه و تولیدی پوشاک مردانه المارت (ellmarrt.ir) در بازار سرپوشیده تبریز با {YEARS} سال سابقه؛ مستقل از فروشگاه‌های همنام در سایر شهرها.`,
   address: { "@type": "PostalAddress", streetAddress: STORE.address, addressLocality: STORE.city, addressRegion: STORE.region, addressCountry: "IR" },
@@ -509,7 +531,7 @@ return `<section class="sec reviews" id="reviews"><div class="wrap">
     preload: heroPreload,
     preloadSet: heroPreloadSet,
     preloadSizes: heroPreloadSizes,
-    schema: [orgSchema(ctx), { "@context": "https://schema.org", "@type": "WebSite", name: STORE.name, alternateName: STORE.latin, url: `${ctx.SITE_URL}/`, inLanguage: "fa-IR", potentialAction: { "@type": "SearchAction", target: `${ctx.SITE_URL}/shop/?q={search_term_string}`, "query-input": "required name=search_term_string" } }, faqSchema(HOME_FAQ)],
+    schema: [{ "@context": "https://schema.org", "@type": "WebSite", name: STORE.name, alternateName: STORE.latin, url: `${ctx.SITE_URL}/`, inLanguage: "fa-IR", potentialAction: { "@type": "SearchAction", target: `${ctx.SITE_URL}/shop/?q={search_term_string}`, "query-input": "required name=search_term_string" } }, faqSchema(HOME_FAQ)],
     body,
   });
 }
@@ -661,7 +683,7 @@ function product(ctx, p) {
       priceValidUntil,
       availability: offerAvail,
       itemCondition: "https://schema.org/NewCondition",
-      seller: { "@type": "Organization", "@id": `${SITE_URL}/#store`, name: STORE.name, url: `${SITE_URL}/` },
+      seller: orgRef(ctx),
       shippingDetails: {
         "@type": "OfferShippingDetails",
         shippingDestination: { "@type": "DefinedRegion", addressCountry: "IR" },
@@ -847,7 +869,7 @@ ${chartLine(["pants", "shorts"])}
 }
 
 function about(ctx) {
-  const { BASE, products: P } = ctx;
+  const { BASE, products: P, storeReviews: rv } = ctx;
   const items = [["/", "خانه"], ["/about/", "داستان ما"]];
   const heroImg = `${BASE}/assets/img/hojreh-1280.webp`;
   const heroSet = `${BASE}/assets/img/hojreh-640.webp 640w, ${BASE}/assets/img/hojreh-1280.webp 1280w`;
@@ -864,7 +886,7 @@ function about(ctx) {
     preload: heroImg,
     preloadSet: heroSet,
     preloadSizes: heroSizes,
-    schema: [crumbSchema(ctx, items), orgSchema(ctx)],
+    schema: [crumbSchema(ctx, items)],
     body: `${crumbs(ctx, items)}
 <section class="sec-sm"><div class="wrap story">
 <div class="story-media"><div class="arch arch-landscape"><img src="${heroImg}" srcset="${heroSet}" sizes="${heroSizes}" alt="غرفه المارت در بازار سرپوشیده تبریز" width="1280" height="960" fetchpriority="high" decoding="async"></div><div class="badge-yr"><b class="num">${fa(STORE.years)}</b>سال سابقه</div></div>
@@ -875,6 +897,11 @@ function about(ctx) {
 <p>روزهای اول سخت بود؛ مشتری کم و فروش پایین. اما هر روز یاد گرفتیم و بهتر شدیم. امروز همان حجره کوچک جایی است که مشتری‌ها با لبخند می‌آیند — و حالا با سایت المارت، همان اعتماد بازار را به سراسر ایران می‌بریم.</p>
 <h2>چیزهایی که برایمان مهم است</h2>
 <ul><li><b>جنس بازاری، قیمت منصفانه:</b> اجناس با تجربه ${fa(STORE.years)} سال بازار انتخاب می‌شوند.</li><li><b>عکس واقعی، سایز دقیق:</b> هر کالا قبل از ارسال بررسی می‌شود.</li><li><b>ارسال روز اول کاری:</b> بسته‌بندی ایمن به سراسر کشور.</li><li><b>سایز بزرگ واقعی:</b> برای آقایانی که همیشه دنبال لباس اندازه می‌گشتند.</li></ul>
+<div class="note">
+<h2 style="font-size:17px;margin:0 0 8px">خلاصه معرفی ${STORE.name} (<bdi dir="ltr">${STORE.latin}</bdi>)</h2>
+<p style="margin:0 0 8px">${STORE.full} با وبسایت رسمی <bdi dir="ltr">ellmarrt.ir</bdi> یک فروشگاه و تولیدی خانوادگی با {YEARS} سال سابقه در ${STORE.bazaar} (نشانی: ${STORE.address}) است که مستقل از فروشگاه‌های همنام در سایر شهرها فعالیت می‌کند. این مجموعه شامل ${fa(P.length)} مدل پوشاک مردانه تا سایز {MAX}${rv && rv.count ? ` با امتیاز ${fa(rv.average)} از ۵ (بر اساس ${fa(rv.count)} نظر در <a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه باسلام</a>)` : ""} است و سفارش‌ها را از طریق غرفه باسلام یا سفارش مستقیم با کد پیگیری <bdi dir="ltr">EL-XXXX</bdi> به سراسر ایران ارسال می‌کند.</p>
+<p class="note-sm" style="margin:0">بیشتر بخوانید: <a href="${BASE}/faq/">سوالات متداول</a> · <a href="${BASE}/shipping-returns/">ارسال و مرجوعی</a> · <a href="${BASE}/wholesale/">خرید عمده</a> · <a href="${BASE}/contact/">تماس با ما</a></p>
+</div>
 <p><a class="btn btn-ink" href="${BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} <bdi dir="ltr" class="handle">@${STORE.igHandle}</bdi></a> <a class="btn btn-ghost" href="${BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a></p>
 </div></div></section>
 ${realStrip.length ? `<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>از میز کار و قفسه حجره</h2><p>نمونه عکس‌های واقعی پارچه، دوخت و برش از غرفه المارت در بازار تبریز.</p></div><a class="link" href="${BASE}/shop/">همه مدل‌ها</a></div><div class="grid">${realStrip.map(({ p, g }) => `<a class="about-shot" href="${pUrl(ctx, p)}"><img src="${BASE}/assets/p/${g.file}" alt="${esc(`${short(p)} — عکس واقعی`)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"><span><b>${esc(short(p))}</b><small class="num">${fa(p.price)} تومان</small></span></a>`).join("")}</div></div></section>` : ""}`,
@@ -895,7 +922,7 @@ function tabrizBazaar(ctx) {
     path: "/tabriz-bazaar/",
     title: `فروشگاه و تولیدی لباس مردانه در تبریز | بازار سرپوشیده | ${STORE.name}`,
     desc: `فروشگاه و تولیدی لباس مردانه ${STORE.name} در بازار سرپوشیده تبریز: تیشرت، شلوار اسلش، هودی و سایز بزرگ؛ نشانی و تلفن غرفه، خرید حضوری، پیک در تبریز و ارسال به سراسر ایران.`,
-    schema: [crumbSchema(ctx, items), orgSchema(ctx), faqSchema(qa), ...(prods.length ? [itemList(ctx, prods)] : [])],
+    schema: [crumbSchema(ctx, items), faqSchema(qa), ...(prods.length ? [itemList(ctx, prods)] : [])],
     body: `${crumbs(ctx, items)}
 <section class="sec-sm"><div class="wrap prose">
 <h1>فروشگاه لباس مردانه در تبریز؛ از دل بازار سرپوشیده</h1>
@@ -922,25 +949,31 @@ ${prods.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head
   });
 }
 
+const RUBIKA_ORDER_HANDLE = "@" + STORE.rubikaOrder.replace(/^https?:\/\/[^/]+\//, "").replace(/\/+$/, "").replace(/^@/, "");
 const FAQ_FULL = [
+  ["المارت (ELLMARRT) کجاست و آیا با فروشگاه‌های همنام در شهرهای دیگر ارتباطی دارد؟", `${STORE.full} با دامنه رسمی ellmarrt.ir یک کسب‌وکار خانوادگی با {YEARS} سال سابقه در ${STORE.bazaar} به نشانی ${STORE.address} است. این مجموعه کاملاً مستقل عمل می‌کند و هیچ شعبه یا وابستگی به فروشگاه‌ها و سایت‌های همنام در تهران یا سایر شهرها ندارد.`],
   ["چطور سفارش بدهم؟", "در صفحه محصول سایز و رنگ را انتخاب کنید و روی «خرید امن از غرفه المارت در باسلام» بزنید. در باسلام دوباره سایز و رنگ را انتخاب و قیمت و موجودی نهایی را بررسی کنید. سفارش و پرداخت در باسلام انجام می‌شود."],
   ["سفارش تلفنی یا پیامکی چطور است؟", "اگر نمی‌خواهید از باسلام بخرید، در صفحه محصول سایز و رنگ را انتخاب کنید و «سفارش تلفنی / پیامکی» را بزنید. یک کد پیگیری مثل EL-4K2Q می‌گیرید و متن سفارش آماده می‌شود؛ آن را پیامک کنید، با شماره‌های المارت تماس بگیرید یا در روبیکا پیام بدهید و کد را بگویید. پرداخت و ارسال همان‌جا با شما هماهنگ می‌شود."],
   ["چرا پرداخت در باسلام انجام می‌شود؟", "باسلام بازار آنلاین معتبر ایرانی است؛ پرداخت شما تا زمان دریافت کالا نزد باسلام امن می‌ماند و از ضمانت بازگشت وجه باسلام بهره‌مند می‌شوید."],
   ["هزینه و زمان ارسال چقدر است؟", "ارسال از روز اول کاری بعد از سفارش با پست پیشتاز یا سفارشی انجام می‌شود و هزینه دقیق هنگام ثبت سفارش در باسلام محاسبه می‌شود. در تبریز پیک موتوری هم داریم."],
   ["اگر سایز اندازه نبود چه کنم؟", "قبل از خرید از سایزیاب و جدول سایز استفاده کنید. اگر مشکلی پیش آمد، از طریق پیام باسلام یا اینستاگرام با ما در تماس باشید تا مطابق قوانین باسلام راهنمایی‌تان کنیم."],
+  ["پوشاک سایز بزرگ مردانه المارت در چه سایزهایی تولید و عرضه می‌شود؟", "قواره سایز بزرگ المارت با الگوی استاندارد برای آقایان درشت‌اندام طراحی می‌شود و شامل تیشرت تا {MAX:tshirt}، شلوار اسلش و راحتی تا {MAX:pants} و هودی و دورس تا {MAX:sweat} است. برای تطبیق دقیق با قد و وزن خود، جدول سانتی‌متری هر مدل را در صفحه همان محصول بررسی کنید."],
   ["آیا رنگ‌ها با عکس یکی است؟", "بعضی تصاویر اصلی بازسازی استودیویی هستند و رنگ ممکن است با توجه به نور و نمایشگر متفاوت دیده شود. عکس‌های واقعی غرفه را نیز در صفحه محصول ببینید."],
-  ["خرید عمده دارید؟", "بله؛ المارت پخش پوشاک مردانه است. برای خرید عمده و همکاری در اینستاگرام پیام بدهید."],
+  ["خرید عمده دارید؟", `بله؛ ${STORE.full} علاوه بر فروش تکی، سفارش عمده برای مغازه‌ها و فروشندگان سراسر کشور نیز می‌پذیرد. برای استعلام قیمت عمده به صفحه خرید عمده المارت سر بزنید یا کد کالا، رنگ، سایز و تعداد را از طریق شماره‌های ${STORE.phones.map(fa0).join(" و ")} یا پیام‌رسان روبیکا (${RUBIKA_ORDER_HANDLE}) بفرستید.`],
 ];
 
 function faq(ctx) {
+  const { BASE } = ctx;
   const items = [["/", "خانه"], ["/faq/", "ارسال و سوالات متداول"]];
+  const renderAns = (a) => a.replace("صفحه خرید عمده المارت", `<a class="link" href="${BASE}/wholesale/">صفحه خرید عمده المارت</a>`);
   return layout(ctx, {
     path: "/faq/",
     title: "ارسال، پرداخت و سوالات متداول",
     desc: "پاسخ سوالات پرتکرار درباره خرید از المارت: نحوه سفارش، پرداخت امن با باسلام، زمان و روش ارسال، انتخاب سایز و خرید عمده پوشاک مردانه.",
     schema: [crumbSchema(ctx, items), faqSchema(FAQ_FULL)],
-    body: `${crumbs(ctx, items)}<header class="wrap phead"><h1>ارسال و سوالات متداول</h1></header>
-<section class="sec-sm"><div class="wrap faq">${FAQ_FULL.map(([q, a], i) => `<details${i === 0 ? " open" : ""}><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>`,
+    body: `${crumbs(ctx, items)}<header class="wrap phead"><h1>ارسال و سوالات متداول</h1><p>پاسخ پرسش‌های رایج درباره خرید، ارسال، انتخاب سایز و سفارش عمده از المارت (<bdi dir="ltr">ELLMARRT</bdi>).</p></header>
+<section class="sec-sm" style="padding-top:8px;padding-bottom:0"><div class="wrap prose" style="max-width:860px"><div class="note" style="margin:0 0 12px"><p style="margin:0 0 8px"><b>${STORE.name} (<bdi dir="ltr">${STORE.latin}</bdi>)</b> با وبسایت رسمی <bdi dir="ltr">ellmarrt.ir</bdi>، ${STORE.full} با {YEARS} سال سابقه خانوادگی در ${STORE.bazaar} (${STORE.address}) است و مستقل از فروشگاه‌های همنام در سایر شهرها فعالیت می‌کند. مجموعه محصولات ما شامل تیشرت نخ پنبه، پولوشرت، شلوار اسلش، هودی و دورس و پوشاک سایز بزرگ مردانه تا {MAX} است که از دو مسیر رسمی قابل سفارش‌اند: خرید آنلاین امن از <a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه المارت در باسلام</a> یا سفارش مستقیم (تلفنی، پیامکی و روبیکا) با کد پیگیری اختصاصی <bdi dir="ltr">EL-XXXX</bdi>.</p><p class="note-sm" style="margin:0">مسیرهای سریع: <a href="${BASE}/about/">داستان و معرفی المارت</a> · <a href="${BASE}/shop/">فروشگاه کامل</a> · <a href="${BASE}/big-size/">لباس سایز بزرگ تا {MAX}</a> · <a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a> · <a href="${BASE}/shipping-returns/">ارسال و مرجوعی</a> · <a href="${BASE}/wholesale/">خرید عمده</a> · <a href="${BASE}/contact/">تماس با ما</a></p></div></div></section>
+<section class="sec-sm"><div class="wrap faq">${FAQ_FULL.map(([q, a], i) => `<details${i === 0 ? " open" : ""}><summary>${q}</summary><p>${renderAns(a)}</p></details>`).join("")}</div></section>`,
   });
 }
 
@@ -1785,8 +1818,8 @@ function guide(ctx, g) {
       headline: g.title, description: g.desc, inLanguage: "fa-IR",
       image: [ogImg],
       wordCount,
-      author: { "@type": "Organization", name: STORE.name, url: `${ctx.SITE_URL}/` },
-      publisher: { "@type": "Organization", "@id": `${ctx.SITE_URL}/#store`, name: STORE.name, logo: { "@type": "ImageObject", url: `${ctx.SITE_URL}/assets/img/icon-512.png` } },
+      author: orgRef(ctx),
+      publisher: orgRef(ctx),
       mainEntityOfPage: `${ctx.SITE_URL}/guide/${g.slug}/`,
       datePublished: datePub,
       dateModified: dateMod,
@@ -1842,6 +1875,21 @@ function notFound(ctx) {
   });
 }
 
+const keyPagesLines = (ctx) => [
+  `- [فروشگاه کامل](${ctx.SITE_URL}/shop/): همه ${fa(ctx.products.length)} محصول با فیلتر سایز و قیمت`,
+  `- [لباس سایز بزرگ مردانه](${ctx.SITE_URL}/big-size/): کالکشن تخصصی 3XL تا {MAX}`,
+  `- [لباس سایز بزرگ مردانه در تبریز](${ctx.SITE_URL}/big-size/tabriz/): خرید حضوری در بازار تبریز و ارسال سراسری`,
+  `- [فروشگاه لباس مردانه در تبریز](${ctx.SITE_URL}/tabriz-bazaar/): معرفی حجره و خرید حضوری`,
+  `- [درباره المارت (داستان ما)](${ctx.SITE_URL}/about/): داستان و معرفی برند المارت در بازار سرپوشیده تبریز`,
+  `- [سایزیاب آنلاین و جدول سایز](${ctx.SITE_URL}/size-guide/): پیشنهاد سایز بر اساس قد و وزن (L تا {MAX})`,
+  `- [سایز لباس مردانه بر اساس وزن](${ctx.SITE_URL}/size/weight/): جدول وزن ۶۵ تا ۱۵۰ کیلوگرم`,
+  `- [راهنمای خرید پوشاک مردانه](${ctx.SITE_URL}/guide/): فهرست کامل راهنماهای خرید و انتخاب سایز پوشاک مردانه`,
+  `- [تولیدی و پخش عمده پوشاک مردانه تبریز](${ctx.SITE_URL}/wholesale/): استعلام قیمت عمده و همکاری فروشگاهی برای تیشرت، شلوار اسلش، هودی و سایز بزرگ`,
+  `- [ارسال، مرجوعی و سفارش مستقیم](${ctx.SITE_URL}/shipping-returns/): ارسال روز اول کاری به سراسر ایران، پیک تبریز، سفارش مستقیم با کد EL-XXXX و شرایط تعویض`,
+  `- [سوالات متداول](${ctx.SITE_URL}/faq/): پاسخ پرسش‌های پرتکرار درباره معرفی برند المارت تبریز، نحوه خرید، ارسال، سایز بزرگ و فروش عمده`,
+  `- [تماس با المارت](${ctx.SITE_URL}/contact/): شماره‌های تماس و پیامک، روبیکا، اینستاگرام، غرفه باسلام و نشانی حضوری حجره در بازار تبریز`,
+].join("\n");
+
 function llms(ctx) {
   const live = ctx.products.filter((p) => p.inStock);
   const rv = ctx.storeReviews;
@@ -1867,16 +1915,7 @@ function llms(ctx) {
 - نسخه کامل برای هوش مصنوعی: ${ctx.SITE_URL}/llms-full.txt | کاتالوگ JSON: ${ctx.SITE_URL}/assets/ai-catalog.json | خوراک RSS: ${ctx.SITE_URL}/feed.xml
 
 ## صفحات اصلی و ابزارها
-- [فروشگاه کامل](${ctx.SITE_URL}/shop/): همه ${fa(ctx.products.length)} محصول با فیلتر سایز و قیمت
-- [لباس سایز بزرگ مردانه](${ctx.SITE_URL}/big-size/): کالکشن تخصصی 3XL تا {MAX}
-- [لباس سایز بزرگ مردانه در تبریز](${ctx.SITE_URL}/big-size/tabriz/): خرید حضوری در بازار تبریز و ارسال سراسری
-- [فروشگاه لباس مردانه در تبریز](${ctx.SITE_URL}/tabriz-bazaar/): معرفی حجره و خرید حضوری
-- [سایزیاب آنلاین و جدول سایز](${ctx.SITE_URL}/size-guide/): پیشنهاد سایز بر اساس قد و وزن (L تا {MAX})
-- [سایز لباس مردانه بر اساس وزن](${ctx.SITE_URL}/size/weight/): جدول وزن ۶۵ تا ۱۵۰ کیلوگرم
-- [تولیدی و پخش عمده پوشاک مردانه تبریز](${ctx.SITE_URL}/wholesale/)
-- [ارسال، مرجوعی و سفارش مستقیم](${ctx.SITE_URL}/shipping-returns/)
-- [سوالات متداول](${ctx.SITE_URL}/faq/)
-- [تماس با المارت](${ctx.SITE_URL}/contact/)
+${keyPagesLines(ctx)}
 
 ## دسته‌بندی محصولات
 ${cats}
@@ -1940,26 +1979,29 @@ function llmsFull(ctx) {
 - مدل موجود: ${fa(live.length)} مدل آماده ارسال از ${fa(ctx.products.length)} محصول، تا سایز {MAX}.
 - ارسال: از روز اول کاری پس از ثبت سفارش با پست پیشتاز یا سفارشی به سراسر ایران و پیک موتوری در تبریز.
 
-## ۲. جدول راهنمای سایز مردانه (تیشرت، پولوشرت، هودی و پیراهن)
+## ۲. صفحات اصلی و ابزارها
+${keyPagesLines(ctx)}
+
+## ۳. جدول راهنمای سایز مردانه (تیشرت، پولوشرت، هودی و پیراهن)
 | سایز | قد (سانتی‌متر) | وزن (کیلوگرم) | عرض سینه (سانت) | قد لباس (سانت) |
 |---|---|---|---|---|
 ${SIZE_ROWS.map((r) => `| ${r[0]} | ${r[1]} | ${r[2]} | ${r[3]} | ${r[4]} |`).join("\n")}
 
-## ۳. جدول راهنمای سایز شلوار اسلش و شلوارک
+## ۴. جدول راهنمای سایز شلوار اسلش و شلوارک
 | سایز | وزن تقریبی (کیلوگرم) | قد شلوار (سانتی‌متر) |
 |---|---|---|
 ${pantsRows.map((r) => `| ${r[0]} | ${r[1]} | ${r[2]} |`).join("\n")}
-${sc ? `\n## ۴. جدول سایز کفش اسپرت مردانه (مدل ${sc.p.title})\n| سایز | طول پا (سانتی‌متر) |\n|---|---|\n${sc.rows.map(([z, v]) => `| ${fa0(z)} | ${fa0(v["طول پا"])} |`).join("\n")}\n` : ""}
-## ۵. پرسش و پاسخ‌های رسمی فروشگاه
+${sc ? `\n## ۵. جدول سایز کفش اسپرت مردانه (مدل ${sc.p.title})\n| سایز | طول پا (سانتی‌متر) |\n|---|---|\n${sc.rows.map(([z, v]) => `| ${fa0(z)} | ${fa0(v["طول پا"])} |`).join("\n")}\n` : ""}
+## ۶. پرسش و پاسخ‌های رسمی فروشگاه
 ${allFaq.map(([q, a]) => `**${q}**\n${a}`).join("\n\n")}
 
-## ۶. خلاصه راهنماهای خرید المارت
+## ۷. خلاصه راهنماهای خرید المارت
 ${guides.map((g) => { const f0 = g.faq && g.faq[0]; return `- **${g.title}** (${ctx.SITE_URL}/guide/${g.slug}/): ${g.desc}${f0 ? ` | پرسش کلیدی: ${f0[0]} ← ${f0[1]}` : ""}`; }).join("\n")}
 
-## ۷. صفحات مدل و استایل (${fa(sty.stylePages(ctx).length)} صفحه)
+## ۸. صفحات مدل و استایل (${fa(sty.stylePages(ctx).length)} صفحه)
 ${sty.stylePages(ctx).map((x) => `- [${x.h1}](${ctx.SITE_URL}${sty.stylePath(ctx, x)})`).join("\n")}
 
-## ۸. کاتالوگ کامل محصولات
+## ۹. کاتالوگ کامل محصولات
 ${prodDetails}
 `);
 }
@@ -2012,7 +2054,7 @@ function aiCatalog(ctx) {
 }
 
 const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
-const info = require("./pages-info")({ layout, crumbs, crumbSchema, orgSchema, faqSchema, STORE, I, fa0, fa });
+const info = require("./pages-info")({ layout, crumbs, crumbSchema, faqSchema, STORE, I, fa0, fa });
 const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS });
 
 const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });

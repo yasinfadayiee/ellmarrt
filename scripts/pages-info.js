@@ -1,5 +1,5 @@
 // Trust pages: contact, terms, privacy, shipping & returns (also needed later for eNamad).
-module.exports = ({ layout, crumbs, crumbSchema, orgSchema, faqSchema, STORE, I, fa0, fa }) => {
+module.exports = ({ layout, crumbs, crumbSchema, faqSchema, STORE, I, fa0, fa }) => {
   const prosePage = (ctx, route, crumb, title, desc, html, extraSchema = []) => {
     const items = [["/", "خانه"], [route, crumb]];
     return layout(ctx, {
@@ -16,7 +16,7 @@ module.exports = ({ layout, crumbs, crumbSchema, orgSchema, faqSchema, STORE, I,
       path: "/contact/",
       title: "تماس با المارت؛ تلفن، روبیکا و آدرس بازار تبریز",
       desc: `راه‌های تماس با ${STORE.name}: ثبت سفارش تلفنی ${STORE.phones.map(fa0).join(" و ")}، روبیکا @aliegbal، اینستاگرام و آدرس حجره در ${STORE.address}.`,
-      schema: [crumbSchema(ctx, items), orgSchema(ctx)],
+      schema: [crumbSchema(ctx, items)],
       body: `${crumbs(ctx, items)}
 <header class="wrap phead"><h1>تماس با المارت</h1><p>برای سفارش، مشاوره سایز یا خرید عمده با ما در تماس باشید. پاسخ‌گویی در ساعات کاری بازار تبریز.</p></header>
 <section class="sec-sm"><div class="wrap contact-g">

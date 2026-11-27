@@ -50,6 +50,7 @@ const descViolations = [];
 const h1Violations = [];
 const thinPages = [];
 let checkedPages = 0;
+let canonicalStore = null;
 
 for (const file of htmlFiles) {
   const rel = "/" + path.relative(DOCS, file).replace(/\\/g, "/").replace(/index\.html$/, "");
@@ -94,22 +95,48 @@ for (const file of htmlFiles) {
   if (words < 180) thinPages.push([rel, words]);
 
   const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  const parsedSchemas = schemas.map((sm) => JSON.parse(sm[1]));
+  const typesOf = (obj) => Array.isArray(obj["@type"]) ? obj["@type"] : [obj["@type"]];
+  const storeSchemas = parsedSchemas.filter((obj) => {
+    const t = typesOf(obj);
+    return t.includes("ClothingStore") || t.includes("Organization");
+  });
+  assert.equal(storeSchemas.length, 1, `Expected exactly 1 ClothingStore/Organization JSON-LD on ${rel}, found ${storeSchemas.length}`);
+  const storeObj = storeSchemas[0];
+  const storeTypes = typesOf(storeObj);
+  assert(storeTypes.includes("ClothingStore") && storeTypes.includes("Organization"), `Store JSON-LD on ${rel} must include both ClothingStore and Organization`);
+  assert(storeObj["@id"] && storeObj.name && storeObj.url, `Missing @id/name/url on store JSON-LD on ${rel}`);
+  assert(storeObj.logo && storeObj.logo["@type"] === "ImageObject" && storeObj.logo.url, `Store logo must be ImageObject with url on ${rel}`);
+  assert(Array.isArray(storeObj.sameAs) && storeObj.sameAs.length >= 3, `Missing store sameAs on ${rel}`);
+  assert(storeObj.geo && storeObj.disambiguatingDescription, `Missing store geo/disambiguatingDescription on ${rel}`);
+  const storeSig = { "@id": storeObj["@id"], name: storeObj.name, url: storeObj.url, logoUrl: storeObj.logo.url, sameAs: storeObj.sameAs };
+  if (!canonicalStore) canonicalStore = storeSig;
+  else assert.deepEqual(storeSig, canonicalStore, `Inconsistent store JSON-LD on ${rel}`);
+
+  const assertOrgRef = (ref, label) => {
+    assert(ref && typeof ref === "object", `Missing ${label} on ${rel}`);
+    assert.equal(ref["@id"], canonicalStore["@id"], `${label}.@id mismatch on ${rel}`);
+    assert.equal(ref.name, canonicalStore.name, `${label}.name mismatch on ${rel}`);
+    assert.equal(ref.url, canonicalStore.url, `${label}.url mismatch on ${rel}`);
+    assert(ref.logo && ref.logo["@type"] === "ImageObject" && ref.logo.url === canonicalStore.logoUrl, `${label}.logo mismatch on ${rel}`);
+    assert.deepEqual(ref.sameAs, canonicalStore.sameAs, `${label}.sameAs mismatch on ${rel}`);
+  };
+
   let hasFaqSchema = false;
-  for (const sm of schemas) {
-    const obj = JSON.parse(sm[1]);
+  for (const obj of parsedSchemas) {
     if (obj["@type"] === "FAQPage") hasFaqSchema = true;
     if (obj["@type"] === "Product" && obj.offers) {
       assert(obj.offers.priceValidUntil, `Missing priceValidUntil on ${rel}`);
       assert(obj.offers.shippingDetails && obj.offers.shippingDetails.deliveryTime && obj.offers.shippingDetails.deliveryTime.transitTime, `Missing shippingDetails/transitTime on ${rel}`);
       assert(obj.offers.hasMerchantReturnPolicy && obj.offers.hasMerchantReturnPolicy.merchantReturnDays === 7, `Missing merchantReturnDays on ${rel}`);
       assert(obj.offers.hasMerchantReturnPolicy.returnMethod && obj.offers.hasMerchantReturnPolicy.returnFees, `Missing returnMethod/returnFees on ${rel}`);
+      assertOrgRef(obj.offers.seller, "Product.offers.seller");
     }
     if (obj["@type"] === "Article") {
       assert(obj.image && obj.image.length, `Missing Article image on ${rel}`);
       assert(obj.dateModified, `Missing Article dateModified on ${rel}`);
-    }
-    if (obj["@type"] === "ClothingStore" || (Array.isArray(obj["@type"]) && obj["@type"].includes("ClothingStore"))) {
-      assert(obj.geo && obj.disambiguatingDescription, `Missing store geo/disambiguatingDescription on ${rel}`);
+      assertOrgRef(obj.author, "Article.author");
+      assertOrgRef(obj.publisher, "Article.publisher");
     }
   }
   if (/^\/guide\/[^/]+\/$/.test(rel)) assert(hasFaqSchema, `Missing FAQPage on guide ${rel}`);
@@ -147,6 +174,16 @@ assert(!/\{MAX(?::\w+)?\}|\{YEARS\}/.test(feed), "Unreplaced token in feed.xml")
 const llms = fs.readFileSync(path.join(DOCS, "llms.txt"), "utf8");
 const llmsFull = fs.readFileSync(path.join(DOCS, "llms-full.txt"), "utf8");
 assert(!/\{MAX(?::\w+)?\}|\{YEARS\}/.test(llms + llmsFull), "Unreplaced token in llms.txt or llms-full.txt");
+const requiredLlmsRoutes = [
+  "/shop/", "/size-guide/", "/big-size/", "/faq/", "/about/",
+  "/guide/", "/shipping-returns/", "/contact/", "/wholesale/",
+];
+for (const route of requiredLlmsRoutes) {
+  const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`^- \\[[^\\]]+\\]\\(https://ellmarrt\\.ir${escaped}\\):\\s+\\S[^\\r\\n]{8,}$`, "m");
+  assert(re.test(llms), `docs/llms.txt missing key route with description: ${route}`);
+  assert(re.test(llmsFull), `docs/llms-full.txt missing key route with description: ${route}`);
+}
 
 const aiCat = JSON.parse(fs.readFileSync(path.join(DOCS, "assets/ai-catalog.json"), "utf8"));
 assert(aiCat.store && Array.isArray(aiCat.products) && aiCat.products.length > 0, "Invalid assets/ai-catalog.json");
