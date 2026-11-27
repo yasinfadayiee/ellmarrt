@@ -48,11 +48,12 @@ const ALT = { "طوسی": "خاکستری", "مشکی": "سیاه", "قهوه‌
 const SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
 const bySize = (a, b) => (SIZE_ORDER.indexOf(a) + 1 || 99 + parseFloat(a)) - (SIZE_ORDER.indexOf(b) + 1 || 99 + parseFloat(b));
 
-module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS }) => {
+module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS, imgAlt, mainBase }) => {
   const rank = (a, b) => (b.sales || 0) - (a.sales || 0) || a.price - b.price;
   // the product with the colour switched to g, so its card shows that colour's studio shot
   const asColor = (p, g) => {
-    const i = p.colors.findIndex((c, k) => group(c) === g && p.colorInStock.includes(k) && p.colorImages.includes(k));
+    let i = p.colors.findIndex((c, k) => group(c) === g && p.colorInStock.includes(k) && p.colorImages.includes(k));
+    if (i < 0) i = p.colors.findIndex((c, k) => group(c) === g && p.colorImages.includes(k));
     return i >= 0 ? { ...p, mainColor: i } : p;
   };
   const listOf = (ctx, cat, g) => ctx.products
@@ -160,9 +161,15 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
   }
 
   return { colorPages, colorPage, colorLinks, colorTitle: h1Of, colorPath: pathOf, colorGroup: group, colorImages: (ctx, pg) => {
-    const withCol = pg.list.map((p) => asColor(p, pg.g)).find((t) => t.mainColor != null);
-    const t = withCol || asColor(pg.list[0], pg.g);
-    const loc = t.mainColor != null ? `${ctx.SITE_URL}/assets/p/${t.id}-k${t.mainColor}-960.webp` : `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`;
-    return [{ loc, title: h1Of(pg.cat, pg.g) }];
+    const out = [], seen = new Set();
+    for (const p of pg.list) {
+      const t = asColor(p, pg.g);
+      const loc = `${ctx.SITE_URL}/assets/p/${mainBase(t)}-960.webp`;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
+      out.push({ loc, title: imgAlt(ctx, t) });
+      if (out.length >= 4) break;
+    }
+    return out;
   } };
 };

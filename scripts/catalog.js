@@ -142,6 +142,7 @@ function load() {
       autoTitle: (curated[s.id] || autoCurate(d, s))[0],
       hasVideo: !!(s.video && s.video.PRIMARY),
       created: d.created_at,
+      updated: d.updated_at || d.created_at || null,
       images: images[s.id] || { hero: null, gallery: [] },
       colorImages: colors.map((_, i) => i).filter((i) => fs.existsSync(path.join(ROOT, "assets/p", `${s.id}-k${i}-960.webp`))),
       colorInStock: colors.map((_, i) => i).filter((i) => variants.some((v) => v.color === colors[i] && v.stock > 0)),

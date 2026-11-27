@@ -6,7 +6,7 @@ const MIN = 3;
 const LIMITS = [[1000000, "1m", "۱ میلیون"], [1500000, "1500k", "۱٫۵ میلیون"], [2000000, "2m", "۲ میلیون"]];
 const NOUN = { tshirt: "تیشرت", polo: "پولوشرت", shirt: "پیراهن", sweat: "هودی و دورس", pants: "شلوار", shorts: "شلوارک", shoes: "کفش اسپرت", kids: "لباس پسرانه" };
 
-module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa }) => {
+module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, imgAlt, mainBase }) => {
   const cheap = (a, b) => a.price - b.price || (b.sales || 0) - (a.sales || 0);
   const under = (ctx, limit, cat) => ctx.products.filter((p) => p.inStock && p.price <= limit && (cat ? p.cat === cat : p.cat !== "kids")).sort(cheap);
 
@@ -74,5 +74,15 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     return pg.length ? `<p class="note-sm">بر اساس بودجه: ${pg.map((x) => `<a class="link" href="${ctx.BASE}${pathOf(ctx, x)}">${h1Of(x)}</a>`).join(" · ")}</p>` : "";
   };
 
-  return { pricePages, pricePage, pricePath: pathOf, priceTitle: h1Of, priceLinks, priceImages: (ctx, pg) => [{ loc: `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`, title: h1Of(pg) }] };
+  return { pricePages, pricePage, pricePath: pathOf, priceTitle: h1Of, priceLinks, priceImages: (ctx, pg) => {
+    const out = [], seen = new Set();
+    for (const p of pg.list) {
+      const loc = `${ctx.SITE_URL}/assets/p/${mainBase(p)}-960.webp`;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
+      out.push({ loc, title: imgAlt(ctx, p) });
+      if (out.length >= 4) break;
+    }
+    return out;
+  } };
 };

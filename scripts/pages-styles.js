@@ -62,7 +62,7 @@ const ALT = {
   "zip-pocket": "اسلش جیب‌دار",
 };
 
-module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE }) => {
+module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, imgAlt, mainBase }) => {
   const rank = (a, b) => (b.sales || 0) - (a.sales || 0) || a.price - b.price;
   const hay = (p) => `${p.title} ${p.keyword || ""} ${p.basalamTitle || ""}`.replace(/‌/g, " ");
   const listOf = (ctx, s) => ctx.products.filter((p) => p.inStock && p.cat === s[0] && s[3].test(hay(p))).sort(rank);
@@ -141,5 +141,15 @@ module.exports = ({ layout, crumbs, crumbSchema, faqSchema, itemList, card, live
     });
   }
 
-  return { stylePages, stylePage, stylePath: pathOf, styleLinks, stylesOf, styleImages: (ctx, pg) => [{ loc: `${ctx.SITE_URL}/assets/p/${pg.list[0].id}-960.webp`, title: pg.h1 }] };
+  return { stylePages, stylePage, stylePath: pathOf, styleLinks, stylesOf, styleImages: (ctx, pg) => {
+    const out = [], seen = new Set();
+    for (const p of pg.list) {
+      const loc = `${ctx.SITE_URL}/assets/p/${mainBase(p)}-960.webp`;
+      if (seen.has(loc)) continue;
+      seen.add(loc);
+      out.push({ loc, title: imgAlt(ctx, p) });
+      if (out.length >= 4) break;
+    }
+    return out;
+  } };
 };
