@@ -92,8 +92,9 @@
   /* product card template (for shop filtering & recent items) */
   const camI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>';
   const sizeTags = (p) => { const z = p.s || []; return (z.length > 5 ? [z[0], "…", ...z.slice(-3)] : z).map((s) => (s === "…" ? "<i>…</i>" : `<span>${s}</span>`)).join(""); };
+  const escA = (s) => String(s || "").replace(/"/g, "&quot;");
   const card = (p) => `<article class="card rv${p.st ? "" : " out"}">
-    <div class="card-media"><img src="${p.img}" srcset="${p.img} 480w, ${p.img.replace(/-480\.webp$/, "-960.webp")} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${p.t}" width="480" height="600" loading="lazy" decoding="async">${!p.real && p.alt ? `<img class="alt" src="${p.alt}" alt="" width="480" height="600" loading="lazy" decoding="async">` : ""}
+    <div class="card-media"><img src="${p.img}" srcset="${p.img} 480w, ${p.img.replace(/-480\.webp$/, "-960.webp")} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${escA(p.imgAlt || p.t)}" width="480" height="600" loading="lazy" decoding="async">${!p.real && p.alt ? `<img class="alt" src="${p.alt}" alt="${escA(p.altImgAlt || "")}" width="480" height="600" loading="lazy" decoding="async">` : ""}
     <div class="card-tags">${p.tag ? `<span class="tag ${p.tagc}">${p.tag}</span>` : ""}</div>
     <button type="button" class="fav" data-id="${p.id}" aria-label="افزودن به علاقه‌مندی‌ها"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.4 4.5 7 4.5c2 0 3.5 1.1 5 2.9 1.5-1.8 3-2.9 5-2.9 3.6 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg></button>${p.real ? `<button type="button" class="real-tg" data-real="${p.real}" aria-pressed="false" aria-label="نمایش عکس واقعی ${p.t}">${camI}<span>عکس واقعی</span></button>` : ""}</div>
     <div class="card-body"><div class="card-top"><span class="card-cat">${p.cn}${p.msr ? " · جدول سایز دارد" : ""}</span>${p.rate ? `<span class="card-rate num"><i>★</i>${p.rate}</span>` : ""}</div><h3 class="card-title"><a href="${p.url}">${p.t}</a></h3>
@@ -107,6 +108,7 @@
     if (!primary) return;
     primary.src = btn.dataset.swImg;
     if (btn.dataset.swSrcset) primary.srcset = btn.dataset.swSrcset;
+    if (btn.dataset.swAlt) primary.alt = btn.dataset.swAlt;
     cardEl.classList.remove("show-real");
     $(".real-tg", cardEl)?.setAttribute("aria-pressed", "false");
     $$(".dot", cardEl).forEach((d) => d.classList.toggle("on", d === btn));
@@ -269,6 +271,8 @@
         if (cur !== i) return;
         main.removeAttribute("srcset"); main.removeAttribute("sizes");
         main.src = next;
+        const tAlt = $("img", thumbs[i])?.alt;
+        if (tAlt) main.alt = tAlt;
         main.style.opacity = 1;
       };
       pre.onload = pre.onerror = swap;

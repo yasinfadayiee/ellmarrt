@@ -225,7 +225,7 @@ const dotsHtml = (ctx, p) => {
     const hasImg = (p.colorImages || []).includes(i);
     const active = i === p.mainColor ? " on" : "";
     return hasImg
-      ? `<button type="button" class="dot${active}" data-sw-img="${ctx.BASE}/assets/p/${p.id}-k${i}-480.webp" data-sw-srcset="${ctx.BASE}/assets/p/${p.id}-k${i}-480.webp 480w, ${ctx.BASE}/assets/p/${p.id}-k${i}-960.webp 960w" aria-label="نمایش رنگ ${esc(c)}" title="${esc(c)}" style="background:${HEX[c] || "#bbb"}"></button>`
+      ? `<button type="button" class="dot${active}" data-sw-img="${ctx.BASE}/assets/p/${p.id}-k${i}-480.webp" data-sw-srcset="${ctx.BASE}/assets/p/${p.id}-k${i}-480.webp 480w, ${ctx.BASE}/assets/p/${p.id}-k${i}-960.webp 960w" data-sw-alt="${esc(imgAlt(ctx, p, { color: c }))}" aria-label="نمایش رنگ ${esc(c)}" title="${esc(c)}" style="background:${HEX[c] || "#bbb"}"></button>`
       : `<i class="dot" title="${esc(c)}" style="background:${HEX[c] || "#bbb"}"></i>`;
   }).join("")}${sw.length > 5 ? `<small>+${sw.length - 5}</small>` : ""}</div>`;
 };
@@ -249,6 +249,36 @@ const guideFor = (p) => guides.find((g) => g.cats.includes(p.cat));
 const short = (p) => p.title.split(" | ")[0];
 const mainBase = (p) => (p.mainColor != null ? `${p.id}-k${p.mainColor}` : `${p.id}`);
 const pUrl = (ctx, p) => `${ctx.BASE}/p/${p.id}/`;
+const CAT_ROOT = {
+  tshirt: /تیشرت|تی\s*شرت/,
+  polo: /پولوشرت/,
+  shirt: /پیراهن/,
+  sweat: /هودی|دورس|بلوز|سویشرت/,
+  pants: /شلوار/,
+  shorts: /شلوارک/,
+  shoes: /کفش/,
+  kids: /پسرانه/,
+};
+function imgAlt(ctx, p, opts = {}) {
+  const norm = (s) => String(s || "").replace(/\u200c/g, " ").replace(/\s+/g, " ").trim();
+  const base = short(p).replace(/\s*\|.*$/, "").replace(/\s+/g, " ").trim();
+  const cat = catOf(ctx, p);
+  const root = CAT_ROOT[p.cat];
+  const catLabel = cat && root && !root.test(norm(base)) ? cat.name : "";
+  const suffix = String(opts.suffix || "").replace(/\|/g, " ").replace(/\s+/g, " ").trim();
+  const rawColor = opts.color !== undefined ? opts.color : (suffix ? "" : (p.mainColor != null ? p.colors[p.mainColor] : ""));
+  const color = String(rawColor || "").replace(/\|/g, " ").replace(/\s+/g, " ").trim();
+  const colorPart = color && !norm(base).includes(norm(color)) ? ` رنگ ${color}` : "";
+  const brand = catLabel ? `${catLabel} ${STORE.name}` : STORE.name;
+  const tail = `${suffix ? ` — ${suffix}` : ""} — ${brand}`;
+  const full = `${base}${colorPart}${tail}`;
+  if (full.length <= 125) return full;
+  const withoutCat = `${base}${colorPart}${suffix ? ` — ${suffix}` : ""} — ${STORE.name}`;
+  if (withoutCat.length <= 125) return withoutCat;
+  const maxHead = Math.max(20, 125 - tail.length);
+  const head = `${base}${colorPart}`.slice(0, maxHead).replace(/\s+\S*$/, "").trim();
+  return `${head}${tail}`.slice(0, 125).trim();
+}
 // Curated real unretouched booth/flatlay/macro index per product so "عکس واقعی" & editorial slots show honest product photography rather than collages
 const REAL_IDX = { 50436324: 1, 49701761: 1, 53765502: 2, 47475290: 1, 68137613: 0, 65852930: 2, 60937967: 2, 42724724: 0, 43999644: 0, 36616537: 0, 53614296: 1, 46295449: 1, 45029484: 1, 43994736: 1, 44438413: 1, 50425812: 2 };
 const realPick = (p) => {
@@ -273,19 +303,22 @@ function cardData(ctx, p) {
   const t = tagFor(p);
   const rp = realPick(p);
   const realUrl = rp ? `${ctx.BASE}/assets/p/${rp.file}` : null;
+  const altIdx = realUrl ? null : p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i));
   return {
     id: p.id, t: short(p), c: p.cat, cn: catOf(ctx, p).name, p: p.price, s: liveSizes(p), st: p.inStock, sales: p.sales, d: p.created, k: p.keyword,
     msr: !!measures(p),
     url: pUrl(ctx, p), img: `${ctx.BASE}/assets/p/${mainBase(p)}-480.webp`,
+    imgAlt: imgAlt(ctx, p),
     real: realUrl,
-    alt: realUrl ? null : (() => { const o = p.colorImages.find((i) => i !== p.mainColor && p.colorInStock.includes(i)); return o != null ? `${ctx.BASE}/assets/p/${p.id}-k${o}-480.webp` : null; })(),
+    alt: altIdx != null ? `${ctx.BASE}/assets/p/${p.id}-k${altIdx}-480.webp` : null,
+    altImgAlt: altIdx != null ? imgAlt(ctx, p, { color: p.colors[altIdx] }) : null,
     tag: t && t[0], tagc: t && t[1], dots: dotsHtml(ctx, p), rate: p.rating && p.rating.avg ? fa0(p.rating.avg) : "",
   };
 }
 function card(ctx, p, eager = false) {
   const d = cardData(ctx, p);
   return `<article class="card rv${d.st ? "" : " out"}">
-<div class="card-media"><img src="${d.img}" srcset="${d.img} 480w, ${d.img.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(p.title)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${!d.real && d.alt ? `<img class="alt" src="${d.alt}" srcset="${d.alt} 480w, ${d.alt.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(`${p.title} — نمای دوم`.slice(0, 120))}" width="480" height="600" loading="lazy" decoding="async">` : ""}
+<div class="card-media"><img src="${d.img}" srcset="${d.img} 480w, ${d.img.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(d.imgAlt)}" width="480" height="600" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${!d.real && d.alt ? `<img class="alt" src="${d.alt}" srcset="${d.alt} 480w, ${d.alt.replace(/-480\.webp$/, '-960.webp')} 960w" sizes="(max-width:600px) 50vw, 25vw" alt="${esc(d.altImgAlt || imgAlt(ctx, p, { suffix: "نمای دوم" }))}" width="480" height="600" loading="lazy" decoding="async">` : ""}
 <div class="card-tags">${d.tag ? `<span class="tag ${d.tagc}">${d.tag}</span>` : ""}</div>
 <button type="button" class="fav" data-id="${p.id}" aria-label="افزودن ${esc(p.title)} به علاقه‌مندی‌ها">${I.heart}</button>${d.real ? `<button type="button" class="real-tg" data-real="${d.real}" aria-pressed="false" aria-label="${esc(`نمایش عکس واقعی ${short(p)}`)}">${I.camera}<span>عکس واقعی</span></button>` : ""}</div>
 <div class="card-body"><div class="card-top"><span class="card-cat">${d.cn}${d.msr ? " · جدول سایز دارد" : ""}</span>${d.rate ? `<span class="card-rate num"><i>★</i>${d.rate}</span>` : ""}</div><h3 class="card-title"><a href="${d.url}">${esc(short(p))}</a></h3>
@@ -399,7 +432,7 @@ function home(ctx) {
       <div class="hero-cta"><a class="btn btn-accent" href="${BASE}/shop/">${esc(hero("cta1", "مشاهده و خرید"))} ${I.arrow}</a><a class="btn btn-glass" href="${BASE}/size-guide/">${esc(hero("cta2", "سایزیاب ۱۰ ثانیه‌ای"))}</a></div>
       <div class="hero-kpis d-only"><span><b class="num">{YEARS}+</b> سال بازار تبریز</span><span><b class="num">${fa(P.filter((p) => p.inStock).length)}</b> مدل آماده ارسال</span><span>تا <b class="num">{MAX}</b> واقعی</span></div>
     </div>
-    ${heroFloats.length ? `<div class="hero-floats d-only">${heroFloats.map((fp) => `<a class="hero-float" href="${pUrl(ctx, fp)}"><img src="${BASE}/assets/p/${mainBase(fp)}-480.webp" width="480" height="600" loading="lazy" decoding="async" alt="${esc(short(fp))}"><div class="hero-float-in"><small>${catOf(ctx, fp).name}</small><b>${esc(short(fp))}</b><span><i class="num">${fa(fp.price)}</i> تومان ${I.arrow}</span></div></a>`).join("")}</div>` : ""}
+    ${heroFloats.length ? `<div class="hero-floats d-only">${heroFloats.map((fp) => `<a class="hero-float" href="${pUrl(ctx, fp)}"><img src="${BASE}/assets/p/${mainBase(fp)}-480.webp" width="480" height="600" loading="lazy" decoding="async" alt="${esc(imgAlt(ctx, fp))}"><div class="hero-float-in"><small>${catOf(ctx, fp).name}</small><b>${esc(short(fp))}</b><span><i class="num">${fa(fp.price)}</i> تومان ${I.arrow}</span></div></a>`).join("")}</div>` : ""}
   </div>
 </div></section>
 
@@ -723,8 +756,8 @@ function product(ctx, p) {
   const body = `${crumbs(ctx, items)}
 <div class="wrap pdp" id="pdp">
   <div class="gal">
-    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(p.title)}" width="960" height="1200" fetchpriority="high" decoding="async"><span class="gal-count num" id="gal-count">${fa(1)} / ${fa(allThumbs.length)}</span><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
-    <div class="thumbs">${allThumbs.map((g, i) => `<button type="button" data-full="${g.full}" data-tc="${esc(g.color)}"${g.isReal ? ' data-real="1"' : ' data-kind="studio"'} aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="${esc(`${p.title} — ${g.label || `نمای ${fa(i + 1)}`}`.slice(0, 120))}" loading="lazy" width="${g.w}" height="${g.h}" decoding="async">${g.isReal ? `<span class="thumb-tag">واقعی</span>` : ""}</button>`).join("")}</div>
+    <div class="gal-main"><img class="cover" src="${hero}" srcset="${BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${hero} 960w" sizes="(max-width:900px) 92vw, 46vw" alt="${esc(imgAlt(ctx, p))}" width="960" height="1200" fetchpriority="high" decoding="async"><span class="gal-count num" id="gal-count">${fa(1)} / ${fa(allThumbs.length)}</span><span class="gal-hint">برای بزرگ‌نمایی بزنید</span></div>
+    <div class="thumbs">${allThumbs.map((g, i) => `<button type="button" data-full="${g.full}" data-tc="${esc(g.color)}"${g.isReal ? ' data-real="1"' : ' data-kind="studio"'} aria-label="${esc(g.label)}" aria-current="${i === 0}"><img src="${g.thumb}" alt="${esc(g.isReal ? imgAlt(ctx, p, { color: "", suffix: g.label }) : g.color ? imgAlt(ctx, p, { color: g.color }) : imgAlt(ctx, p))}" loading="lazy" width="${g.w}" height="${g.h}" decoding="async">${g.isReal ? `<span class="thumb-tag">واقعی</span>` : ""}</button>`).join("")}</div>
   </div>
   <div class="pinfo">
     <a class="kicker" href="${BASE}/c/${c.slug}/">${c.name}</a>
@@ -759,7 +792,7 @@ ${(() => {
 <div class="copy">${rows.length ? `<table class="spec">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</table>` : ""}<p class="note-sm"><b>نکته سایز:</b> ${esc(p.copy.sizeNote)}</p><p class="note-sm"><b>نگهداری:</b> ${esc(p.copy.care)}</p><p class="note-sm"><a class="link" href="${BASE}/size-guide/">سایزیاب و جدول سایز</a>${Object.entries(gar.GARMENTS).filter(([k, G]) => G.cats.includes(p.cat) && gar.garmentKinds(ctx).includes(k)).map(([k, G]) => ` · <a class="link" href="${BASE}/size/${k}/">${G.h1}</a>`).join("")}${(() => { if (p.cat === "shoes" && sz.shoeChart(ctx)) return ` · <a class="link" href="${BASE}/size/shoes/">جدول سایز کفش به سانتی‌متر</a>`; const z = liveSizes(p).filter((x) => sz.sizePages.includes(x)).pop(); return z ? ` · <a class="link" href="${BASE}/size/${z.toLowerCase()}/">سایز ${z} چند کیلو است؟</a>` : ""; })()} · <a class="link" href="${BASE}/c/${c.slug}/">همه ${c.plural}</a>${col.colorPages(ctx).filter((x) => x.cat === p.cat && x.list.includes(p) && p.colors.some((k, i) => p.colorInStock.includes(i) && col.colorGroup(k) === x.g)).map((x) => ` · <a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${x.g === "" ? "" : col.colorTitle(x.cat, x.g)}</a>`).join("")}${sty.stylesOf(ctx, p).map((x) => ` · <a class="link" href="${BASE}${sty.stylePath(ctx, x)}">${x.h1}</a>`).join("")}${g ? ` · <a class="link" href="${BASE}/guide/${g.slug}/">${g.title}</a>` : ""}</p></div></div></section>`;
 })()}
 ${real.length ? `<section class="sec-sm real"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>عکس‌های واقعی از غرفه</h2><p>همین کالا، عکاسی‌شده در حجره المارت در بازار تبریز؛ برای دیدن رنگ‌ها و جزئیات بزنید.</p></div></div>
-<div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(p.title)} — عکس واقعی ${fa(i + 1)}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
+<div class="real-g">${real.map((src, i) => `<button class="real-i" data-real="${i}" aria-label="عکس واقعی ${fa(i + 1)}"><img src="${src}" alt="${esc(imgAlt(ctx, p, { color: "", suffix: `عکس واقعی ${fa(i + 1)}` }))}" loading="lazy" width="${p.images.gallery[i].w}" height="${p.images.gallery[i].h}" decoding="async"></button>`).join("")}</div></div></section>` : ""}
 ${p.inStock ? `<div class="mbar"><b class="num" id="mobile-price">${fa(p.price)} تومان</b><a class="btn btn-ink buy-go" href="${p.buyUrl}" target="_blank" rel="noopener">خرید از باسلام</a><button class="btn btn-ghost mbar-call" type="button" data-direct-order aria-label="سفارش تلفنی یا پیامکی">${I.phone}</button></div>` : ""}
 ${p.reviews.length ? `<section class="sec-sm" id="reviews"><div class="wrap"><div class="sec-head"><div><span class="kicker">نظر خریداران</span><h2>${fa(p.rating.avg)} از ۵ <small class="h-sub">از ${fa(p.reviews.length)} امتیاز در باسلام</small></h2></div></div><div class="rv-grid">${p.reviews.filter((r) => r.text).map((r) => reviewCard(ctx, r, false)).join("") || `<p class="note-sm">${fa(p.reviews.length)} خریدار به این محصول امتیاز داده‌اند (بدون متن).</p>`}</div></div></section>` : storeReviewsBlock(ctx, p)}
 ${pair.length ? `<section class="sec-sm"><div class="wrap"><div class="sec-head"><div><span class="kicker">ست کامل</span><h2>با این ست کنید</h2><p>${pair.some((x) => fit(x)) && sizes.length ? "اول مدل‌هایی که در سایزهای همین محصول موجودند." : "انتخاب‌های پرفروش برای کامل کردن استایل."}</p></div></div><div class="grid">${pair.map((x) => card(ctx, x)).join("")}</div></div></section>` : ""}
@@ -904,7 +937,7 @@ function about(ctx) {
 </div>
 <p><a class="btn btn-ink" href="${BASE}/shop/">دیدن کالکشن</a> <a class="btn btn-ghost" href="${STORE.instagram}" target="_blank" rel="noopener">${I.ig} <bdi dir="ltr" class="handle">@${STORE.igHandle}</bdi></a> <a class="btn btn-ghost" href="${BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a></p>
 </div></div></section>
-${realStrip.length ? `<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>از میز کار و قفسه حجره</h2><p>نمونه عکس‌های واقعی پارچه، دوخت و برش از غرفه المارت در بازار تبریز.</p></div><a class="link" href="${BASE}/shop/">همه مدل‌ها</a></div><div class="grid">${realStrip.map(({ p, g }) => `<a class="about-shot" href="${pUrl(ctx, p)}"><img src="${BASE}/assets/p/${g.file}" alt="${esc(`${short(p)} — عکس واقعی`)}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"><span><b>${esc(short(p))}</b><small class="num">${fa(p.price)} تومان</small></span></a>`).join("")}</div></div></section>` : ""}`,
+${realStrip.length ? `<section class="sec-sm bg-cream"><div class="wrap"><div class="sec-head"><div><span class="kicker">بدون روتوش</span><h2>از میز کار و قفسه حجره</h2><p>نمونه عکس‌های واقعی پارچه، دوخت و برش از غرفه المارت در بازار تبریز.</p></div><a class="link" href="${BASE}/shop/">همه مدل‌ها</a></div><div class="grid">${realStrip.map(({ p, g }) => `<a class="about-shot" href="${pUrl(ctx, p)}"><img src="${BASE}/assets/p/${g.file}" alt="${esc(imgAlt(ctx, p, { color: "", suffix: "عکس واقعی" }))}" width="${g.w}" height="${g.h}" loading="lazy" decoding="async"><span><b>${esc(short(p))}</b><small class="num">${fa(p.price)} تومان</small></span></a>`).join("")}</div></div></section>` : ""}`,
   });
 }
 
@@ -1794,7 +1827,7 @@ function guideCover(ctx, g) {
 }
 function gcard(ctx, g, h = "h3") {
   const p = guideCover(ctx, g);
-  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" srcset="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${ctx.BASE}/assets/p/${mainBase(p)}-960.webp 960w" sizes="(max-width:600px) 100vw, 33vw" alt="" width="480" height="600" loading="lazy" decoding="async">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><${h}>${g.title}</${h}><p>${g.desc}</p></div></a>`;
+  return `<a class="gcard" href="${ctx.BASE}/guide/${g.slug}/">${p ? `<img src="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp" srcset="${ctx.BASE}/assets/p/${mainBase(p)}-480.webp 480w, ${ctx.BASE}/assets/p/${mainBase(p)}-960.webp 960w" sizes="(max-width:600px) 100vw, 33vw" alt="${esc(g.title)}" width="480" height="600" loading="lazy" decoding="async">` : ""}<div><span class="kicker">${fa(readMin(ctx, g))} دقیقه مطالعه</span><${h}>${g.title}</${h}><p>${g.desc}</p></div></a>`;
 }
 
 function guide(ctx, g) {
@@ -2055,11 +2088,11 @@ function aiCatalog(ctx) {
 
 const sz = require("./pages-sizes")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, sizer, SIZE_ROWS, STORE, fa, fa0 });
 const info = require("./pages-info")({ layout, crumbs, crumbSchema, faqSchema, STORE, I, fa0, fa });
-const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS });
+const col = require("./pages-colors")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, SIZE_ROWS, imgAlt, mainBase });
 
-const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa });
+const price = require("./pages-price")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, imgAlt, mainBase });
 const gar = require("./pages-garments")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, SIZE_ROWS, fa, fa0 });
 const wt = require("./pages-weight")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, SIZE_ROWS, STORE, fa, fa0, esc });
-const sty = require("./pages-styles")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE });
+const sty = require("./pages-styles")({ layout, crumbs, crumbSchema, faqSchema, itemList, card, liveSizes, fa, STORE, imgAlt, mainBase });
 
-module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), aiCatalog, fillSizes, home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms, llmsFull };
+module.exports = { ...info, ...sz, ...col, ...price, ...sty, ...gar, ...wt, catalog: (ctx) => ctx.products.map((p) => cardData(ctx, p)), aiCatalog, fillSizes, imgAlt, mainBase, guideCover, realPick, liveSizes, isBig, fa, SIZE_ROWS, home, shop, category, product, bigSize, sizeGuide, about, tabrizBazaar, faq, guide, guideIndex, guides, notFound, llms, llmsFull };

@@ -49,6 +49,7 @@ const titleViolations = [];
 const descViolations = [];
 const h1Violations = [];
 const thinPages = [];
+const altViolations = [];
 let checkedPages = 0;
 let canonicalStore = null;
 
@@ -93,6 +94,16 @@ for (const file of htmlFiles) {
   const mainM = html.match(/<main[^>]*>([\s\S]*?)<\/main>/);
   const words = (mainM ? mainM[1] : html).replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(Boolean).length;
   if (words < 180) thinPages.push([rel, words]);
+
+  for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
+    const tag = m[0];
+    const attrs = Object.fromEntries([...tag.matchAll(/([\w-]+)\s*=\s*(["'])(.*?)\2/g)].map((x) => [x[1].toLowerCase(), x[3]]));
+    const src = attrs.src || "", alt = attrs.alt ?? "";
+    if (!src || src.endsWith("/assets/img/mark.svg") || attrs.width === "28") continue;
+    if (!alt.trim() || !/[\u0600-\u06FF]/.test(alt) || alt.includes("|") || (src.includes("/assets/p/") && alt.length > 125)) {
+      altViolations.push([rel, src, alt]);
+    }
+  }
 
   const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
   const parsedSchemas = schemas.map((sm) => JSON.parse(sm[1]));
@@ -157,6 +168,7 @@ assert.deepEqual(descViolations, [], `Meta desc length violations: ${JSON.string
 assert.deepEqual([...titles.entries()].filter(([, v]) => v.length > 1), [], "Duplicate titles found");
 assert.deepEqual([...descs.entries()].filter(([, v]) => v.length > 1), [], "Duplicate meta descriptions found");
 assert.deepEqual(thinPages, [], `Thin pages (<180 words): ${JSON.stringify(thinPages)}`);
+assert.deepEqual(altViolations, [], `Invalid/missing image alt text: ${JSON.stringify(altViolations.slice(0, 10))}`);
 
 const robots = fs.readFileSync(path.join(DOCS, "robots.txt"), "utf8");
 for (const token of ["OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Disallow: /admin/", "Sitemap: https://ellmarrt.ir/sitemap.xml"]) {
@@ -166,6 +178,26 @@ for (const token of ["OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Disallow
 const sitemap = fs.readFileSync(path.join(DOCS, "sitemap.xml"), "utf8");
 assert(sitemap.includes("<lastmod>"), "sitemap.xml missing <lastmod>");
 assert(sitemap.includes("<image:title>"), "sitemap.xml missing <image:title>");
+assert(!/\{MAX(?::\w+)?\}|\{YEARS\}/.test(sitemap), "Unreplaced token in sitemap.xml");
+const sitemapUrls = [...sitemap.matchAll(/<url>/g)].length;
+const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
+assert.equal(lastmods.length, sitemapUrls, "Every sitemap <url> must have a <lastmod>");
+for (const lm of lastmods) assert(/^\d{4}-\d{2}-\d{2}$/.test(lm), `Invalid <lastmod> format: ${lm}`);
+const distinctLastmods = new Set(lastmods);
+assert(distinctLastmods.size > 5, `Expected >5 distinct <lastmod> dates in sitemap.xml, found ${distinctLastmods.size}`);
+const imageLocs = [...sitemap.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map((m) => m[1]);
+assert(imageLocs.length > 0, "sitemap.xml missing <image:loc> entries");
+for (const loc of imageLocs) {
+  const pathname = new URL(loc).pathname.replace(/^\//, "");
+  assert(fs.existsSync(path.join(DOCS, pathname)), `Missing sitemap image on disk: docs/${pathname}`);
+}
+for (const tm of sitemap.matchAll(/<image:title>([^<]*)<\/image:title>/g)) {
+  assert(!tm[1].includes("|"), `Raw '|' pipe in sitemap image title: ${tm[1]}`);
+}
+const catalogJson = JSON.parse(fs.readFileSync(path.join(DOCS, "assets/catalog.json"), "utf8"));
+for (const item of catalogJson) {
+  assert(item.imgAlt && /[\u0600-\u06FF]/.test(item.imgAlt) && !item.imgAlt.includes("|") && item.imgAlt.length <= 125, `Invalid catalog.json imgAlt for ${item.id}: ${item.imgAlt}`);
+}
 
 const feed = fs.readFileSync(path.join(DOCS, "feed.xml"), "utf8");
 assert(feed.includes('<rss version="2.0"') && feed.includes("<item>"), "Invalid docs/feed.xml RSS feed");
@@ -189,4 +221,4 @@ const aiCat = JSON.parse(fs.readFileSync(path.join(DOCS, "assets/ai-catalog.json
 assert(aiCat.store && Array.isArray(aiCat.products) && aiCat.products.length > 0, "Invalid assets/ai-catalog.json");
 assert(Array.isArray(aiCat.guides) && aiCat.guides.length > 0 && aiCat.sizeChart && Array.isArray(aiCat.sizeChart.tops), "Missing guides or sizeChart in assets/ai-catalog.json");
 
-console.log(`PASS: ${checkedPages} indexable pages, ${aiCat.products.length} AI-catalog products, 0 broken links, 0 duplicate titles/descs, 0 thin pages, full schema & GEO verified.`);
+console.log(`PASS: ${checkedPages} indexable pages, ${aiCat.products.length} AI-catalog products, ${imageLocs.length} sitemap images, ${distinctLastmods.size} distinct lastmod dates, 0 broken links, 0 duplicate titles/descs, 0 thin pages, 0 alt issues, full schema & GEO verified.`);
