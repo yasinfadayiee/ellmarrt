@@ -181,7 +181,7 @@ ${o.body}
         <div class="social"><a href="${STORE.instagram}" target="_blank" rel="noopener" aria-label="اینستاگرام المارت">${I.ig}</a><a href="${STORE.basalam}" target="_blank" rel="noopener" aria-label="غرفه باسلام">${I.store}</a><a href="${STORE.rubika}" target="_blank" rel="noopener" aria-label="کانال روبیکا">${I.share}</a></div>
       </div>
       <div><h2>فروشگاه</h2><ul>${Object.values(ctx.CATEGORIES).map((c) => `<li><a href="${BASE}/c/${c.slug}/">${c.name}</a></li>`).join("")}${col.colorPages(ctx).sort((x, y) => y.list.length - x.list.length).slice(0, 2).map((x) => `<li><a href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a></li>`).join("")}${price.pricePages(ctx).filter((x) => !x.cat).slice(0, 1).map((x) => `<li><a href="${BASE}${price.pricePath(ctx, x)}">${price.priceTitle(x)}</a></li>`).join("")}</ul></div>
-      <div><h2>راهنما</h2><ul><li><a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a></li><li><a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></li><li><a href="${BASE}/guide/">راهنمای خرید</a></li><li><a href="${BASE}/faq/">سوالات متداول</a></li><li><a href="${BASE}/shipping-returns/">ارسال و مرجوعی</a></li><li><a href="${BASE}/terms/">قوانین و مقررات</a></li><li><a href="${BASE}/privacy/">حریم خصوصی</a></li><li><a href="${BASE}/contact/">تماس با ما</a></li></ul></div>
+      <div><h2>راهنما</h2><ul><li><a href="${BASE}/size-guide/">سایزیاب و جدول سایز</a></li><li><a href="${BASE}/big-size/">لباس سایز بزرگ مردانه</a></li><li><a href="${BASE}/guide/">راهنمای خرید</a></li><li><a href="${BASE}/guide/yalda-fathers-day-gift-men/">کادوی یلدا و روز پدر</a></li><li><a href="${BASE}/faq/">سوالات متداول</a></li><li><a href="${BASE}/shipping-returns/">ارسال و مرجوعی</a></li><li><a href="${BASE}/terms/">قوانین و مقررات</a></li><li><a href="${BASE}/privacy/">حریم خصوصی</a></li><li><a href="${BASE}/contact/">تماس با ما</a></li></ul></div>
       <div><h2>المارت</h2><ul><li><a href="${BASE}/about/">داستان ما</a></li><li><a href="${BASE}/tabriz-bazaar/">حجره بازار تبریز</a></li><li><a href="${BASE}/wholesale/">خرید عمده</a></li><li><a href="${STORE.instagram}" target="_blank" rel="noopener">اینستاگرام <bdi dir="ltr" class="handle">@${STORE.igHandle}</bdi></a></li><li><a href="${STORE.basalam}" target="_blank" rel="noopener">غرفه در باسلام</a></li><li><a href="${STORE.rubika}" target="_blank" rel="noopener">کانال روبیکا</a></li>${STORE.phones.map((p)=>`<li><a href="tel:${p}" class="num">${fa0(p)}</a></li>`).join("")}<li>${STORE.address}</li></ul></div>
     </div>
     <div class="ftr-wordmark" aria-hidden="true">ELLMARRT</div>
@@ -333,7 +333,7 @@ function home(ctx) {
   const pNow = +String(new Intl.DateTimeFormat("en-u-ca-persian", { year: "numeric" }).format(new Date())).replace(/\D/g, "") || 1405;
   const startYear = fa0(pNow - STORE.years);
   const cold = [8, 9, 10, 11, 0, 1].includes(new Date().getMonth());
-  const COLD_GUIDE_SLUGS = ["yalda-outfit-men", "winter-outfit-men", "big-size-winter-men"];
+  const COLD_GUIDE_SLUGS = ["yalda-fathers-day-gift-men", "yalda-outfit-men", "winter-outfit-men", "big-size-winter-men"];
   const homeGuides = (cold
     ? [...COLD_GUIDE_SLUGS.map((s) => guides.find((g) => g.slug === s)).filter(Boolean), ...guides.filter((g) => !COLD_GUIDE_SLUGS.includes(g.slug))]
     : guides).slice(0, 3);
@@ -551,7 +551,7 @@ function shop(ctx) {
 ${sty.styleLinks(ctx, null)}
 ${topColors.length ? `<p class="note-sm">رنگ‌های پرطرفدار: ${topColors.map((x) => `<a class="link" href="${BASE}${col.colorPath(ctx, x.cat, x.g)}">${col.colorTitle(x.cat, x.g)}</a>`).join(" · ")}</p>` : ""}
 ${price.priceLinks(ctx, null)}
-<p class="note-sm">ابزار و راهنما: <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ تا {MAX}</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب با قد و وزن</a> · <a class="link" href="${BASE}/size/weight/">سایز بر اساس وزن</a> · <a class="link" href="${BASE}/guide/">همه راهنماهای خرید</a></p>
+<p class="note-sm">ابزار و راهنما: <a class="link" href="${BASE}/big-size/">لباس سایز بزرگ تا {MAX}</a> · <a class="link" href="${BASE}/size-guide/">سایزیاب با قد و وزن</a> · <a class="link" href="${BASE}/size/weight/">سایز بر اساس وزن</a> · <a class="link" href="${BASE}/guide/yalda-fathers-day-gift-men/">راهنمای کادوی شب یلدا و روز پدر</a> · <a class="link" href="${BASE}/guide/">همه راهنماهای خرید</a></p>
 </div></section>`,
   });
 }
@@ -1346,7 +1346,8 @@ const guides = [
 <h2>۵. برای آقایان سایز بزرگ</h2>
 <p>رنگ تیره (زرشکی تیره، یشمی، مشکی) را برای بالاتنه انتخاب کنید و لباس را اندازه بخرید، نه گشاد. برای انتخاب سایز، <a href="${ctx.BASE}/size/weight/">سایز بر اساس وزن</a> و <a href="${ctx.BASE}/guide/big-size-men/">راهنمای لباس مردان شکم‌دار</a> را ببینید.</p>
 <h2>زمان سفارش</h2>
-<p>سفارش‌ها از روز اول کاری از تبریز ارسال می‌شوند؛ برای اینکه لباس پیش از ۳۰ آذر برسد، یکی دو هفته زودتر سفارش دهید. اگر در تبریز هستید، می‌توانید <a href="${ctx.BASE}/tabriz-bazaar/">حضوری به غرفه</a> بیایید.</p>`;
+<p>سفارش‌ها از روز اول کاری از تبریز ارسال می‌شوند؛ برای اینکه لباس پیش از ۳۰ آذر برسد، یکی دو هفته زودتر سفارش دهید. اگر در تبریز هستید، می‌توانید <a href="${ctx.BASE}/tabriz-bazaar/">حضوری به غرفه</a> بیایید.</p>
+<p>اگر علاوه بر انتخاب لباس خودتان، به‌دنبال ایده هدیه برای شب یلدا و روز مرد و پدر (حدود ۱ تا ۲ دی ۱۴۰۵) هستید، <a href="${ctx.BASE}/guide/yalda-fathers-day-gift-men/">راهنمای کادوی شب یلدا و روز مرد و پدر</a> را بر اساس بودجه ببینید.</p>`;
     },
   },
   {
@@ -1473,6 +1474,7 @@ const guides = [
 <ul><li><b>برای محیط کار و مهمانی:</b> ${a(53765502, "پولوشرت نیم‌زیپ گلدوزی‌شده")} یا ${a(53614296, "تیشرت یقه انگلیسی خنک")} ظاهر مرتب‌تری از تیشرت ساده دارند و بین مردان مختلف بسیار محبوب‌اند.</li><li><b>برای پاییز و زمستان:</b> ${a(60191258, "دورس دو نخ لاکرا ۱۰۰٪ پنبه")} یا ${a(60937967, "سویشرت کلاه‌دار تمام‌زیپ")} انتخاب‌های گرم و کاربردی هستند؛ مدل‌های تمام‌زیپ از نظر تن‌خور انعطاف بیشتری دارند.</li><li><b>برای هدیه کامل و بی‌دردسر:</b> ${a(60209573, "ست بلوز و شلوار یقه‌دار کبریتی")} بالا و پایین هماهنگ را یک‌جا دارد.</li></ul>
 <h2>۳. چه رنگ‌هایی همیشه جواب می‌دهند؟</h2>
 <p>اگر سلیقه دقیق رنگی را نمی‌دانید، سراغ رنگ‌های پایه بروید: <b>مشکی، سرمه‌ای، طوسی یا کرمی</b>. این رنگ‌ها تقریباً با هر شلوار و کفشی که در کمد است ست می‌شوند. برای دیدن مدل‌های تفکیک‌شده بر اساس رنگ می‌توانید از <a href="${ctx.BASE}/c/sweatshirt/black/">دورس و هودی مشکی</a> یا <a href="${ctx.BASE}/c/polo/navy/">پولوشرت سرمه‌ای</a> شروع کنید.</p>
+<p>برای پیشنهاد مدل‌های مشخص بر اساس بودجه و نسبت (همسر، پدر، برادر یا دوست) ویژه پاییز و زمستان، <a href="${ctx.BASE}/guide/yalda-fathers-day-gift-men/">راهنمای کادوی شب یلدا و روز مرد و پدر ۱۴۰۵</a> را هم ببینید.</p>
 <p>پیش از نهایی کردن خرید، شرایط تعویض سایز را در صفحه <a href="${ctx.BASE}/shipping-returns/">ارسال و مرجوعی</a> بخوانید یا در <a href="${ctx.BASE}/contact/">تماس با المارت</a> با ما مشورت کنید.</p>`;
     },
   },
@@ -1662,6 +1664,84 @@ const guides = [
 <p>برای دیدن همه مدل‌ها با فیلتر سایز تا {MAX} به <a href="${ctx.BASE}/shop/">فروشگاه المارت</a> بروید، درباره خرید بی‌واسطه در <a href="${ctx.BASE}/tabriz-bazaar/">صفحه بازار سرپوشیده تبریز</a> بخوانید و برای سفارش عمده هم به صفحه <a href="${ctx.BASE}/wholesale/">پخش عمده پوشاک مردانه</a> سر بزنید.</p>`;
     },
   },
+  {
+    slug: "yalda-fathers-day-gift-men",
+    date: "2026-11-27",
+    updated: "2026-11-27",
+    seoTitle: "کادوی شب یلدا و روز مرد و پدر ۱۴۰۵ | راهنمای هدیه مردانه",
+    title: "راهنمای کادوی شب یلدا و روز مرد و پدر ۱۴۰۵ (۱۳ رجب ۱۴۴۸؛ حدود ۱ تا ۲ دی)",
+    desc: "راهنمای کادوی شب یلدا (۳۰ آذر) و روز مرد و پدر (حدود ۱ تا ۲ دی ۱۴۰۵): پیشنهاد لباس مردانه واقعی بازار تبریز بر اساس بودجه برای همسر، پدر، برادر و دوست.",
+    cats: ["sweat", "polo", "pants", "shoes"],
+    faq: [
+      ["تاریخ شب یلدا و روز مرد و پدر ۱۴۰۵ چه زمانی است و کی سفارش بدهیم؟", "شب یلدا ۳۰ آذر ۱۴۰۵ است و روز مرد و پدر (۱۳ رجب ۱۴۴۸) حدود ۱ تا ۲ دی ۱۴۰۵، درست بلافاصله پس از یلدا قرار می‌گیرد. از آنجا که بسته‌ها از روز اول کاری از تبریز ارسال می‌شوند، ثبت سفارش حدود یک تا دو هفته زودتر خیال شما را از رسیدن به‌موقع کادو راحت می‌کند."],
+      ["با بودجه زیر یک میلیون تومان چه کادوی مردانه‌ای مناسب‌تر است؟", "در بازه زیر یک میلیون تومان، پولوشرت نیم‌زیپ، تیشرت یقه انگلیسی، تیشرت نخ پنبه و شلوارهای راحتی یا اسلش کتان کشی سایز بزرگ انتخاب‌های کاربردی و روزمره‌ای با قیمت مستقیم بازار تبریز هستند."],
+      ["اگر سایز دقیق پدر یا همسر را ندانیم، چطور کم‌خطاتر انتخاب کنیم؟", "قد و وزن تقریبی او را در سایزیاب المارت وارد کنید و با جدول سانتی‌متری صفحه همان محصول بسنجید؛ مدل‌هایی مثل سویشرت تمام‌زیپ یا شلوار کمرکش و بنددار هم انعطاف بیشتری دارند و با سالم ماندن برچسب و بسته‌بندی، امکان بررسی تعویض سایز طبق صفحه ارسال و مرجوعی وجود دارد."],
+      ["برای آقایان سایز بزرگ هم گزینه کادویی دارید؟", "بله؛ پوشاک مردانه المارت شامل تیشرت تا {MAX:tshirt}، شلوار تا {MAX:pants} و هودی و دورس تا {MAX:sweat} با قواره و قد واقعی برای اندام‌های درشت است."],
+    ],
+    html: (ctx) => {
+      const p = (id) => ctx.products.find((x) => x.id === id && x.inStock);
+      const a = (id, label) => {
+        const x = p(id);
+        return x ? `<a href="${pUrl(ctx, x)}">${label}</a> (<span class="num">${fa(x.price)}</span> تومان)` : label;
+      };
+      const priceHref = (slug) => {
+        const hit = price.pricePages(ctx).find((x) => !x.cat && x.slug === slug);
+        return hit ? `${ctx.BASE}${price.pricePath(ctx, hit)}` : `${ctx.BASE}/shop/`;
+      };
+      const catLink = (k, label) => (ctx.CATEGORIES[k] && ctx.products.some((x) => x.cat === k) ? `<a href="${ctx.BASE}/c/${ctx.CATEGORIES[k].slug}/">${label}</a>` : label);
+      return `<p>در پاییز و زمستان ۱۴۰۵ دو مناسبت عزیز پشت سر هم می‌افتند: <b>شب یلدا (۳۰ آذر ۱۴۰۵)</b> و بلافاصله بعد از آن <b>روز مرد و روز پدر (۱۳ رجب ۱۴۴۸، حدود ۱ تا ۲ دی ۱۴۰۵)</b>. برای هدیه دادن در این دو روز، بهترین انتخاب لباسی است که هم به هوای سرد دی‌ماه بیاید و هم در طول سال کاربردی بماند، نه کادویی که ته کمد بماند.</p>
+<div class="note"><b>پیشنهاد سریع:</b> برای انتخاب بدون ریسک، رنگ‌های پایه و ماندگار (مشکی، سرمه‌ای، طوسی، کرمی، یشمی یا زرشکی) را در نظر بگیرید. پیشنهادهای واقعی المارت را بر اساس بودجه در بخش‌های <a href="#budget-under-1m">زیر ۱ میلیون</a>، <a href="#budget-1m-2m">۱ تا ۲ میلیون</a> و <a href="#budget-over-2m">بالای ۲ میلیون تومان</a> ببینید.</div>
+<h2>۱. انتخاب کادوی مردانه بر اساس بودجه</h2>
+<table><thead><tr><th>بازه بودجه</th><th>پیشنهادهای اصلی کادو</th><th>دسترسی سریع</th></tr></thead><tbody>
+<tr><td>زیر ۱ میلیون تومان</td><td>تیشرت یقه انگلیسی، پولوشرت نیم‌زیپ، تیشرت نخ پنبه، شلوار راحتی و اسلش سایز بزرگ</td><td><a href="#budget-under-1m">مدل‌های برگزیده</a> · <a href="${priceHref("1m")}">همه زیر ۱ میلیون</a></td></tr>
+<tr><td>۱ تا ۲ میلیون تومان</td><td>شلوار اسلش تمام‌نخ و کارگو، پیراهن مراکشی، پولوشرت کبریتی و آستین‌بلند، دورس دو نخ</td><td><a href="#budget-1m-2m">مدل‌های برگزیده</a> · <a href="${priceHref("2m")}">همه زیر ۲ میلیون</a></td></tr>
+<tr><td>بالای ۲ میلیون تومان</td><td>بلوز بافت یقه اسکی، ست بلوز و شلوار کبریتی، هودی و سویشرت توکرک، کفش اسپرت</td><td><a href="#budget-over-2m">مدل‌های برگزیده</a></td></tr>
+</tbody></table>
+<p>همه قیمت‌ها و موجودی‌ها مستقیماً از غرفه المارت در بازار سرپوشیده تبریز به‌روزرسانی می‌شوند و قیمت دقیق هر مدل در کارت‌های پایین صفحه درج شده است.</p>
+<h2>۲. پیشنهاد کادو بر اساس گیرنده (همسر، پدر، برادر و دوست)</h2>
+<h3>برای همسر</h3>
+<p>برای همسر، ترکیبی از گرمای زمستانی و ظاهر مرتب برای دورهمی‌های شب یلدا و بیرون رفتن بهترین نتیجه را می‌دهد. ${a(68137613, "بلوز بافت یقه اسکی ریزبافت")} زیر کت یا کاپشن بسیار شیک می‌ایستد و ${a(60209573, "ست بلوز و شلوار یقه‌دار کبریتی")} هدیه‌ای آماده و یکدست در رنگ‌های زمستانی است. اگر لباس تک را ترجیح می‌دهید، ${a(60467399, "پولوشرت کبریتی یقه سفید")} یا ${a(60937967, "سویشرت کلاه‌دار تمام‌زیپ داخل کرکی")} گزینه‌هایی کاربردی در دسته‌های ${catLink("sweat", "هودی و دورس مردانه")} و ${catLink("polo", "پولوشرت و یقه‌دار")} هستند.</p>
+<h3>برای پدر</h3>
+<p>در کادوی روز پدر، راحتی کمر و یقه و جنس نرم پارچه از هر چیز مهم‌تر است. ${a(60192679, "پولوشرت آستین‌بلند یقه‌دار")} برای مهمانی و محیط کار آرام انتخابی سنگین و مرتب است، و ${a(53765502, "پولوشرت نیم‌زیپ گلدوزی‌شده")} برای بودجه اقتصادی‌تر بسیار خوش‌تیپ می‌نشیند. برای پایین‌تنه، ${a(50436324, "شلوار اسلش تمام‌نخ مخصوص پیاده‌روی و سفر")} یا ${a(54125344, "شلوار اسلش کتان کشی سایز بزرگ")} با کمرکش راحت دوخته شده‌اند و برای پدران درشت‌اندام، ${a(53718702, "تیشرت نخ پنبه سایز بزرگ")} همراه با صفحه <a href="${ctx.BASE}/big-size/">لباس سایز بزرگ مردانه تا {MAX}</a> و دسته ${catLink("pants", "شلوار مردانه")} قواره‌های واقعی تا {MAX:pants} را پوشش می‌دهد.</p>
+<h3>برای برادر</h3>
+<p>برای برادر یا جوانان، مدل‌های امروزی‌تر با قواره باکسی یا جیب‌های کاربردی محبوب‌ترند. ${a(65851800, "هودی سه‌نخ باکسی نایک")} و ${a(64343889, "دورس نیم‌زیپ پشت‌چاپ حوله‌ای")} استایل زمستانی به‌روزی می‌سازند و ${a(54126455, "شلوار کارگو شش جیب کتان کشی")} به‌راحتی با هودی و تیشرت ست می‌شود. اگر دنبال هدیه متفاوت‌تر هستید، مدل‌های دسته ${catLink("shoes", "کفش اسپرت مردانه")} مانند ${a(43999644, "کفش اسپرت دوردوخت زیره PU")} و ${a(55720135, "کفش اسپرت سه‌خط دوردوخت")} گزینه‌های بادوامی برای استفاده روزمره هستند.</p>
+<h3>برای دوست یا همکار</h3>
+<p>برای دوست یا همکار معمولاً لباسی مناسب است که بودجه متعادل داشته باشد و به سلیقه بیشتر آقایان بخورد. ${a(53614296, "تیشرت یقه انگلیسی خنک و کشسان")}، ${a(43998508, "تیشرت نخ پنبه مرغوب طرح Boston")} در دسته ${catLink("tshirt", "تیشرت مردانه")} و ${a(44438413, "شلوار راحتی نخ و پنبه سه جیب زیپ‌دار")} انتخاب‌هایی کم‌ریسک و پرکاربردند. همچنین ${a(47475290, "پیراهن آستین کوتاه یقه انگلیسی مراکشی")} از دسته ${catLink("shirt", "پیراهن مردانه")} یا ${a(60094668, "دورس دو نخ لاکرا چاپی ۱۰۰٪ پنبه")} با رنگ‌های متنوع به سلیقه‌های مختلف می‌آیند.</p>
+<h2>۳. زمان سفارش و انتخاب سایز بدون حدس زدن</h2>
+<p>چون شب یلدا (۳۰ آذر ۱۴۰۵) و روز مرد و پدر (حدود ۱ تا ۲ دی ۱۴۰۵) در یک هفته قرار می‌گیرند، سفارش‌هایی که حدود یک تا دو هفته پیش از یلدا ثبت شوند راحت‌تر پیش از شلوغی پستی آخر آذر به دستتان می‌رسند. سفارش‌ها از روز اول کاری از <a href="${ctx.BASE}/tabriz-bazaar/">بازار سرپوشیده تبریز</a> به سراسر ایران پست می‌شوند و در شهر تبریز امکان ارسال با پیک و مراجعه حضوری هم وجود دارد. خرید شما هم از طریق درگاه امن باسلام و هم با سفارش مستقیم و کد پیگیری ثبت می‌شود.</p>
+<p>برای انتخاب سایز بدون نگرانی، قد و وزن تقریبی فرد مقابل را در <a href="${ctx.BASE}/size-guide/">سایزیاب المارت</a> وارد کنید و جدول سانتی‌متری هر مدل را ببینید؛ روش کامل‌تر سایزگیری هدیه را در <a href="${ctx.BASE}/guide/gift-for-men-clothing/">راهنمای خرید لباس هدیه مردانه</a> و ایده رنگ‌بندی ویژه یلدا را در <a href="${ctx.BASE}/guide/yalda-outfit-men/">راهنمای لباس شب یلدا مردانه</a> نوشته‌ایم. همچنین اگر نیاز به تعویض سایز پیش آمد، شرایط آن در صفحه <a href="${ctx.BASE}/shipping-returns/">ارسال و مرجوعی</a> توضیح داده شده است.</p>`;
+    },
+    sections: (ctx) => {
+      const pickTier = (ids, pred, n = 4) => {
+        const chosen = ids.map((id) => ctx.products.find((x) => x.id === id && x.inStock && pred(x))).filter(Boolean);
+        const rest = ctx.products.filter((x) => x.inStock && x.cat !== "kids" && pred(x) && !chosen.includes(x))
+          .sort((x, y) => (y.featured - x.featured) || (y.sales - x.sales) || x.price - y.price);
+        return [...chosen, ...rest].slice(0, n);
+      };
+      const priceHref = (slug, fallback) => {
+        const hit = price.pricePages(ctx).find((x) => !x.cat && x.slug === slug);
+        return hit ? `${ctx.BASE}${price.pricePath(ctx, hit)}` : `${ctx.BASE}${fallback}`;
+      };
+      const tiers = [
+        {
+          id: "budget-under-1m", kicker: "بودجه اقتصادی", title: "کادوی مردانه زیر ۱ میلیون تومان",
+          href: priceHref("1m", "/shop/"), linkText: "همه مدل‌های زیر ۱ میلیون",
+          items: pickTier([53614296, 53765502, 44438413, 54125344], (x) => x.price <= 1000000),
+        },
+        {
+          id: "budget-1m-2m", kicker: "بودجه میان‌رده", title: "کادوی مردانه ۱ تا ۲ میلیون تومان",
+          href: priceHref("2m", "/shop/"), linkText: "همه مدل‌های زیر ۲ میلیون",
+          items: pickTier([50436324, 60467399, 60192679, 64343889], (x) => x.price > 1000000 && x.price <= 2000000),
+        },
+        {
+          id: "budget-over-2m", kicker: "هدیه ویژه و زمستانی", title: "کادوی مردانه بالای ۲ میلیون تومان",
+          href: `${ctx.BASE}/c/${ctx.CATEGORIES.sweat.slug}/`, linkText: `همه ${ctx.CATEGORIES.sweat.plural}`,
+          items: pickTier([60209573, 60937967, 68137613, 43999644], (x) => x.price > 2000000),
+        },
+      ].filter((t) => t.items.length);
+      return tiers.map((t, i) => `<section class="sec-sm${i % 2 === 0 ? " bg-cream" : ""}" id="${t.id}"><div class="wrap"><div class="sec-head"><div><span class="kicker">${t.kicker}</span><h2>${t.title}</h2></div><a class="link" href="${t.href}">${t.linkText}</a></div><div class="grid">${t.items.map((x) => card(ctx, x)).join("")}</div></div></section>`).join("\n");
+    },
+  },
 ];
 
 const readMin = (ctx, g) => Math.max(2, Math.round(g.html(ctx).replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length / 200));
@@ -1722,9 +1802,10 @@ function guide(ctx, g) {
     extraHead: `<meta property="article:published_time" content="${datePub}">\n<meta property="article:modified_time" content="${dateMod}">`,
     schema: schemaList,
     body: `${crumbs(ctx, items)}<article class="sec-sm"><div class="wrap prose"><h1 style="font-size:clamp(28px,4vw,42px)">${g.title}</h1><p class="gmeta">${fa(readMin(ctx, g))} دقیقه مطالعه · ${new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(dateMod))}</p>${htmlBody}${(g.cats || []).includes("shoes") && sz.shoeChart(ctx) ? `<p>جدول دقیق: <a href="${ctx.BASE}/size/shoes/">سایز کفش مردانه به سانتی‌متر</a></p>` : ""}${(g.cats || []).some((k) => sz.bigCats(ctx).includes(k)) ? `<p>سایز بزرگ: ${(g.cats || []).filter((k) => sz.bigCats(ctx).includes(k)).map((k) => `<a href="${ctx.BASE}/big-size/${ctx.CATEGORIES[k].slug}/">${sz.BIG_CATS[k].h1}</a>`).join(" · ")}</p>` : ""}</div></article>
-${g.faq && g.faq.length ? `<section class="sec-sm bg-cream"><div class="wrap faq"><h2>سوالات پرتکرار</h2>${g.faq.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}
-<section class="sec-sm${g.faq && g.faq.length ? "" : " bg-cream"}"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>
-<section class="sec-sm"><div class="wrap prose"><h2>راهنماهای بیشتر</h2><ul>${guides.filter((x) => x.slug !== g.slug).map((x) => `<li><a href="${ctx.BASE}/guide/${x.slug}/">${x.title}</a></li>`).join("")}</ul></div></section>`,
+${g.sections ? g.sections(ctx) : ""}
+${g.faq && g.faq.length ? `<section class="sec-sm${g.sections ? "" : " bg-cream"}"><div class="wrap faq"><h2>سوالات پرتکرار</h2>${g.faq.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</div></section>` : ""}
+${g.sections ? "" : `<section class="sec-sm${g.faq && g.faq.length ? "" : " bg-cream"}"><div class="wrap"><div class="sec-head"><h2>محصولات مرتبط</h2></div><div class="grid">${prods.map((p) => card(ctx, p)).join("")}</div></div></section>`}
+<section class="sec-sm${g.sections ? " bg-cream" : ""}"><div class="wrap prose"><h2>راهنماهای بیشتر</h2><ul>${guides.filter((x) => x.slug !== g.slug).map((x) => `<li><a href="${ctx.BASE}/guide/${x.slug}/">${x.title}</a></li>`).join("")}</ul></div></section>`,
   });
 }
 
